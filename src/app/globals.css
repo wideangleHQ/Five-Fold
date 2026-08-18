@@ -1,0 +1,40 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  :root {
+    --brand-green: #1F7A45;
+    --brand-green-dark: #0B3D2E;
+    --brand-off-white: #F7F8F5;
+    --brand-charcoal: #111615;
+    --brand-amber: #E9B949;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color: #111615;
+    background-color: #FFFFFF;
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-manrope), system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Crisp scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #0B3D2E;
+}
+::-webkit-scrollbar-thumb {
+  background: #1F7A45;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E9B949;
+}
