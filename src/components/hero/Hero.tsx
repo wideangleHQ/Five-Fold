@@ -60,9 +60,9 @@ export const Hero: React.FC = () => {
         </div>
       </Container>
 
-      {/* 3. Oversized Cropped Bottom Brand Typography ("FIVEFOLD") (Visually Intact & Visible within 100vh) */}
-      <div className="relative z-0 w-full overflow-hidden pointer-events-none select-none shrink-0">
-        <div className="font-heading text-[15vw] sm:text-[17vw] lg:text-[16vw] font-extrabold text-center leading-none tracking-tighter text-emerald-500/20 transform translate-y-[20%] uppercase">
+      {/* 3. FULL-VIEWPORT-WIDTH OVERSIZED BRAND TYPOGRAPHY ("FIVEFOLD") */}
+      <div className="relative z-0 w-full max-w-full overflow-hidden pointer-events-none select-none shrink-0 flex justify-center">
+        <div className="font-heading text-[21vw] sm:text-[23vw] lg:text-[24vw] xl:text-[25vw] font-extrabold text-center leading-none tracking-tighter text-emerald-500/20 transform translate-y-[22%] uppercase whitespace-nowrap">
           FIVEFOLD
         </div>
       </div>
