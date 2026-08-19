@@ -21,10 +21,10 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-white py-3 sm:py-4 font-sans relative z-10">
-      {/* 1. SUBSTANTIALLY WIDER FOOTER CONTAINER WITH MINIMAL SIDE GUTTERS */}
-      <div className="w-full max-w-[1840px] mx-auto px-2 sm:px-3 lg:px-4 xl:px-5">
-        <div className="relative rounded-t-[2.5rem] sm:rounded-t-[3.5rem] rounded-b-xl sm:rounded-b-2xl bg-[#0B3D2E] text-white overflow-hidden shadow-2xl border border-emerald-900/60 pt-12 sm:pt-16 pb-0">
+    <footer className="bg-white pt-3 sm:pt-4 pb-0 mb-0 font-sans relative z-10">
+      {/* 1. SUBSTANTIALLY WIDER FOOTER CONTAINER WITH FLUSH BOTTOM EDGE */}
+      <div className="w-full max-w-[1840px] mx-auto px-1 sm:px-2 pb-0 mb-0">
+        <div className="relative rounded-t-[2.5rem] sm:rounded-t-[3.5rem] rounded-b-none bg-[#0B3D2E] text-white overflow-hidden shadow-2xl border-t border-l border-r border-emerald-900/60 pt-12 sm:pt-16 pb-0 mb-0">
           
           {/* Background Sky Image - 90% Visible at Top, Gradual Vertical Fade Down */}
           <div className="absolute inset-0 z-0">
@@ -276,7 +276,7 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* 5. OVERSIZED CROPPED BRAND TYPOGRAPHY ("FIVEFOLD") */}
-          <div className="relative z-0 w-full overflow-hidden pointer-events-none select-none -mb-3 sm:-mb-5">
+          <div className="relative z-0 w-full overflow-hidden pointer-events-none select-none mb-0 pb-0">
             <div className="font-heading text-[17vw] sm:text-[19vw] lg:text-[18vw] font-extrabold text-center leading-none tracking-tighter text-emerald-500/15 transform translate-y-[22%] uppercase">
               FIVEFOLD
             </div>

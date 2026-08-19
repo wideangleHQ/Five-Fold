@@ -47,8 +47,8 @@ export const EngineeringCapabilities: React.FC = () => {
           <div className="lg:col-span-6 flex flex-col justify-between space-y-8">
             {/* Section Header */}
             <div className="space-y-3">
-              <span className="font-sans text-xs font-bold uppercase tracking-wider text-[#1F7A45]">
-                Engineering Precision
+              <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
+                • ENGINEERING PRECISION
               </span>
               <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.1]">
                 Engineering Capability & Journey

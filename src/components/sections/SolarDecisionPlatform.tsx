@@ -14,19 +14,22 @@ export const SolarDecisionPlatform: React.FC = () => {
   return (
     <section className="py-16 sm:py-24 bg-white border-b border-slate-200/80 font-sans">
       <Container>
-        {/* 1. SECTION HEADER */}
-        <div className="max-w-3xl mb-12 space-y-3">
-          <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
-            Find The Right Solar Solution
-          </span>
+        {/* 1. ASYMMETRIC EDITORIAL HEADER (Matching Reference) */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-end mb-12">
+          <div className="md:col-span-7 space-y-2">
+            <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
+              • FIND YOUR SOLAR SOLUTION
+            </span>
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.12]">
+              Find the right solar solution for you
+            </h2>
+          </div>
 
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-tight">
-            Find the right solar solution for you
-          </h2>
-
-          <p className="font-sans text-slate-600 text-sm sm:text-base max-w-xl leading-relaxed">
-            Smart calculations to help you choose the right solar solution.
-          </p>
+          <div className="md:col-span-5 text-left md:text-right">
+            <p className="font-sans text-slate-600 text-sm sm:text-base leading-relaxed max-w-md ml-auto">
+              Smart calculations to help you choose the right solar solution.
+            </p>
+          </div>
         </div>
 
         {/* 2. THREE FEATURE DATA CARDS */}
