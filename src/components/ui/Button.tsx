@@ -16,15 +16,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary:
-        "bg-brand-green hover:bg-[#165c33] text-white shadow-xs border border-transparent font-semibold",
+        "bg-[#1F7A45] hover:bg-[#155E34] text-white shadow-xs border border-transparent font-semibold",
       secondary:
-        "bg-brand-green-dark hover:bg-[#07281e] text-white shadow-xs border border-transparent font-semibold",
+        "bg-[#0B3D2E] hover:bg-[#07281e] text-white shadow-xs border border-transparent font-semibold",
       outline:
-        "border border-slate-300 bg-white text-brand-charcoal hover:bg-slate-50 hover:border-slate-400 font-semibold",
+        "border border-slate-300 bg-white text-[#111615] hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white font-semibold",
       ghost:
-        "bg-transparent text-brand-charcoal hover:bg-slate-100 hover:text-brand-green font-medium",
+        "bg-transparent text-[#111615] hover:bg-slate-100 hover:text-[#1F7A45] font-medium",
       amber:
-        "bg-brand-amber hover:bg-[#d4a234] text-brand-charcoal font-semibold shadow-xs border border-transparent",
+        "bg-[#E9B949] hover:bg-[#d4a234] text-[#111615] font-semibold shadow-xs border border-transparent",
     };
 
     const sizes = {

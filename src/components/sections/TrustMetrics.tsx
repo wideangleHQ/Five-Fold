@@ -2,11 +2,11 @@ import React from "react";
 import { Container } from "@/components/ui/Container";
 
 const METRICS = [
-  { value: "10+ Years", label: "Renewable Energy Leadership" },
-  { value: "20+ MW", label: "Rooftop Solar Installed" },
-  { value: "30+ Projects", label: "Industrial & Institutional" },
-  { value: "800+ MW", label: "Cumulative Design & Consultation" },
-  { value: "10+ States", label: "Engineering Reach Across India" },
+  { value: "10+ Years", label: "Renewable Energy" },
+  { value: "20+ MW", label: "Installed" },
+  { value: "30+ Projects", label: "Delivered" },
+  { value: "800+ MW", label: "Engineering Experience" },
+  { value: "10+ States", label: "Engineering Reach" },
 ];
 
 export const TrustMetrics: React.FC = () => {

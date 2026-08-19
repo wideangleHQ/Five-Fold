@@ -73,13 +73,15 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobileMenuOpen]);
 
+  const isLightBackground = isScrolled || pathname !== "/";
+
   return (
     <>
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-40 transition-transform duration-300 ease-in-out font-sans motion-reduce:transition-none",
           isHeaderVisible ? "translate-y-0" : "-translate-y-full",
-          isScrolled
+          isLightBackground
             ? "bg-[#F7F8F5]/95 backdrop-blur-md shadow-xs border-b border-slate-200/80 py-3 text-[#111615]"
             : "bg-transparent py-5 text-white"
         )}
@@ -87,14 +89,14 @@ export const Header: React.FC = () => {
         <Container className="flex items-center justify-between">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1F7A45] font-heading text-lg font-bold text-white shadow-xs group-hover:bg-[#165c33] transition-colors">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1F7A45] font-heading text-lg font-bold text-white shadow-xs group-hover:bg-[#155E34] transition-colors">
               F
             </div>
             <div className="flex flex-col">
               <span
                 className={cn(
                   "font-heading text-base sm:text-lg font-extrabold tracking-tight leading-none",
-                  isScrolled ? "text-[#111615]" : "text-white"
+                  isLightBackground ? "text-[#111615]" : "text-white"
                 )}
               >
                 FIVEFOLD
@@ -102,7 +104,7 @@ export const Header: React.FC = () => {
               <span
                 className={cn(
                   "font-sans text-[9px] tracking-widest uppercase font-semibold mt-0.5",
-                  isScrolled ? "text-[#1F7A45]" : "text-emerald-400"
+                  isLightBackground ? "text-[#1F7A45]" : "text-emerald-400"
                 )}
               >
                 RENEWABLE
@@ -128,7 +130,7 @@ export const Header: React.FC = () => {
                         "px-2 py-1 text-xs xl:text-sm font-medium transition-colors inline-flex items-center gap-1 font-sans",
                         isSubActive
                           ? "text-[#1F7A45] font-semibold"
-                          : isScrolled
+                          : isLightBackground
                           ? "text-[#111615] hover:text-[#1F7A45]"
                           : "text-white hover:text-emerald-400"
                       )}
@@ -169,7 +171,7 @@ export const Header: React.FC = () => {
                     "px-2 py-1 text-xs xl:text-sm font-medium transition-colors font-sans",
                     isActive
                       ? "text-[#1F7A45] font-semibold"
-                      : isScrolled
+                      : isLightBackground
                       ? "text-[#111615] hover:text-[#1F7A45]"
                       : "text-white hover:text-emerald-400"
                   )}
@@ -180,28 +182,26 @@ export const Header: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Action CTAs */}
-          <div className="hidden lg:flex items-center gap-2.5">
+          {/* Desktop Right CTA Action Area */}
+          <div className="hidden lg:flex items-center gap-3">
+            <button
+              onClick={() => setIsSchemeModalOpen(true)}
+              className={cn(
+                "px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all duration-200 font-sans",
+                isLightBackground
+                  ? "border-slate-300 bg-white text-[#111615] hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white"
+                  : "border-white/40 bg-white/5 text-white hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white"
+              )}
+            >
+              Check Schemes
+            </button>
             <Button
               href="/contact"
               variant="primary"
               size="sm"
-              className="bg-[#1F7A45] hover:bg-[#176338] text-white py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out border-0"
+              className="bg-[#1F7A45] hover:bg-[#155E34] text-white py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out border-0"
             >
               Get a Free Consultation
-            </Button>
-            <Button
-              href="/contact"
-              variant="outline"
-              size="sm"
-              className={cn(
-                "py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out",
-                isScrolled
-                  ? "border-slate-300 text-[#111615] hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white"
-                  : "border-white/40 bg-white/5 text-white hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white"
-              )}
-            >
-              Contact Us
             </Button>
           </div>
 
@@ -211,7 +211,7 @@ export const Header: React.FC = () => {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={cn(
               "lg:hidden p-2 rounded-md transition-colors focus:outline-none",
-              isScrolled
+              isLightBackground
                 ? "text-[#111615] hover:bg-slate-100"
                 : "text-white hover:bg-white/10"
             )}

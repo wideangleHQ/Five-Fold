@@ -101,20 +101,20 @@ export const ServicesGrid: React.FC = () => {
 
   return (
     <section className="py-8 sm:py-12 bg-white font-sans select-none">
-      {/* REFINED ARCHITECTURAL SECTION CONTAINER */}
-      <div className="max-w-[1536px] mx-auto px-3 sm:px-6 lg:px-8 xl:px-12">
+      {/* 98% VIEWPORT WIDTH CONTAINER (1% Breathing Room Each Side) */}
+      <div className="w-[98%] max-w-[98vw] mx-auto px-0">
         <div
-          className="relative rounded-2xl sm:rounded-3xl bg-[#111615] text-white overflow-hidden border border-slate-800 shadow-xl p-6 sm:p-10 lg:p-12 min-h-[500px] sm:min-h-[540px] flex flex-col justify-between"
+          className="relative rounded-2xl sm:rounded-3xl bg-[#111615] text-white overflow-hidden border border-slate-800 shadow-xl p-6 sm:p-10 lg:p-12 min-h-[540px] sm:min-h-[600px] flex flex-col justify-between"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Background Image Layer (70% Opacity + Dark/Black Overlay) */}
+          {/* Background Image Layer (~90% Visually Exposed) */}
           <div className="absolute inset-0 z-0 overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.id}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.7 }}
+                animate={{ opacity: 0.9 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
                 className="absolute inset-0"
@@ -124,14 +124,14 @@ export const ServicesGrid: React.FC = () => {
                   alt={activeSlide.title}
                   fill
                   priority
-                  sizes="(max-width: 1536px) 100vw, 1536px"
-                  className="object-cover object-center opacity-70"
+                  sizes="98vw"
+                  className="object-cover object-center opacity-90"
                 />
               </motion.div>
             </AnimatePresence>
 
-            {/* Controlled Black / Dark Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#111615] via-[#111615]/85 to-[#111615]/70 z-[1]" />
+            {/* Subtle Gradient Overlay for Text Readability (~90% Photo Visibility) */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#111615]/95 via-[#111615]/40 to-[#111615]/10 z-[1]" />
           </div>
 
           {/* 1. FIXED & CONSTANT HEADER */}
@@ -179,7 +179,7 @@ export const ServicesGrid: React.FC = () => {
                 <div className="pt-2">
                   <Link
                     href={activeSlide.href}
-                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg bg-[#1F7A45] hover:bg-[#165c33] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md group"
+                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg bg-[#1F7A45] hover:bg-[#155E34] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md group"
                   >
                     <span>{activeSlide.ctaText}</span>
                     <ArrowRight className="h-4 w-4 text-emerald-200 group-hover:translate-x-0.5 transition-transform" />

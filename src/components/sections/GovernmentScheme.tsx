@@ -19,9 +19,9 @@ const SCHEMES = [
     num: "01",
     category: "Residential Scheme",
     badge: "PM Surya Ghar",
-    title: "PM Surya Ghar: Muft Bijli Yojana Facilitation",
+    title: "PM Surya Ghar: Muft Bijli Yojana",
     description:
-      "Fivefold provides complete end-to-end guidance, portal application filing, statutory DISCOM approvals, and compliant rooftop installation under the PM Surya Ghar initiative across Odisha.",
+      "End-to-end guidance for portal application filing, approvals and compliant rooftop installation.",
     image: stock1Img,
     ctaText: "Apply for Guidance",
     ctaHref: "/contact",
@@ -33,7 +33,7 @@ const SCHEMES = [
     badge: "Tax & Net Metering",
     title: "C&I Tax Benefits & Net Metering Support",
     description:
-      "Industrial and commercial enterprises benefit from 40% accelerated depreciation, GST input tax credit, and DISCOM grid-export approvals for large-scale rooftop arrays.",
+      "Accelerated depreciation, GST benefits, and DISCOM grid-export approvals.",
     image: stock2Img,
     ctaText: "Discuss Commercial Project",
     ctaHref: "/contact",
@@ -45,7 +45,7 @@ const SCHEMES = [
     badge: "Odisha DISCOM Liaison",
     title: "Odisha DISCOM Liaison & Utility Approvals",
     description:
-      "End-to-end statutory approvals, bidirectional meter installation, transformer load verification, and grid interconnection support across all four Odisha distribution utilities.",
+      "Statutory approvals, net metering and grid interconnection support.",
     image: skyImg,
     ctaText: "Check DISCOM Eligibility",
     ctaHref: "/government-schemes",
