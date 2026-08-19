@@ -15,7 +15,7 @@ import {
 
 // Import approved local image assets
 import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
-import stock2Img from "@/assets/Images/Five_Fold_stock_2.png";
+import stock2Img from "@/assets/Images/Five_fold_stock_2.png";
 import heroBgImg from "@/assets/Images/hero section background.png";
 import skyImg from "@/assets/Images/Five_fold_sky.png";
 

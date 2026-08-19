@@ -9,7 +9,7 @@ import { ArrowRight } from "lucide-react";
 
 // Import approved local image assets
 import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
-import stock2Img from "@/assets/Images/Five_Fold_stock_2.png";
+import stock2Img from "@/assets/Images/Five_fold_stock_2.png";
 import skyImg from "@/assets/Images/Five_fold_sky.png";
 
 // Scheme Data preserving exact factual content
