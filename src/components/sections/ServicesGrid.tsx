@@ -179,7 +179,7 @@ export const ServicesGrid: React.FC = () => {
                 <div className="pt-2">
                   <Link
                     href={activeSlide.href}
-                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg bg-[#1F7A45] hover:bg-[#165c33] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md group"
+                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg bg-[#1F7A45] hover:bg-[#155E34] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md group"
                   >
                     <span>{activeSlide.ctaText}</span>
                     <ArrowRight className="h-4 w-4 text-emerald-200 group-hover:translate-x-0.5 transition-transform" />

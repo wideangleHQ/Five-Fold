@@ -4,6 +4,15 @@
 
 @layer base {
   :root {
+    --fivefold-green: #1F7A45;
+    --fivefold-deep-green: #0B3D2E;
+    --fivefold-solar-yellow: #E9B949;
+    --fivefold-off-white: #F7F8F5;
+    --fivefold-white: #FFFFFF;
+    --fivefold-charcoal: #111615;
+    --fivefold-hero-gray: #F2F2F2;
+    --fivefold-green-hover: #155E34;
+    
     --brand-green: #1F7A45;
     --brand-green-dark: #0B3D2E;
     --brand-off-white: #F7F8F5;

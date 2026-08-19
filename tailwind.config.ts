@@ -10,10 +10,12 @@ const config: Config = {
       colors: {
         brand: {
           green: "#1F7A45",
+          "green-hover": "#155E34",
           "green-dark": "#0B3D2E",
           "off-white": "#F7F8F5",
           charcoal: "#111615",
           amber: "#E9B949",
+          "hero-gray": "#F2F2F2",
           slate: "#2D3748",
           muted: "#64748B",
           border: "#E2E8F0",

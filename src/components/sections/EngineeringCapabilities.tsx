@@ -13,20 +13,20 @@ const ENGINEERING_JOURNEY = [
   {
     phase: "01",
     title: "PRE-CONSTRUCTION",
-    desc: "Feasibility & Bankable Design Preparation",
-    steps: ["Feasibility", "Shadow Analysis", "3D Layout", "PVsyst", "DPR", "Financial Modelling", "Risk Review"],
+    desc: "Feasibility, design and bankable project preparation.",
+    steps: ["Feasibility", "Shadow Analysis", "3D Layout", "PVsyst Yield Simulation"],
   },
   {
     phase: "02",
     title: "EXECUTION",
-    desc: "Precision Procurement & Grid Synchronisation",
-    steps: ["Engineering", "Procurement", "Installation", "Commissioning", "Performance Assurance"],
+    desc: "Precision procurement, installation and grid synchronisation.",
+    steps: ["Engineering", "Procurement", "Installation", "Grid Synchronization"],
   },
   {
     phase: "03",
     title: "QUALITY & TRACEABILITY",
-    desc: "Tier-1 Equipment & Quality Assurance Protocols",
-    steps: ["Tier-1 Components", "QA & Inspection", "Testing & Flash Data", "Documentation Pack", "Traceability"],
+    desc: "Tier-1 equipment selection, testing and QA protocols.",
+    steps: ["Tier-1 Modules", "String Inverters", "Flash Data QA", "Traceability"],
   },
 ];
 

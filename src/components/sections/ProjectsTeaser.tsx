@@ -77,7 +77,7 @@ export const ProjectsTeaser: React.FC = () => {
           {/* Header Right */}
           <div className="lg:col-span-5 space-y-4">
             <p className="font-sans text-slate-600 text-sm sm:text-base leading-relaxed">
-              Explore how we&apos;ve helped businesses across Odisha reduce energy costs and transition to clean, reliable solar power.
+              Explore selected solar projects delivered across sectors.
             </p>
           </div>
         </div>
@@ -178,7 +178,7 @@ export const ProjectsTeaser: React.FC = () => {
         <div className="pt-8 text-center">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#1F7A45] hover:bg-[#165c33] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md"
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#1F7A45] hover:bg-[#155E34] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md"
           >
             <span>View All Projects</span>
           </Link>

@@ -43,8 +43,8 @@ export const Hero: React.FC = () => {
           </h1>
 
           {/* Supporting Paragraph (Inter 400) */}
-          <p className="font-sans text-sm sm:text-base md:text-lg lg:text-xl text-slate-200/95 font-normal max-w-xl mx-auto leading-relaxed pt-0.5">
-            Engineering-Led Solar EPC Solutions Since 2016
+          <p className="font-sans text-sm sm:text-base md:text-lg lg:text-xl text-[#F2F2F2] font-normal max-w-2xl mx-auto leading-relaxed pt-0.5">
+            Engineering-led solar EPC solutions for smarter energy and long-term performance.
           </p>
         </div>
 
@@ -53,7 +53,7 @@ export const Hero: React.FC = () => {
           <Button
             href="/contact"
             variant="primary"
-            className="bg-[#1F7A45] hover:bg-[#165c33] text-white px-6 py-2.5 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md transition-all duration-200"
+            className="bg-[#1F7A45] hover:bg-[#155E34] text-white px-6 py-2.5 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md transition-all duration-200"
           >
             Get a Free Consultation
           </Button>

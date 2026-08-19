@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
             {/* 2. TOP BRAND & SOCIAL AREA (CLEARLY VISIBLE OVER 90% SKY PHOTOGRAPHY) */}
             <div className="text-center space-y-4 max-w-xl mx-auto pb-10 border-b border-white/20">
               <Link href="/" className="inline-flex items-center gap-3 group">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1F7A45] font-heading text-xl font-bold text-white shadow-md group-hover:bg-[#165c33] transition-colors">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1F7A45] font-heading text-xl font-bold text-white shadow-md group-hover:bg-[#155E34] transition-colors">
                   F
                 </div>
                 <div className="flex flex-col text-left">
@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
               </Link>
 
               <p className="font-sans text-xs sm:text-sm text-white font-medium leading-relaxed max-w-md mx-auto drop-shadow-xs">
-                Engineering-led solar EPC solutions designed for smarter energy, stronger performance and long-term value.
+                Engineering-led solar EPC solutions for smarter energy, stronger performance and long-term value.
               </p>
 
               {/* Compact Translucent Circular Social Icons */}
@@ -122,7 +122,7 @@ export const Footer: React.FC = () => {
                   STAY CONNECTED
                 </h4>
                 <p className="font-sans text-xs sm:text-sm text-slate-200 leading-relaxed max-w-md">
-                  Get the latest solar insights, project updates and practical energy information delivered straight to your inbox.
+                  Get the latest solar insights delivered straight to your inbox.
                 </p>
                 <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1 max-w-md">
                   <input
@@ -135,7 +135,7 @@ export const Footer: React.FC = () => {
                   />
                   <button
                     type="submit"
-                    className="bg-[#1F7A45] hover:bg-[#165c33] text-white px-5 py-2.5 text-xs font-sans font-semibold rounded-lg transition-colors shrink-0 shadow-xs"
+                    className="bg-[#1F7A45] hover:bg-[#155E34] text-white px-5 py-2.5 text-xs font-sans font-semibold rounded-lg transition-colors shrink-0 shadow-xs"
                   >
                     {subscribed ? "Subscribed!" : "Subscribe"}
                   </button>
