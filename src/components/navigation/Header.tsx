@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -30,29 +30,55 @@ const NAV_ITEMS = [
 
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
   const [isSchemeModalOpen, setIsSchemeModalOpen] = useState(false);
   const pathname = usePathname();
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 30) {
+      const currentScrollY = window.scrollY;
+
+      // Scrolled styling state
+      if (currentScrollY > 30) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
+
+      // Always show at the very top of page or if mobile menu is open
+      if (currentScrollY <= 20 || isMobileMenuOpen) {
+        setIsHeaderVisible(true);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      // Threshold to prevent micro-jitter (8px)
+      const diff = currentScrollY - lastScrollY.current;
+
+      if (diff > 8) {
+        // Scrolling DOWN -> Hide header
+        setIsHeaderVisible(false);
+        lastScrollY.current = currentScrollY;
+      } else if (diff < -8) {
+        // Scrolling UP -> Reveal header
+        setIsHeaderVisible(true);
+        lastScrollY.current = currentScrollY;
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isMobileMenuOpen]);
 
   return (
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-40 transition-all duration-300 font-sans",
+          "fixed top-0 left-0 right-0 z-40 transition-transform duration-300 ease-in-out font-sans motion-reduce:transition-none",
+          isHeaderVisible ? "translate-y-0" : "-translate-y-full",
           isScrolled
             ? "bg-[#F7F8F5]/95 backdrop-blur-md shadow-xs border-b border-slate-200/80 py-3 text-[#111615]"
             : "bg-transparent py-5 text-white"
@@ -160,7 +186,7 @@ export const Header: React.FC = () => {
               href="/contact"
               variant="primary"
               size="sm"
-              className="bg-[#1F7A45] hover:bg-[#165c33] text-white py-2 px-4 text-xs font-semibold"
+              className="bg-[#1F7A45] hover:bg-[#176338] text-white py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out border-0"
             >
               Get a Free Consultation
             </Button>
@@ -169,10 +195,10 @@ export const Header: React.FC = () => {
               variant="outline"
               size="sm"
               className={cn(
-                "py-2 px-4 text-xs font-semibold transition-colors",
+                "py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out",
                 isScrolled
-                  ? "border-slate-300 text-[#111615] hover:bg-slate-100"
-                  : "border-white/30 text-white hover:bg-white/10 hover:border-white"
+                  ? "border-slate-300 text-[#111615] hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white"
+                  : "border-white/40 bg-white/5 text-white hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white"
               )}
             >
               Contact Us
@@ -212,3 +238,4 @@ export const Header: React.FC = () => {
     </>
   );
 };
+

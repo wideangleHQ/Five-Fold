@@ -137,7 +137,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                 onClick={onClose}
                 variant="primary"
                 size="sm"
-                className="w-full text-xs font-semibold py-2.5"
+                className="w-full text-xs font-semibold py-2.5 bg-[#1F7A45] hover:bg-[#176338] text-white transition-all duration-200 ease-in-out border-0"
               >
                 <span>Free Consultation</span>
               </Button>

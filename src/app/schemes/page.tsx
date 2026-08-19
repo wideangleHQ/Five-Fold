@@ -1,4 +1,16 @@
-import GovernmentSchemesPage, { metadata } from "../government-schemes/page";
+import React from "react";
+import { Metadata } from "next";
+import { constructMetadata } from "@/lib/seo";
+import { GovernmentSchemesView } from "@/components/schemes/GovernmentSchemesView";
 
-export { metadata };
-export default GovernmentSchemesPage;
+export const metadata: Metadata = constructMetadata({
+  title: "Government Solar Schemes & Subsidies | Fivefold Renewable",
+  description: "Discover PM Surya Ghar Muft Bijli Yojana, RTS Phase II, and DISCOM Net Metering assistance for residential and commercial solar in Odisha.",
+  canonical: "/schemes",
+});
+
+export default function SchemesPage() {
+  return <GovernmentSchemesView />;
+}
+
+

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,13 +11,13 @@ import {
   Building2,
   Factory,
   Landmark,
-  CheckCircle2,
-  ChevronRight,
-  ShieldCheck,
 } from "lucide-react";
 
-// Use approved local image asset for background
-import sectionBgImg from "@/assets/Images/hero section background.png";
+// Import approved local image assets
+import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
+import stock2Img from "@/assets/Images/Five_Fold_stock_2.png";
+import heroBgImg from "@/assets/Images/hero section background.png";
+import skyImg from "@/assets/Images/Five_fold_sky.png";
 
 const SLIDES = [
   {
@@ -29,16 +29,8 @@ const SLIDES = [
     title: "Smart solar solutions for homes.",
     description:
       "Engineered rooftop solar systems designed for residential energy needs, savings and long-term performance.",
-    points: [
-      "Rooftop Solar",
-      "Site Assessment",
-      "System Design",
-      "Government Scheme Assistance",
-      "Net Metering",
-      "Commissioning",
-      "Long-Term Technical Support",
-    ],
-    ctaText: "Calculate My Home Solar Requirement",
+    image: stock1Img,
+    ctaText: "Calculate Home Solar Requirement",
   },
   {
     id: "commercial",
@@ -49,23 +41,8 @@ const SLIDES = [
     title: "Efficient solar for smarter businesses.",
     description:
       "Solar systems designed around your energy requirement, available space, investment and long-term returns.",
-    points: [
-      "Offices",
-      "Retail Outlets",
-      "Hotels",
-      "Hospitals",
-      "Educational Institutions",
-      "Commercial Buildings",
-    ],
-    flow: [
-      "Energy Requirement",
-      "Available Space",
-      "System Design",
-      "Investment",
-      "Generation",
-      "Long-Term Returns",
-    ],
-    ctaText: "Plan Solar for My Business",
+    image: stock2Img,
+    ctaText: "Plan Solar for Business",
   },
   {
     id: "industrial",
@@ -76,21 +53,8 @@ const SLIDES = [
     title: "Engineered solar for high-demand industry.",
     description:
       "Engineering-first solar solutions focused on system optimisation, reliability and long-term performance.",
-    points: [
-      "Factories",
-      "Manufacturing Facilities",
-      "Warehouses",
-      "Large Industrial Facilities",
-    ],
-    techFocus: [
-      "System Optimisation",
-      "Generation Performance",
-      "Structural Requirements",
-      "Electrical Engineering",
-      "Reliability",
-      "Long-Term Performance",
-    ],
-    ctaText: "Discuss My Industrial Project",
+    image: heroBgImg,
+    ctaText: "Discuss Industrial Project",
   },
   {
     id: "institutional",
@@ -101,24 +65,14 @@ const SLIDES = [
     title: "Reliable solar for essential infrastructure.",
     description:
       "Purpose-built solar solutions for institutions seeking dependable energy performance and long-term value.",
-    points: [
-      "Schools",
-      "Hospitals",
-      "Educational Institutions",
-      "Public Infrastructure",
-    ],
-    techFocus: [
-      "Engineering",
-      "Reliability",
-      "Performance",
-      "Long-Term Support",
-    ],
+    image: skyImg,
     ctaText: "Explore Institutional Solar",
   },
 ];
 
 export const ServicesGrid: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
   const activeSlide = SLIDES[activeIndex];
 
   const handleNext = () => {
@@ -129,128 +83,116 @@ export const ServicesGrid: React.FC = () => {
     setActiveIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    if (diff > 50) {
+      handleNext();
+    } else if (diff < -50) {
+      handlePrev();
+    }
+    touchStartX.current = null;
+  };
+
   return (
-    <section className="py-8 sm:py-12 bg-white font-sans">
-      {/* STRETCHED SECTION CONTAINER WITH INTENTIONAL WHITE GUTTERS */}
+    <section className="py-8 sm:py-12 bg-white font-sans select-none">
+      {/* REFINED ARCHITECTURAL SECTION CONTAINER */}
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6 lg:px-8 xl:px-12">
-        <div className="relative rounded-2xl sm:rounded-[2.5rem] lg:rounded-[3rem] bg-[#0B3D2E] text-white overflow-hidden shadow-xl border border-emerald-900/60 p-6 sm:p-10 lg:p-14 min-h-[620px] flex flex-col justify-between">
-          
-          {/* Background Image Overlay */}
-          <div className="absolute inset-0 z-0">
-            <Image
-              src={sectionBgImg}
-              alt="Fivefold Renewable Solar Energy Installation"
-              fill
-              sizes="(max-width: 1536px) 100vw, 1536px"
-              className="object-cover object-center transition-all duration-700 opacity-30"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B3D2E] via-[#0B3D2E]/85 to-[#0B3D2E]/90 z-0" />
+        <div
+          className="relative rounded-2xl sm:rounded-3xl bg-[#111615] text-white overflow-hidden border border-slate-800 shadow-xl p-6 sm:p-10 lg:p-12 min-h-[500px] sm:min-h-[540px] flex flex-col justify-between"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Background Image Layer (70% Opacity + Dark/Black Overlay) */}
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSlide.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.7 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={activeSlide.image}
+                  alt={activeSlide.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1536px) 100vw, 1536px"
+                  className="object-cover object-center opacity-70"
+                />
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Controlled Black / Dark Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#111615] via-[#111615]/85 to-[#111615]/70 z-[1]" />
           </div>
 
-          {/* 1. FIXED & CONSTANT HEADER (NEVER ANIMATES OR MOVES) */}
+          {/* 1. FIXED & CONSTANT HEADER */}
           <div className="relative z-10">
-            <div className="flex items-center justify-between font-sans text-xs font-semibold uppercase tracking-wider mb-6 sm:mb-8 text-slate-300">
-              <div className="flex items-center gap-2 text-emerald-400">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="flex items-center justify-between font-sans text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <div className="flex items-center gap-2 text-[#1F7A45]">
+                <span className="h-2 w-2 rounded-full bg-[#1F7A45]" />
                 <span>OUR OFFERINGS</span>
               </div>
-              <div className="hidden sm:block text-slate-300">
+              <div className="hidden sm:block text-slate-400">
                 / SOLAR OFFERINGS BY PROPERTY CATEGORY
               </div>
             </div>
           </div>
 
-          {/* 2. DYNAMIC SLIDE CONTENT (TRANSITIONS TOGETHER AS ONE SLIDE) */}
-          <div className="relative z-10 my-auto py-2 sm:py-4">
+          {/* 2. MINIMAL DYNAMIC SLIDE CONTENT */}
+          <div className="relative z-10 my-auto py-6 sm:py-8 max-w-3xl">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.id}
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.45, ease: "easeInOut" }}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="space-y-4 sm:space-y-6"
               >
-                {/* Left Column: Heading, Subtitle & Single CTA */}
-                <div className="lg:col-span-7 space-y-4 sm:space-y-6">
-                  <div className="space-y-3">
-                    <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-emerald-400 text-xs font-sans font-bold uppercase tracking-wider border border-white/15">
-                      SLIDE {activeSlide.number} — {activeSlide.category}
-                    </span>
-                    <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.08]">
-                      {activeSlide.title}
-                    </h2>
-                    <p className="font-sans text-slate-200 text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed pt-1">
-                      {activeSlide.description}
-                    </p>
-                  </div>
-
-                  {/* Single CTA Button */}
-                  <div className="pt-2">
-                    <Link
-                      href={activeSlide.href}
-                      className="inline-flex items-center gap-3 px-6 py-3 rounded-lg bg-[#1F7A45] hover:bg-[#165c33] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md group"
-                    >
-                      <span>{activeSlide.ctaText}</span>
-                      <ArrowRight className="h-4 w-4 text-emerald-300 group-hover:translate-x-0.5 transition-transform" />
-                    </Link>
-                  </div>
+                {/* Category Pill Tag */}
+                <div>
+                  <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-emerald-400 text-xs font-sans font-medium uppercase tracking-wider border border-white/10">
+                    SLIDE {activeSlide.number} — {activeSlide.category}
+                  </span>
                 </div>
 
-                {/* Right Column: Category Specific Details & Highlights */}
-                <div className="lg:col-span-5 space-y-4">
-                  {/* Commercial Visual Solution Flow */}
-                  {activeSlide.flow && (
-                    <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 space-y-3">
-                      <span className="font-heading text-xs font-bold uppercase tracking-wider text-emerald-400 block">
-                        Commercial Solution Flow
-                      </span>
-                      <div className="flex flex-wrap items-center gap-2 text-xs font-sans text-slate-200">
-                        {activeSlide.flow.map((step, idx) => (
-                          <React.Fragment key={step}>
-                            <span className="px-2.5 py-1 rounded-md bg-white/10 font-medium">
-                              {step}
-                            </span>
-                            {idx < activeSlide.flow!.length - 1 && (
-                              <ChevronRight className="h-3 w-3 text-emerald-400 shrink-0" />
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                {/* Main Heading */}
+                <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
+                  {activeSlide.title}
+                </h2>
 
-                  {/* Supporting Points / Categories */}
-                  <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 space-y-3">
-                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-emerald-400 block">
-                      Key Highlights & Scope
-                    </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-sans text-slate-200">
-                      {activeSlide.points.map((point) => (
-                        <div key={point} className="flex items-center gap-2">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                          <span>{point}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                {/* Short Supporting Description */}
+                <p className="font-sans text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                  {activeSlide.description}
+                </p>
 
-                  {/* Technical Focus (If Applicable) */}
-                  {activeSlide.techFocus && (
-                    <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between text-xs text-slate-300">
-                      <span className="font-medium text-emerald-400">Engineering Focus:</span>
-                      <span>{activeSlide.techFocus.slice(0, 3).join(" • ")}</span>
-                    </div>
-                  )}
+                {/* Minimal Single CTA Button */}
+                <div className="pt-2">
+                  <Link
+                    href={activeSlide.href}
+                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg bg-[#1F7A45] hover:bg-[#165c33] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md group"
+                  >
+                    <span>{activeSlide.ctaText}</span>
+                    <ArrowRight className="h-4 w-4 text-emerald-200 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* 3. LOWER CATEGORY SLIDE NAVIGATION & CONTROLS */}
-          <div className="relative z-10 pt-6 sm:pt-8 border-t border-white/15">
-            {/* Category Tab Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pb-6">
+          {/* 3. LOWER SLIDE NAVIGATION CONTROLS */}
+          <div className="relative z-10 pt-6 border-t border-white/15">
+            {/* Category Tab Buttons */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pb-5">
               {SLIDES.map((slide, idx) => {
                 const Icon = slide.icon;
                 const isActive = idx === activeIndex;
@@ -259,13 +201,13 @@ export const ServicesGrid: React.FC = () => {
                     key={slide.id}
                     type="button"
                     onClick={() => setActiveIndex(idx)}
-                    className={`flex items-center gap-3 p-3 rounded-xl transition-all text-left focus:outline-none ${
+                    className={`flex items-center gap-2.5 px-4 py-3 rounded-lg transition-all text-left focus:outline-none ${
                       isActive
-                        ? "bg-[#1F7A45] text-white shadow-sm"
+                        ? "bg-[#1F7A45] text-white font-semibold shadow-md"
                         : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
                     }`}
                   >
-                    <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-emerald-400"}`} />
+                    <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} />
                     <span className="font-heading text-xs sm:text-sm font-bold">
                       {slide.category}
                     </span>
@@ -274,32 +216,27 @@ export const ServicesGrid: React.FC = () => {
               })}
             </div>
 
-            {/* Bottom Progress Bar & Arrows */}
+            {/* Bottom Progress Line & Arrow Navigation */}
             <div className="flex items-center justify-between border-t border-white/10 pt-4">
-              {/* Slide Number Indicators */}
-              <div className="flex items-center gap-4">
-                {SLIDES.map((slide, idx) => (
-                  <button
-                    key={slide.id}
-                    type="button"
-                    onClick={() => setActiveIndex(idx)}
-                    className="flex items-center gap-2 font-sans text-xs font-bold transition-colors focus:outline-none"
-                  >
-                    <span className={idx === activeIndex ? "text-emerald-400 font-bold" : "text-slate-400"}>
-                      {slide.number}
-                    </span>
-                    <div
-                      className={`h-1 rounded-full transition-all duration-300 ${
-                        idx === activeIndex
-                          ? "w-8 sm:w-12 bg-emerald-400"
-                          : "w-3 sm:w-6 bg-white/20 hover:bg-white/40"
-                      }`}
-                    />
-                  </button>
-                ))}
+              {/* Progress Line */}
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-xs text-[#1F7A45] font-bold">
+                  0{activeIndex + 1}
+                </span>
+                <div className="w-24 sm:w-48 h-1 bg-white/20 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#1F7A45] transition-all duration-500 ease-out"
+                    style={{
+                      width: `${((activeIndex + 1) / SLIDES.length) * 100}%`,
+                    }}
+                  />
+                </div>
+                <span className="font-mono text-xs text-slate-500">
+                  0{SLIDES.length}
+                </span>
               </div>
 
-              {/* Prev / Next Arrows */}
+              {/* Prev / Next Buttons */}
               <div className="flex items-center gap-2">
                 <button
                   type="button"
@@ -326,3 +263,4 @@ export const ServicesGrid: React.FC = () => {
     </section>
   );
 };
+
