@@ -4,20 +4,27 @@
 
 @layer base {
   :root {
-    --fivefold-green: #1F7A45;
-    --fivefold-deep-green: #0B3D2E;
-    --fivefold-solar-yellow: #E9B949;
+    --fivefold-navy: #20435F;
+    --fivefold-dark-navy: #0C3046;
+    --fivefold-cyan: #00A9D6;
+    
+    --fivefold-green: #20435F;
+    --fivefold-deep-green: #0C3046;
+    --fivefold-solar-yellow: #00A9D6;
     --fivefold-off-white: #F7F8F5;
     --fivefold-white: #FFFFFF;
     --fivefold-charcoal: #111615;
     --fivefold-hero-gray: #F2F2F2;
-    --fivefold-green-hover: #155E34;
+    --fivefold-green-hover: #0C3046;
     
-    --brand-green: #1F7A45;
-    --brand-green-dark: #0B3D2E;
+    --brand-green: #20435F;
+    --brand-green-dark: #0C3046;
+    --brand-navy: #20435F;
+    --brand-navy-dark: #0C3046;
+    --brand-cyan: #00A9D6;
     --brand-off-white: #F7F8F5;
     --brand-charcoal: #111615;
-    --brand-amber: #E9B949;
+    --brand-amber: #00A9D6;
   }
 
   html {
@@ -38,12 +45,12 @@
   width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #0B3D2E;
+  background: #0C3046;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1F7A45;
+  background: #20435F;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #E9B949;
+  background: #00A9D6;
 }

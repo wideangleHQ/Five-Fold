@@ -12,7 +12,7 @@ export const FaqSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* LEFT COLUMN: Reference Heading & Contact Note (~40% width) */}
           <div className="lg:col-span-5 space-y-4">
-            <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
+            <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
               • FAQ
             </span>
 
@@ -28,7 +28,7 @@ export const FaqSection: React.FC = () => {
               <span className="text-xs font-sans font-semibold text-[#111615] block">Still have a question?</span>
               <a
                 href="/contact"
-                className="inline-block px-5 py-2.5 rounded-lg bg-[#111615] hover:bg-[#0B3D2E] text-white text-xs font-sans font-semibold transition-all"
+                className="inline-block px-5 py-2.5 rounded-lg bg-[#111615] hover:bg-[#0C3046] text-white text-xs font-sans font-semibold transition-all"
               >
                 Contact Us
               </a>

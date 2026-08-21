@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Container } from "@/components/ui/Container";
@@ -9,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./MobileMenu";
 import { SchemeModal } from "@/components/schemes/SchemeModal";
+import logoImg from "@/assets/Images/Logos/Five_Fold_White.png";
 
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
@@ -88,28 +90,16 @@ export const Header: React.FC = () => {
       >
         <Container className="flex items-center justify-between">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1F7A45] font-heading text-lg font-bold text-white shadow-xs group-hover:bg-[#155E34] transition-colors">
-              F
-            </div>
-            <div className="flex flex-col">
-              <span
-                className={cn(
-                  "font-heading text-base sm:text-lg font-extrabold tracking-tight leading-none",
-                  isLightBackground ? "text-[#111615]" : "text-white"
-                )}
-              >
-                FIVEFOLD
-              </span>
-              <span
-                className={cn(
-                  "font-sans text-[9px] tracking-widest uppercase font-semibold mt-0.5",
-                  isLightBackground ? "text-[#1F7A45]" : "text-emerald-400"
-                )}
-              >
-                RENEWABLE
-              </span>
-            </div>
+          <Link href="/" className="flex items-center group">
+            <Image
+              src={logoImg}
+              alt="Fivefold Renewable Logo"
+              priority
+              className={cn(
+                "h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-200 group-hover:opacity-90",
+                isLightBackground ? "brightness-0" : ""
+              )}
+            />
           </Link>
 
           {/* Desktop Navigation (Inter Font, Colour-Only Active & Hover) */}
@@ -129,10 +119,10 @@ export const Header: React.FC = () => {
                       className={cn(
                         "px-2 py-1 text-xs xl:text-sm font-medium transition-colors inline-flex items-center gap-1 font-sans",
                         isSubActive
-                          ? "text-[#1F7A45] font-semibold"
+                          ? "text-[#20435F] font-semibold"
                           : isLightBackground
-                          ? "text-[#111615] hover:text-[#1F7A45]"
-                          : "text-white hover:text-emerald-400"
+                          ? "text-[#111615] hover:text-[#00A9D6]"
+                          : "text-white hover:text-[#00A9D6]"
                       )}
                     >
                       <span>{item.name}</span>
@@ -149,8 +139,8 @@ export const Header: React.FC = () => {
                             className={cn(
                               "block px-4 py-2 text-xs xl:text-sm font-medium transition-colors font-sans",
                               pathname === sub.href
-                                ? "text-[#1F7A45] font-semibold bg-slate-50"
-                                : "text-slate-700 hover:text-[#1F7A45] hover:bg-slate-50"
+                                ? "text-[#20435F] font-semibold bg-slate-50"
+                                : "text-slate-700 hover:text-[#00A9D6] hover:bg-slate-50"
                             )}
                           >
                             {sub.name}
@@ -170,10 +160,10 @@ export const Header: React.FC = () => {
                   className={cn(
                     "px-2 py-1 text-xs xl:text-sm font-medium transition-colors font-sans",
                     isActive
-                      ? "text-[#1F7A45] font-semibold"
+                      ? "text-[#20435F] font-semibold"
                       : isLightBackground
-                      ? "text-[#111615] hover:text-[#1F7A45]"
-                      : "text-white hover:text-emerald-400"
+                      ? "text-[#111615] hover:text-[#00A9D6]"
+                      : "text-white hover:text-[#00A9D6]"
                   )}
                 >
                   {item.name}
@@ -189,8 +179,8 @@ export const Header: React.FC = () => {
               className={cn(
                 "px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all duration-200 font-sans",
                 isLightBackground
-                  ? "border-slate-300 bg-white text-[#111615] hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white"
-                  : "border-white/40 bg-white/5 text-white hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white"
+                  ? "border-slate-300 bg-white text-[#111615] hover:bg-[#20435F] hover:border-[#20435F] hover:text-white"
+                  : "border-white/40 bg-white/5 text-white hover:bg-[#20435F] hover:border-[#20435F] hover:text-white"
               )}
             >
               Check Schemes
@@ -199,7 +189,7 @@ export const Header: React.FC = () => {
               href="/contact"
               variant="primary"
               size="sm"
-              className="bg-[#1F7A45] hover:bg-[#155E34] text-white py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out border-0"
+              className="bg-[#20435F] hover:bg-[#0C3046] text-white py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out border-0"
             >
               Get a Free Consultation
             </Button>

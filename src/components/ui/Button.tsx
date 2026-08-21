@@ -12,19 +12,19 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", href, children, ...props }, ref) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-sans font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-green focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.99]";
+      "inline-flex items-center justify-center font-sans font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#20435F] focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.99]";
 
     const variants = {
       primary:
-        "bg-[#1F7A45] hover:bg-[#155E34] text-white shadow-xs border border-transparent font-semibold",
+        "bg-[#20435F] hover:bg-[#0C3046] text-white shadow-xs border border-transparent font-semibold",
       secondary:
-        "bg-[#0B3D2E] hover:bg-[#07281e] text-white shadow-xs border border-transparent font-semibold",
+        "bg-[#0C3046] hover:bg-[#082333] text-white shadow-xs border border-transparent font-semibold",
       outline:
-        "border border-slate-300 bg-white text-[#111615] hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white font-semibold",
+        "border border-slate-300 bg-white text-[#111615] hover:bg-[#20435F] hover:border-[#20435F] hover:text-white font-semibold",
       ghost:
-        "bg-transparent text-[#111615] hover:bg-slate-100 hover:text-[#1F7A45] font-medium",
+        "bg-transparent text-[#111615] hover:bg-slate-100 hover:text-[#20435F] font-medium",
       amber:
-        "bg-[#E9B949] hover:bg-[#d4a234] text-[#111615] font-semibold shadow-xs border border-transparent",
+        "bg-[#00A9D6] hover:bg-[#0094bd] text-white font-bold shadow-xs border border-transparent",
     };
 
     const sizes = {

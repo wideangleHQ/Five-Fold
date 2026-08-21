@@ -24,19 +24,19 @@ const LIFECYCLE_SERVICES = [
 
 export const LongTermPerformance: React.FC = () => {
   return (
-    <section className="py-20 sm:py-24 bg-brand-charcoal text-white relative overflow-hidden">
+    <section className="py-20 sm:py-24 bg-[#0C3046] text-white relative overflow-hidden">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column Text */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-brand-green/40 bg-brand-green/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-green">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#00A9D6]/40 bg-[#00A9D6]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#00A9D6]">
               <Activity className="h-4 w-4" />
               25-Year Asset Protection
             </div>
 
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
               We Stay With You <br />
-              <span className="text-brand-amber">After Installation</span>
+              <span className="text-[#00A9D6]">After Installation</span>
             </h2>
 
             <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
@@ -44,7 +44,7 @@ export const LongTermPerformance: React.FC = () => {
             </p>
 
             <div className="p-4 rounded-xl bg-white/5 border border-slate-800 space-y-2">
-              <div className="font-mono text-xs text-brand-amber uppercase tracking-wider font-bold">
+              <div className="font-mono text-xs text-[#00A9D6] uppercase tracking-wider font-bold">
                 LIFECYCLE CONTINUUM
               </div>
               <p className="text-sm text-slate-200 font-medium">
@@ -54,15 +54,15 @@ export const LongTermPerformance: React.FC = () => {
           </div>
 
           {/* Right Column Services Grid */}
-          <div className="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-brand-green-dark border border-brand-green/30 shadow-xl space-y-6">
-            <h3 className="font-heading text-xl font-bold text-white pb-3 border-b border-brand-green/40">
+          <div className="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-[#20435F] border border-[#20435F] shadow-xl space-y-6">
+            <h3 className="font-heading text-xl font-bold text-white pb-3 border-b border-white/20">
               14-Point O&M & Lifespan Checklist
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-200">
               {LIFECYCLE_SERVICES.map((srv, idx) => (
                 <div key={idx} className="flex items-center gap-2.5 p-2 rounded-md bg-white/5 border border-white/5">
-                  <CheckCircle2 className="h-4 w-4 text-brand-amber shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#00A9D6] shrink-0" />
                   <span>{srv}</span>
                 </div>
               ))}

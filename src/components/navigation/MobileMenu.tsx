@@ -2,9 +2,11 @@
 
 import React, { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, Mail, MapPin, ChevronRight, X, Calculator, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/Button";
+import logoImg from "@/assets/Images/Logos/Five_Fold_White.png";
 
 interface NavItem {
   name: string;
@@ -48,18 +50,12 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
         >
           {/* Top Bar */}
           <div className="flex items-center justify-between p-4 border-b border-slate-800">
-            <Link href="/" onClick={onClose} className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-green font-heading text-lg font-bold text-white">
-                F
-              </div>
-              <div className="flex flex-col">
-                <span className="font-heading text-base font-extrabold tracking-tight text-white leading-none">
-                  FIVEFOLD
-                </span>
-                <span className="text-[9px] tracking-widest uppercase font-semibold text-brand-amber mt-0.5">
-                  RENEWABLE
-                </span>
-              </div>
+            <Link href="/" onClick={onClose} className="flex items-center group">
+              <Image
+                src={logoImg}
+                alt="Fivefold Renewable Logo"
+                className="h-8 sm:h-9 w-auto object-contain group-hover:opacity-90 transition-opacity"
+              />
             </Link>
             <button
               onClick={onClose}
@@ -137,7 +133,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                 onClick={onClose}
                 variant="primary"
                 size="sm"
-                className="w-full text-xs font-semibold py-2.5 bg-[#1F7A45] hover:bg-[#155E34] text-white transition-all duration-200 ease-in-out border-0"
+                className="w-full text-xs font-semibold py-2.5 bg-[#20435F] hover:bg-[#0C3046] text-white transition-all duration-200 ease-in-out border-0"
               >
                 <span>Free Consultation</span>
               </Button>
@@ -145,11 +141,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
             <div className="space-y-1.5 text-[11px] text-slate-400">
               <div className="flex items-center gap-2">
-                <Phone className="h-3.5 w-3.5 text-brand-amber shrink-0" />
+                <Phone className="h-3.5 w-3.5 text-[#00A9D6] shrink-0" />
                 <span>+91 70081 01078 / +91 70081 33792</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="h-3.5 w-3.5 text-brand-amber shrink-0" />
+                <Mail className="h-3.5 w-3.5 text-[#00A9D6] shrink-0" />
                 <span>info@fivefoldsolar.com</span>
               </div>
             </div>

@@ -45,8 +45,8 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
         {/* Header */}
         <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
           <div>
-            <div className="flex items-center gap-2 text-brand-amber text-xs font-mono font-semibold uppercase tracking-wider">
-              <ShieldCheck className="h-4 w-4 text-emerald-400" />
+            <div className="flex items-center gap-2 text-[#00A9D6] text-xs font-mono font-semibold uppercase tracking-wider">
+              <ShieldCheck className="h-4 w-4 text-[#00A9D6]" />
               <span>Government Scheme Discovery</span>
             </div>
             <h3 className="font-heading text-lg font-bold text-white">
@@ -78,7 +78,7 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
                       onClick={() => setPropertyType(type)}
                       className={`p-3 text-center rounded-xl border text-xs font-semibold transition-all ${
                         propertyType === type
-                          ? "border-brand-green bg-brand-green/10 text-brand-green"
+                          ? "border-[#20435F] bg-[#20435F]/10 text-[#20435F]"
                           : "border-slate-200 hover:border-slate-300 text-slate-700"
                       }`}
                     >
@@ -105,7 +105,7 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
                       onClick={() => setCustomerCategory(cat)}
                       className={`p-3 text-left rounded-xl border text-xs font-semibold transition-all ${
                         customerCategory === cat
-                          ? "border-brand-green bg-brand-green/10 text-brand-green"
+                          ? "border-[#20435F] bg-[#20435F]/10 text-[#20435F]"
                           : "border-slate-200 hover:border-slate-300 text-slate-700"
                       }`}
                     >
@@ -127,7 +127,7 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
                       onClick={() => setSolarReqKw(req)}
                       className={`p-2.5 text-center rounded-xl border text-xs font-semibold transition-all ${
                         solarReqKw === req
-                          ? "border-brand-green bg-brand-green/10 text-brand-green"
+                          ? "border-[#20435F] bg-[#20435F]/10 text-[#20435F]"
                           : "border-slate-200 hover:border-slate-300 text-slate-700"
                       }`}
                     >
@@ -149,7 +149,7 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
                       onClick={() => setHasExistingSolar(option)}
                       className={`px-5 py-2 rounded-lg border text-xs font-semibold transition-all ${
                         hasExistingSolar === option
-                          ? "border-brand-green bg-brand-green/10 text-brand-green"
+                          ? "border-[#20435F] bg-[#20435F]/10 text-[#20435F]"
                           : "border-slate-200 hover:border-slate-300 text-slate-700"
                       }`}
                     >
@@ -192,16 +192,16 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder="e.g. Khordha / Bhubaneswar / Cuttack"
-                  className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                  className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#20435F]"
                 />
               </div>
 
-              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs space-y-2">
-                <div className="font-bold text-emerald-950 flex items-center gap-1.5">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-700" />
+              <div className="p-4 rounded-xl bg-sky-50 border border-sky-200 text-sky-900 text-xs space-y-2">
+                <div className="font-bold text-sky-950 flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4 text-[#00A9D6]" />
                   <span>Verified Government Scheme Match Identified</span>
                 </div>
-                <p className="text-emerald-800 leading-relaxed">
+                <p className="text-sky-800 leading-relaxed">
                   Based on your input, your property qualifies for central government rooftop subsidy (PM Surya Ghar Muft Bijli Yojana) and Odisha DISCOM Net Metering regulatory support.
                 </p>
               </div>
@@ -210,12 +210,12 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
 
           {step === 3 && (
             <div className="space-y-5">
-              <div className="p-5 rounded-xl border border-brand-green/30 bg-brand-green/5 space-y-3">
+              <div className="p-5 rounded-xl border border-[#20435F]/30 bg-[#20435F]/5 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold uppercase text-brand-green">
+                  <span className="text-xs font-mono font-bold uppercase text-[#20435F]">
                     Recommended Primary Scheme
                   </span>
-                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sky-100 text-[#20435F]">
                     Active Guidelines
                   </span>
                 </div>
@@ -235,7 +235,7 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
                   <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                    <CheckCircle2 className="h-4 w-4 text-brand-green" />
+                    <CheckCircle2 className="h-4 w-4 text-[#20435F]" />
                     <span>Potential Benefits</span>
                   </div>
                   <ul className="space-y-1 text-slate-600 list-disc list-inside">
@@ -248,7 +248,7 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
 
                 <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
                   <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                    <FileText className="h-4 w-4 text-brand-green" />
+                    <FileText className="h-4 w-4 text-[#20435F]" />
                     <span>Required Documents</span>
                   </div>
                   <ul className="space-y-1 text-slate-600 list-disc list-inside">

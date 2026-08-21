@@ -181,7 +181,7 @@ export const Hero: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[250vh] bg-[#111615] text-white select-none"
+      className="relative h-[250vh] bg-[#0C3046] text-white select-none"
     >
       {/* STICKY FULL-VIEWPORT STAGE (100vh) */}
       <div className="sticky top-0 h-screen h-[100svh] w-full overflow-hidden flex flex-col justify-between pt-20 sm:pt-24 pb-0">
@@ -210,14 +210,14 @@ export const Hero: React.FC = () => {
         <Container className="relative z-10 my-auto py-3 sm:py-5 text-center space-y-3 sm:space-y-5 max-h-full">
           <div ref={overlayRef} className="space-y-3 sm:space-y-5">
             {/* Small Editorial Label */}
-            <span className="text-[clamp(0.7rem,1vw,0.8rem)] font-sans font-semibold uppercase tracking-wider text-emerald-400 block mx-auto">
+            <span className="text-[clamp(0.7rem,1vw,0.8rem)] font-sans font-semibold uppercase tracking-wider text-[#00A9D6] block mx-auto">
               • CINEMATIC SOLAR EPC &amp; DECISION PLATFORM
             </span>
 
             {/* Editorial Headline */}
             <div className="space-y-2 sm:space-y-3 max-w-4xl mx-auto">
               <h1 className="font-heading text-[clamp(2.25rem,4.5vw+0.75rem,5.25rem)] font-extrabold tracking-tight leading-[1.06] text-center">
-                <span className="text-emerald-400 block sm:inline">Powering Odisha with </span>
+                <span className="text-[#00A9D6] block sm:inline">Powering Odisha with </span>
                 <br className="hidden sm:inline" />
                 <span className="text-white">Smarter Solar Energy</span>
               </h1>
@@ -233,7 +233,7 @@ export const Hero: React.FC = () => {
               <Button
                 href="/contact"
                 variant="primary"
-                className="bg-[#1F7A45] hover:bg-[#155E34] text-white px-6 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md transition-all duration-200"
+                className="bg-[#20435F] hover:bg-[#0C3046] text-white px-6 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md transition-all duration-200"
               >
                 Get a Free Consultation
               </Button>
@@ -246,7 +246,7 @@ export const Hero: React.FC = () => {
           ref={brandTextRef}
           className="relative z-0 w-full overflow-hidden pointer-events-none select-none shrink-0 flex justify-center items-end opacity-20"
         >
-          <div className="font-heading text-[19.5vw] font-extrabold text-center leading-none tracking-tighter text-emerald-500 uppercase whitespace-nowrap w-[110vw] max-w-none transform translate-y-[38%] shrink-0">
+          <div className="font-heading text-[19.5vw] font-extrabold text-center leading-none tracking-tighter text-[#00A9D6] uppercase whitespace-nowrap w-[110vw] max-w-none transform translate-y-[38%] shrink-0">
             FIVEFOLD
           </div>
         </div>

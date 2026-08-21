@@ -43,7 +43,7 @@ export const WhyFivefold: React.FC = () => {
       <Container>
         {/* Section Header */}
         <div className="max-w-3xl mb-12 space-y-3">
-          <span className="font-sans text-xs font-semibold uppercase tracking-wider text-[#1F7A45] block">
+          <span className="font-sans text-xs font-semibold uppercase tracking-wider text-[#20435F] block">
             Why Choose Fivefold
           </span>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-tight">
@@ -64,7 +64,7 @@ export const WhyFivefold: React.FC = () => {
                 className="rounded-2xl border border-slate-200 p-6 sm:p-8 bg-[#F7F8F5] flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white border border-slate-200 text-[#1F7A45]">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white border border-slate-200 text-[#20435F]">
                     <Icon className="h-5.5 w-5.5" />
                   </div>
                   <h3 className="font-heading text-xl font-bold text-[#111615]">

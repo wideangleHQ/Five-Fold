@@ -17,7 +17,7 @@ export const WarrantySection: React.FC = () => {
     <section className="py-20 sm:py-24 bg-white text-brand-charcoal border-t border-b border-slate-200">
       <Container>
         <div className="max-w-3xl mb-12">
-          <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-green">
+          <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#20435F]">
             Built for Long-Term Performance
           </span>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-charcoal mt-2 tracking-tight">
@@ -33,7 +33,7 @@ export const WarrantySection: React.FC = () => {
             const Icon = w.icon;
             return (
               <div key={idx} className="p-6 rounded-xl bg-brand-off-white border border-slate-200 space-y-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-green/10 text-brand-green">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#20435F]/10 text-[#20435F]">
                   <Icon className="h-5 w-5" />
                 </div>
                 <h3 className="font-heading text-lg font-bold text-brand-charcoal">{w.title}</h3>

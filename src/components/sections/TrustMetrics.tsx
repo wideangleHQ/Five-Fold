@@ -11,9 +11,9 @@ const METRICS = [
 
 export const TrustMetrics: React.FC = () => {
   return (
-    <section className="bg-[#0B3D2E] text-white py-10 border-b border-emerald-900/60 font-sans">
+    <section className="bg-[#0C3046] text-white py-10 border-b border-sky-900/60 font-sans">
       <Container>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-emerald-800/80">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-sky-800/60">
           {METRICS.map((metric, index) => (
             <div key={metric.label} className={`pt-4 md:pt-0 ${index > 0 ? "md:pl-4" : ""}`}>
               <div className="font-heading text-2xl sm:text-3xl font-extrabold text-white">

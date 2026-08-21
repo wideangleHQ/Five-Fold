@@ -105,10 +105,10 @@ export const GovernmentScheme: React.FC = () => {
   return (
     <section
       ref={containerRef}
-      className="relative bg-[#111615] text-white font-sans border-t border-b border-slate-800/80 md:h-[220vh] select-none"
+      className="relative bg-[#0C3046] text-white font-sans border-t border-b border-slate-800/80 md:h-[220vh] select-none"
     >
       {/* Ambient Background Glow */}
-      <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-[#0B3D2E] blur-[140px] rounded-full pointer-events-none opacity-25" />
+      <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-[#20435F] blur-[140px] rounded-full pointer-events-none opacity-25" />
 
       {/* Sticky Viewport Container — Pinned strictly to 100vh / 100svh */}
       <div className="sticky top-0 h-[100svh] max-h-screen flex flex-col justify-between py-5 sm:py-8 lg:py-10 overflow-hidden">
@@ -116,7 +116,7 @@ export const GovernmentScheme: React.FC = () => {
           {/* 1. EDITORIAL HEADER (Reference Style: Left Heading, Right Minimal Progress) */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 shrink-0 mb-3 sm:mb-6">
             <div className="space-y-1">
-              <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
+              <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#00A9D6] block">
                 Government Scheme Support
               </span>
               <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
@@ -131,7 +131,7 @@ export const GovernmentScheme: React.FC = () => {
               </span>
               <div className="w-16 sm:w-24 h-1 bg-slate-800 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#1F7A45] transition-all duration-500 ease-out"
+                  className="h-full bg-[#00A9D6] transition-all duration-500 ease-out"
                   style={{
                     width: `${((activeIndex + 1) / SCHEMES.length) * 100}%`,
                   }}
@@ -175,12 +175,12 @@ export const GovernmentScheme: React.FC = () => {
                     {/* Minimal Information Panel Beneath Image */}
                     <div className="pt-3 sm:pt-4 space-y-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] sm:text-xs font-sans font-semibold text-[#1F7A45] uppercase tracking-wide">
+                        <span className="text-[11px] sm:text-xs font-sans font-semibold text-[#00A9D6] uppercase tracking-wide">
                           {scheme.category}
                         </span>
                       </div>
 
-                      <h3 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-emerald-400 transition-colors line-clamp-1">
+                      <h3 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-[#00A9D6] transition-colors line-clamp-1">
                         {scheme.title}
                       </h3>
 
@@ -191,7 +191,7 @@ export const GovernmentScheme: React.FC = () => {
                       <div className="pt-1">
                         <Link
                           href={scheme.ctaHref}
-                          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-[#1F7A45] hover:text-emerald-300 transition-colors"
+                          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-[#00A9D6] hover:text-sky-300 transition-colors"
                         >
                           <span>{scheme.ctaText}</span>
                           <ArrowRight className="h-3.5 w-3.5" />

@@ -12,7 +12,7 @@ export const ServiceAreas: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Text */}
           <div className="lg:col-span-6 space-y-6">
-            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-brand-green">
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#20435F]">
               Regional Footprint
             </span>
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-charcoal tracking-tight">
@@ -22,8 +22,8 @@ export const ServiceAreas: React.FC = () => {
               Headquartered in Bhubaneswar, Fivefold provides rapid site evaluation and execution teams across key industrial and commercial districts in Odisha.
             </p>
 
-            <div className="p-4 rounded-xl bg-brand-green-dark text-white space-y-2">
-              <div className="flex items-center gap-2 font-heading font-bold text-brand-amber text-sm sm:text-base">
+            <div className="p-4 rounded-xl bg-[#0C3046] text-white space-y-2">
+              <div className="flex items-center gap-2 font-heading font-bold text-[#00A9D6] text-sm sm:text-base">
                 <Globe className="h-5 w-5" />
                 <span>Pan-India Engineering Consultation</span>
               </div>
@@ -37,7 +37,7 @@ export const ServiceAreas: React.FC = () => {
           <div className="lg:col-span-6">
             <div className="p-6 sm:p-8 rounded-2xl bg-brand-off-white border border-slate-200 shadow-sm space-y-6">
               <h3 className="font-heading text-xl font-bold text-brand-charcoal pb-3 border-b border-slate-200 flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-brand-green" />
+                <MapPin className="h-5 w-5 text-[#20435F]" />
                 <span>Key Odisha Service Hubs</span>
               </h3>
 
@@ -47,7 +47,7 @@ export const ServiceAreas: React.FC = () => {
                     key={idx}
                     className="p-4 rounded-xl bg-white border border-slate-200/80 shadow-xs flex flex-col justify-between"
                   >
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-brand-green">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#20435F]">
                       <CheckCircle2 className="h-3.5 w-3.5" />
                       <span>{area.isPrimaryHub ? "HQ Hub" : "Active District"}</span>
                     </div>
