@@ -9,8 +9,8 @@ export const GovernmentSchemesView: React.FC = () => {
       <Container>
         {/* Header */}
         <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold uppercase tracking-wider">
-            <ShieldCheck className="h-4 w-4 text-emerald-700" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-[#20435F] text-xs font-semibold uppercase tracking-wider">
+            <ShieldCheck className="h-4 w-4 text-[#20435F]" />
             <span>Government Assistance & Subsidies</span>
           </div>
           <h1 className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900">
@@ -27,10 +27,10 @@ export const GovernmentSchemesView: React.FC = () => {
           <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold uppercase text-brand-green px-2.5 py-1 rounded-md bg-brand-green/10">
+                <span className="text-xs font-mono font-bold uppercase text-[#20435F] px-2.5 py-1 rounded-md bg-[#20435F]/10">
                   Residential Scheme
                 </span>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sky-100 text-[#20435F]">
                   PM Surya Ghar
                 </span>
               </div>
@@ -89,7 +89,7 @@ export const GovernmentSchemesView: React.FC = () => {
         {/* Fivefold Assistance Process */}
         <div className="p-8 rounded-2xl bg-slate-900 text-white border border-slate-800 space-y-6">
           <div className="max-w-2xl space-y-2">
-            <div className="text-xs font-mono font-bold uppercase text-emerald-400">
+            <div className="text-xs font-mono font-bold uppercase text-[#00A9D6]">
               End-to-End Execution
             </div>
             <h3 className="font-heading text-2xl font-bold text-white">
@@ -102,19 +102,19 @@ export const GovernmentSchemesView: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs pt-4 border-t border-slate-800">
             <div className="space-y-1">
-              <div className="font-bold text-emerald-400">1. Feasibility</div>
+              <div className="font-bold text-[#00A9D6]">1. Feasibility</div>
               <div className="text-slate-300">Technical roof verification & transformer load check.</div>
             </div>
             <div className="space-y-1">
-              <div className="font-bold text-emerald-400">2. Application</div>
+              <div className="font-bold text-[#00A9D6]">2. Application</div>
               <div className="text-slate-300">Portal submission & DISCOM registration.</div>
             </div>
             <div className="space-y-1">
-              <div className="font-bold text-emerald-400">3. Net Metering</div>
+              <div className="font-bold text-[#00A9D6]">3. Net Metering</div>
               <div className="text-slate-300">Bidirectional meter installation & testing.</div>
             </div>
             <div className="space-y-1">
-              <div className="font-bold text-emerald-400">4. Subsidy Claim</div>
+              <div className="font-bold text-[#00A9D6]">4. Subsidy Claim</div>
               <div className="text-slate-300">PCR submission for direct bank disbursal.</div>
             </div>
           </div>

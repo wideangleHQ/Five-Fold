@@ -104,7 +104,7 @@ export const ServicesGrid: React.FC = () => {
       {/* 98% VIEWPORT WIDTH CONTAINER (1% Breathing Room Each Side) */}
       <div className="w-[98%] max-w-[98vw] mx-auto px-0">
         <div
-          className="relative rounded-2xl sm:rounded-3xl bg-[#111615] text-white overflow-hidden border border-slate-800 shadow-xl p-6 sm:p-10 lg:p-12 min-h-[540px] sm:min-h-[600px] flex flex-col justify-between"
+          className="relative rounded-2xl sm:rounded-3xl bg-[#0C3046] text-white overflow-hidden border border-slate-800 shadow-xl p-6 sm:p-10 lg:p-12 min-h-[540px] sm:min-h-[600px] flex flex-col justify-between"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
@@ -131,14 +131,14 @@ export const ServicesGrid: React.FC = () => {
             </AnimatePresence>
 
             {/* Subtle Gradient Overlay for Text Readability (~90% Photo Visibility) */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#111615]/95 via-[#111615]/40 to-[#111615]/10 z-[1]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/95 via-[#0C3046]/40 to-[#0C3046]/10 z-[1]" />
           </div>
 
           {/* 1. FIXED & CONSTANT HEADER */}
           <div className="relative z-10">
             <div className="flex items-center justify-between font-sans text-xs font-semibold uppercase tracking-wider text-slate-400">
-              <div className="flex items-center gap-2 text-[#1F7A45]">
-                <span className="h-2 w-2 rounded-full bg-[#1F7A45]" />
+              <div className="flex items-center gap-2 text-[#00A9D6]">
+                <span className="h-2 w-2 rounded-full bg-[#00A9D6]" />
                 <span>OUR OFFERINGS</span>
               </div>
               <div className="hidden sm:block text-slate-400">
@@ -160,7 +160,7 @@ export const ServicesGrid: React.FC = () => {
               >
                 {/* Category Pill Tag */}
                 <div>
-                  <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-emerald-400 text-xs font-sans font-medium uppercase tracking-wider border border-white/10">
+                  <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[#00A9D6] text-xs font-sans font-medium uppercase tracking-wider border border-white/10">
                     SLIDE {activeSlide.number} — {activeSlide.category}
                   </span>
                 </div>
@@ -179,10 +179,10 @@ export const ServicesGrid: React.FC = () => {
                 <div className="pt-2">
                   <Link
                     href={activeSlide.href}
-                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg bg-[#1F7A45] hover:bg-[#155E34] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md group"
+                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg bg-[#20435F] hover:bg-[#0C3046] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md group"
                   >
                     <span>{activeSlide.ctaText}</span>
-                    <ArrowRight className="h-4 w-4 text-emerald-200 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="h-4 w-4 text-sky-200 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 </div>
               </motion.div>
@@ -203,11 +203,11 @@ export const ServicesGrid: React.FC = () => {
                     onClick={() => setActiveIndex(idx)}
                     className={`flex items-center gap-2.5 px-4 py-3 rounded-lg transition-all text-left focus:outline-none ${
                       isActive
-                        ? "bg-[#1F7A45] text-white font-semibold shadow-md"
+                        ? "bg-[#20435F] text-white font-semibold shadow-md"
                         : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
                     }`}
                   >
-                    <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} />
+                    <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[#00A9D6]" : "text-slate-400"}`} />
                     <span className="font-heading text-xs sm:text-sm font-bold">
                       {slide.category}
                     </span>
@@ -220,12 +220,12 @@ export const ServicesGrid: React.FC = () => {
             <div className="flex items-center justify-between border-t border-white/10 pt-4">
               {/* Progress Line */}
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs text-[#1F7A45] font-bold">
+                <span className="font-mono text-xs text-[#00A9D6] font-bold">
                   0{activeIndex + 1}
                 </span>
                 <div className="w-24 sm:w-48 h-1 bg-white/20 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#1F7A45] transition-all duration-500 ease-out"
+                    className="h-full bg-[#00A9D6] transition-all duration-500 ease-out"
                     style={{
                       width: `${((activeIndex + 1) / SLIDES.length) * 100}%`,
                     }}
@@ -242,7 +242,7 @@ export const ServicesGrid: React.FC = () => {
                   type="button"
                   onClick={handlePrev}
                   aria-label="Previous Slide"
-                  className="h-9 w-9 rounded-full bg-white/10 hover:bg-[#1F7A45] text-white flex items-center justify-center transition-colors focus:outline-none"
+                  className="h-9 w-9 rounded-full bg-white/10 hover:bg-[#20435F] text-white flex items-center justify-center transition-colors focus:outline-none"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </button>
@@ -250,7 +250,7 @@ export const ServicesGrid: React.FC = () => {
                   type="button"
                   onClick={handleNext}
                   aria-label="Next Slide"
-                  className="h-9 w-9 rounded-full bg-white/10 hover:bg-[#1F7A45] text-white flex items-center justify-center transition-colors focus:outline-none"
+                  className="h-9 w-9 rounded-full bg-white/10 hover:bg-[#20435F] text-white flex items-center justify-center transition-colors focus:outline-none"
                 >
                   <ArrowRight className="h-4 w-4" />
                 </button>

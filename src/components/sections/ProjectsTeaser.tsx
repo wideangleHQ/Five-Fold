@@ -66,7 +66,7 @@ export const ProjectsTeaser: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-end mb-10 sm:mb-12">
           {/* Header Left */}
           <div className="lg:col-span-7 space-y-2">
-            <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
+            <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
               Our Work
             </span>
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.15]">
@@ -93,7 +93,7 @@ export const ProjectsTeaser: React.FC = () => {
                 className={cn(
                   "px-3.5 py-1.5 text-xs font-sans font-semibold rounded-full border transition-all duration-200 focus:outline-none",
                   activeCategory === cat
-                    ? "bg-[#1F7A45] text-white border-[#1F7A45] shadow-xs"
+                    ? "bg-[#20435F] text-white border-[#20435F] shadow-xs"
                     : "bg-[#F7F8F5] text-slate-700 border-slate-200 hover:border-slate-300 hover:text-slate-900"
                 )}
               >
@@ -108,7 +108,7 @@ export const ProjectsTeaser: React.FC = () => {
               type="button"
               onClick={scrollLeft}
               aria-label="Previous Projects"
-              className="w-9 h-9 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white flex items-center justify-center transition-all focus:outline-none shadow-xs"
+              className="w-9 h-9 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-[#20435F] hover:border-[#20435F] hover:text-white flex items-center justify-center transition-all focus:outline-none shadow-xs"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
@@ -116,7 +116,7 @@ export const ProjectsTeaser: React.FC = () => {
               type="button"
               onClick={scrollRight}
               aria-label="Next Projects"
-              className="w-9 h-9 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-[#1F7A45] hover:border-[#1F7A45] hover:text-white flex items-center justify-center transition-all focus:outline-none shadow-xs"
+              className="w-9 h-9 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-[#20435F] hover:border-[#20435F] hover:text-white flex items-center justify-center transition-all focus:outline-none shadow-xs"
             >
               <ArrowRight className="h-4 w-4" />
             </button>
@@ -155,7 +155,7 @@ export const ProjectsTeaser: React.FC = () => {
                 <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between bg-white text-[#111615]">
                   <div className="space-y-2">
                     <div>
-                      <span className="inline-block px-3 py-1 rounded-full text-[11px] font-sans font-semibold bg-emerald-50 text-[#1F7A45] border border-emerald-200/80">
+                      <span className="inline-block px-3 py-1 rounded-full text-[11px] font-sans font-semibold bg-sky-50 text-[#20435F] border border-sky-200/80">
                         {project.category}
                       </span>
                     </div>
@@ -178,7 +178,7 @@ export const ProjectsTeaser: React.FC = () => {
         <div className="pt-8 text-center">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#1F7A45] hover:bg-[#155E34] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md"
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#20435F] hover:bg-[#0C3046] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md"
           >
             <span>View All Projects</span>
           </Link>

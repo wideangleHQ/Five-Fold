@@ -29,7 +29,7 @@ export const SolarCareTeaser: React.FC = () => {
       <Container>
         {/* Title */}
         <div className="max-w-3xl mb-12 space-y-3">
-          <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
+          <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
             Long-Term Asset Performance
           </span>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-tight">
@@ -52,7 +52,7 @@ export const SolarCareTeaser: React.FC = () => {
               <select
                 value={size}
                 onChange={(e) => { setSize(e.target.value); handleRecommend(); }}
-                className="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-medium text-[#111615] focus:outline-none focus:border-[#1F7A45]"
+                className="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-medium text-[#111615] focus:outline-none focus:border-[#00A9D6]"
               >
                 <option value="< 10 kWp">&lt; 10 kWp (Home)</option>
                 <option value="10-50 kWp">10 - 50 kWp (Small Commercial)</option>
@@ -66,7 +66,7 @@ export const SolarCareTeaser: React.FC = () => {
               <select
                 value={age}
                 onChange={(e) => { setAge(e.target.value); handleRecommend(); }}
-                className="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-medium text-[#111615] focus:outline-none focus:border-[#1F7A45]"
+                className="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-medium text-[#111615] focus:outline-none focus:border-[#00A9D6]"
               >
                 <option value="< 1 Year">&lt; 1 Year (New System)</option>
                 <option value="1-3 Years">1 - 3 Years</option>
@@ -80,7 +80,7 @@ export const SolarCareTeaser: React.FC = () => {
               <select
                 value={condition}
                 onChange={(e) => { setCondition(e.target.value); handleRecommend(); }}
-                className="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-medium text-[#111615] focus:outline-none focus:border-[#1F7A45]"
+                className="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-medium text-[#111615] focus:outline-none focus:border-[#00A9D6]"
               >
                 <option value="Good">Good / Standard Generation</option>
                 <option value="Needs Inspection">Needs Cleaning &amp; Audit</option>
@@ -99,7 +99,7 @@ export const SolarCareTeaser: React.FC = () => {
                 key={plan.id}
                 className={`p-6 rounded-2xl border transition-all flex flex-col justify-between space-y-6 ${
                   isRecommended
-                    ? "border-[#1F7A45] bg-[#F7F8F5] shadow-sm"
+                    ? "border-[#20435F] bg-[#F7F8F5] shadow-sm"
                     : "border-slate-200 bg-white"
                 }`}
               >
@@ -109,7 +109,7 @@ export const SolarCareTeaser: React.FC = () => {
                       {plan.duration}
                     </span>
                     {isRecommended && (
-                      <span className="text-[10px] font-semibold uppercase px-2.5 py-0.5 rounded-full bg-[#1F7A45] text-white">
+                      <span className="text-[10px] font-semibold uppercase px-2.5 py-0.5 rounded-full bg-[#00A9D6] text-white">
                         Recommended
                       </span>
                     )}
@@ -127,7 +127,7 @@ export const SolarCareTeaser: React.FC = () => {
                   <ul className="space-y-2 pt-3 border-t border-slate-200/80">
                     {plan.features.map((feat, idx) => (
                       <li key={idx} className="flex items-start gap-2 text-xs text-slate-700">
-                        <Check className="h-3.5 w-3.5 text-[#1F7A45] shrink-0 mt-0.5" />
+                        <Check className="h-3.5 w-3.5 text-[#20435F] shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
                     ))}
@@ -139,7 +139,7 @@ export const SolarCareTeaser: React.FC = () => {
                   variant={isRecommended ? "primary" : "outline"}
                   size="sm"
                   className={`w-full py-2.5 text-xs font-semibold rounded-lg ${
-                    isRecommended ? "bg-[#1F7A45] hover:bg-[#155E34] text-white" : ""
+                    isRecommended ? "bg-[#20435F] hover:bg-[#0C3046] text-white" : ""
                   }`}
                 >
                   <span>Find the Right AMC Plan</span>

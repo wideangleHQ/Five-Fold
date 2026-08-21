@@ -53,7 +53,7 @@ export const SolarCalculator: React.FC = () => {
       {/* Wizard Progress Header */}
       <div className="flex items-center justify-between pb-6 mb-8 border-b border-slate-200">
         <div>
-          <div className="flex items-center gap-2 text-brand-green text-xs font-mono font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-[#20435F] text-xs font-mono font-bold uppercase tracking-wider">
             <Calculator className="h-4 w-4" />
             <span>Step 0{step} of 05</span>
           </div>
@@ -71,9 +71,9 @@ export const SolarCalculator: React.FC = () => {
               key={i}
               className={`h-2 rounded-full transition-all ${
                 i === step
-                  ? "w-8 bg-brand-green"
+                  ? "w-8 bg-[#20435F]"
                   : i < step
-                  ? "w-2 bg-emerald-600"
+                  ? "w-2 bg-[#0C3046]"
                   : "w-2 bg-slate-200"
               }`}
             />
@@ -103,13 +103,13 @@ export const SolarCalculator: React.FC = () => {
                   onClick={() => setPropertyType(item.type)}
                   className={`p-5 text-left rounded-xl border transition-all ${
                     isSelected
-                      ? "border-brand-green bg-brand-green/5 ring-2 ring-brand-green/20"
+                      ? "border-[#20435F] bg-[#20435F]/5 ring-2 ring-[#20435F]/20"
                       : "border-slate-200 hover:border-slate-300 bg-white"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <Icon className={`h-6 w-6 ${isSelected ? "text-brand-green" : "text-slate-500"}`} />
-                    {isSelected && <CheckCircle2 className="h-5 w-5 text-brand-green" />}
+                    <Icon className={`h-6 w-6 ${isSelected ? "text-[#20435F]" : "text-slate-500"}`} />
+                    {isSelected && <CheckCircle2 className="h-5 w-5 text-[#20435F]" />}
                   </div>
                   <div className="font-heading font-bold text-base text-slate-900">{item.type}</div>
                   <div className="text-xs text-slate-500 mt-1">{item.desc}</div>
@@ -137,7 +137,7 @@ export const SolarCalculator: React.FC = () => {
                   type="number"
                   value={monthlyBill}
                   onChange={(e) => setMonthlyBill(Number(e.target.value))}
-                  className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-300 text-lg font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-green"
+                  className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-300 text-lg font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#20435F]"
                 />
               </div>
               <div className="flex justify-between text-xs text-slate-500 mt-2">
@@ -206,7 +206,7 @@ export const SolarCalculator: React.FC = () => {
                 value={roofAreaSqFt}
                 onChange={(e) => setRoofAreaSqFt(Number(e.target.value))}
                 placeholder="e.g. 1000"
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-base font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-green"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-base font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#20435F]"
               />
               <span className="text-[11px] text-slate-500 mt-1 block">
                 Rule of thumb: 1 kW requires approx 90-100 sq ft.
@@ -222,7 +222,7 @@ export const SolarCalculator: React.FC = () => {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="e.g. Bhubaneswar, Odisha"
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-base font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-green"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-base font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#20435F]"
               />
             </div>
           </div>
@@ -237,7 +237,7 @@ export const SolarCalculator: React.FC = () => {
               <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Recommended Capacity
               </div>
-              <div className="font-heading text-3xl font-extrabold text-emerald-400">
+              <div className="font-heading text-3xl font-extrabold text-[#00A9D6]">
                 {result.recommendedCapacityKw} kWp
               </div>
               <div className="text-[11px] text-slate-400">Optimal PV Plant Size</div>
@@ -257,7 +257,7 @@ export const SolarCalculator: React.FC = () => {
               <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Estimated Annual Savings
               </div>
-              <div className="font-heading text-3xl font-extrabold text-brand-amber">
+              <div className="font-heading text-3xl font-extrabold text-[#00A9D6]">
                 ₹{result.estimatedAnnualSavingsInr.toLocaleString()}
               </div>
               <div className="text-[11px] text-slate-400">Yearly Electricity Savings</div>
@@ -271,7 +271,7 @@ export const SolarCalculator: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-1">
                 <div className="font-semibold text-slate-700">Recommended Solution</div>
-                <div className="font-bold text-brand-green text-sm">
+                <div className="font-bold text-[#20435F] text-sm">
                   {propertyType === "Residential"
                     ? "Rooftop On-Grid Solar Plant with DISCOM Net Metering"
                     : "C&I High-Yield Rooftop Plant with Zero Export & PVsyst Modeling"}
@@ -322,7 +322,7 @@ export const SolarCalculator: React.FC = () => {
 
         {step === 4 && (
           <Button variant="primary" size="md" onClick={handleCalculate}>
-            <Sparkles className="mr-1.5 h-4 w-4 text-brand-amber" />
+            <Sparkles className="mr-1.5 h-4 w-4 text-[#00A9D6]" />
             <span>Calculate Estimate</span>
           </Button>
         )}

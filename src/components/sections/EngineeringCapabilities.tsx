@@ -47,7 +47,7 @@ export const EngineeringCapabilities: React.FC = () => {
           <div className="lg:col-span-6 flex flex-col justify-between space-y-8">
             {/* Section Header */}
             <div className="space-y-3">
-              <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
+              <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
                 • ENGINEERING PRECISION
               </span>
               <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.1]">
@@ -73,7 +73,7 @@ export const EngineeringCapabilities: React.FC = () => {
                       <div className="flex items-center gap-4">
                         <span
                           className={`font-mono text-sm font-bold transition-colors ${
-                            isOpen ? "text-[#1F7A45]" : "text-slate-400 group-hover:text-slate-700"
+                            isOpen ? "text-[#20435F]" : "text-slate-400 group-hover:text-slate-700"
                           }`}
                         >
                           ({group.phase})
@@ -81,7 +81,7 @@ export const EngineeringCapabilities: React.FC = () => {
                         <div>
                           <h3
                             className={`font-heading text-base sm:text-lg font-bold transition-colors ${
-                              isOpen ? "text-[#1F7A45]" : "text-[#111615] group-hover:text-[#1F7A45]"
+                              isOpen ? "text-[#20435F]" : "text-[#111615] group-hover:text-[#20435F]"
                             }`}
                           >
                             {group.title}
@@ -95,7 +95,7 @@ export const EngineeringCapabilities: React.FC = () => {
                       {/* Minimal +/- Toggle Control */}
                       <div
                         className={`h-7 w-7 rounded-full flex items-center justify-center transition-colors shrink-0 ${
-                          isOpen ? "bg-[#1F7A45] text-white" : "bg-slate-100 text-slate-500 group-hover:bg-slate-200"
+                          isOpen ? "bg-[#20435F] text-white" : "bg-slate-100 text-slate-500 group-hover:bg-slate-200"
                         }`}
                       >
                         {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
@@ -119,7 +119,7 @@ export const EngineeringCapabilities: React.FC = () => {
                                   key={step}
                                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#F7F8F5] border border-slate-200 text-xs font-sans font-medium text-slate-700"
                                 >
-                                  <span className="h-1.5 w-1.5 rounded-full bg-[#1F7A45]" />
+                                  <span className="h-1.5 w-1.5 rounded-full bg-[#20435F]" />
                                   {step}
                                 </span>
                               ))}
@@ -135,7 +135,7 @@ export const EngineeringCapabilities: React.FC = () => {
 
             {/* Quality & Bankability Trust Callout */}
             <div className="pt-2 flex items-center gap-3 text-xs font-sans font-semibold text-slate-700">
-              <div className="h-8 w-8 rounded-lg bg-[#1F7A45]/10 flex items-center justify-center text-[#1F7A45]">
+              <div className="h-8 w-8 rounded-lg bg-[#20435F]/10 flex items-center justify-center text-[#20435F]">
                 <ShieldCheck className="h-4 w-4" />
               </div>
               <span>25–30 Year Bankable Engineering Framework</span>
@@ -156,8 +156,8 @@ export const EngineeringCapabilities: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
 
               {/* Minimal On-Image Metadata Overlay */}
-              <div className="relative z-10 p-5 rounded-2xl bg-[#0B3D2E]/90 backdrop-blur-md border border-emerald-800/80 text-white space-y-1">
-                <div className="flex items-center gap-2 text-emerald-400 font-sans text-xs font-bold uppercase tracking-wider">
+              <div className="relative z-10 p-5 rounded-2xl bg-[#0C3046]/90 backdrop-blur-md border border-sky-800/80 text-white space-y-1">
+                <div className="flex items-center gap-2 text-[#00A9D6] font-sans text-xs font-bold uppercase tracking-wider">
                   <CheckCircle2 className="h-4 w-4" />
                   <span>Quality Assurance Standard</span>
                 </div>

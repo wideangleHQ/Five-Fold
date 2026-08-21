@@ -17,7 +17,7 @@ export const SolarDecisionPlatform: React.FC = () => {
         {/* 1. ASYMMETRIC EDITORIAL HEADER (Matching Reference) */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-end mb-12">
           <div className="md:col-span-7 space-y-2">
-            <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
+            <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
               • FIND YOUR SOLAR SOLUTION
             </span>
             <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.12]">
@@ -35,15 +35,15 @@ export const SolarDecisionPlatform: React.FC = () => {
         {/* 2. THREE FEATURE DATA CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* CARD 01: YOUR ENERGY REQUIREMENT */}
-          <div className="rounded-2xl p-7 bg-[#1F7A45] text-white flex flex-col justify-between min-h-[300px] border border-[#1F7A45]">
+          <div className="rounded-2xl p-7 bg-[#20435F] text-white flex flex-col justify-between min-h-[300px] border border-[#20435F]">
             <div className="space-y-3">
-              <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-emerald-200 block">
+              <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#00A9D6] block">
                 Energy Requirement
               </span>
               <h3 className="font-heading text-2xl font-extrabold text-white tracking-tight">
                 Your Energy Requirement
               </h3>
-              <p className="font-sans text-xs sm:text-sm text-emerald-50 leading-relaxed pt-1">
+              <p className="font-sans text-xs sm:text-sm text-slate-100 leading-relaxed pt-1">
                 Tell us about your property, usage and available rooftop space.
               </p>
             </div>
@@ -61,7 +61,7 @@ export const SolarDecisionPlatform: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/30 z-0" />
 
             <div className="relative z-10 space-y-2">
-              <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-emerald-400 block">
+              <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#00A9D6] block">
                 System Sizing
               </span>
             </div>
@@ -79,7 +79,7 @@ export const SolarDecisionPlatform: React.FC = () => {
           {/* CARD 03: POTENTIAL SAVINGS & SUPPORT */}
           <div className="rounded-2xl p-7 bg-[#F7F8F5] border border-slate-200 text-[#111615] flex flex-col justify-between min-h-[300px]">
             <div className="space-y-3">
-              <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#1F7A45] block">
+              <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
                 Schemes &amp; Savings
               </span>
               <h3 className="font-heading text-2xl font-extrabold text-[#111615] tracking-tight">
@@ -106,7 +106,7 @@ export const SolarDecisionPlatform: React.FC = () => {
           <Button
             href="/solar-calculator"
             variant="primary"
-            className="bg-[#1F7A45] hover:bg-[#155E34] text-white px-6 py-3 text-xs sm:text-sm font-sans font-semibold rounded-lg shrink-0 flex items-center gap-2 transition-all shadow-md"
+            className="bg-[#20435F] hover:bg-[#0C3046] text-white px-6 py-3 text-xs sm:text-sm font-sans font-semibold rounded-lg shrink-0 flex items-center gap-2 transition-all shadow-md"
           >
             <span>Find My Solar Solution</span>
             <ArrowRight className="h-4 w-4" />

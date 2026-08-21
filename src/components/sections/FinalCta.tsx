@@ -7,9 +7,9 @@ import { PhoneCall } from "lucide-react";
 
 export const FinalCta: React.FC = () => {
   return (
-    <section className="py-20 lg:py-24 bg-[#0B3D2E] text-white border-t border-emerald-900/60 font-sans">
+    <section className="py-20 lg:py-24 bg-[#0C3046] text-white border-t border-sky-900/60 font-sans">
       <Container className="text-center space-y-6 max-w-4xl mx-auto">
-        <span className="text-xs font-sans font-semibold uppercase tracking-wider text-emerald-300 block">
+        <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#00A9D6] block">
           Engineering Consultation Ready
         </span>
 
@@ -25,7 +25,7 @@ export const FinalCta: React.FC = () => {
           <Button
             href="/contact"
             variant="primary"
-            className="w-full sm:w-auto bg-[#1F7A45] hover:bg-[#155E34] text-white px-7 py-3.5 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md transition-all"
+            className="w-full sm:w-auto bg-[#20435F] hover:bg-[#0C3046] text-white px-7 py-3.5 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md transition-all"
           >
             <span>Get a Free Consultation</span>
           </Button>
@@ -34,7 +34,7 @@ export const FinalCta: React.FC = () => {
             href="tel:+917008101078"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-lg border border-white/30 bg-white/5 hover:bg-white/10 text-white font-sans text-xs sm:text-sm font-semibold transition-all"
           >
-            <PhoneCall className="h-4 w-4 text-emerald-300" />
+            <PhoneCall className="h-4 w-4 text-[#00A9D6]" />
             <span>Call +91 70081 01078</span>
           </a>
         </div>

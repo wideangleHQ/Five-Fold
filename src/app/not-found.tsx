@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div className="py-24 sm:py-32 bg-white text-[#111615] font-sans">
       <Container className="text-center space-y-6">
-        <span className="font-sans text-xs font-bold uppercase tracking-wider text-[#1F7A45]">
+        <span className="font-sans text-xs font-bold uppercase tracking-wider text-[#20435F]">
           404 Error
         </span>
         <h1 className="font-heading text-4xl sm:text-6xl font-extrabold text-[#111615] tracking-tight">
@@ -16,7 +16,7 @@ export default function NotFound() {
           The page you are looking for does not exist or has been moved.
         </p>
         <div className="pt-4">
-          <Button href="/" variant="primary" className="bg-[#1F7A45] hover:bg-[#155E34]">
+          <Button href="/" variant="primary" className="bg-[#20435F] hover:bg-[#0C3046]">
             Back to Home
           </Button>
         </div>

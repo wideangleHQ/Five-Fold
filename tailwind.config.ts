@@ -9,12 +9,15 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          green: "#1F7A45",
-          "green-hover": "#155E34",
-          "green-dark": "#0B3D2E",
+          navy: "#20435F",
+          "navy-dark": "#0C3046",
+          cyan: "#00A9D6",
+          green: "#20435F",
+          "green-hover": "#0C3046",
+          "green-dark": "#0C3046",
           "off-white": "#F7F8F5",
           charcoal: "#111615",
-          amber: "#E9B949",
+          amber: "#00A9D6",
           "hero-gray": "#F2F2F2",
           slate: "#2D3748",
           muted: "#64748B",

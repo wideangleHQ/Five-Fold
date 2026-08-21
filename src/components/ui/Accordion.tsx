@@ -43,11 +43,11 @@ export const Accordion: React.FC<AccordionProps> = ({
             <button
               type="button"
               onClick={() => toggle(item.id)}
-              className="flex w-full items-center justify-between text-left font-heading text-base sm:text-lg font-bold text-[#111615] hover:text-[#1F7A45] transition-colors focus:outline-none"
+              className="flex w-full items-center justify-between text-left font-heading text-base sm:text-lg font-bold text-[#111615] hover:text-[#20435F] transition-colors focus:outline-none"
               aria-expanded={isOpen}
             >
               <div className="flex items-start gap-3">
-                <span className="text-[#1F7A45] font-mono text-sm font-bold mt-0.5">
+                <span className="text-[#20435F] font-mono text-sm font-bold mt-0.5">
                   {idx + 1}.
                 </span>
                 <span>{item.question}</span>
@@ -55,7 +55,7 @@ export const Accordion: React.FC<AccordionProps> = ({
               <ChevronDown
                 className={cn(
                   "h-5 w-5 shrink-0 text-slate-400 transition-transform duration-200 ml-4",
-                  isOpen && "rotate-180 text-brand-green"
+                  isOpen && "rotate-180 text-[#20435F]"
                 )}
               />
             </button>
