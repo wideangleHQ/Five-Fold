@@ -28,7 +28,7 @@ export const SolarCareTeaser: React.FC = () => {
     <section className="py-16 sm:py-24 bg-white text-[#111615] border-b border-slate-200 font-sans">
       <Container>
         {/* Title */}
-        <div className="max-w-3xl mb-12 space-y-3">
+        <div data-reveal="text" className="max-w-3xl mb-12 space-y-3">
           <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
             Long-Term Asset Performance
           </span>
@@ -41,7 +41,7 @@ export const SolarCareTeaser: React.FC = () => {
         </div>
 
         {/* Interactive Recommendation Bar */}
-        <div className="p-6 rounded-2xl bg-[#F7F8F5] border border-slate-200 mb-12 space-y-4">
+        <div data-reveal="card" className="p-6 rounded-2xl bg-[#F7F8F5] border border-slate-200 mb-12 space-y-4">
           <div className="text-xs font-sans font-bold uppercase tracking-wider text-[#111615]">
             Plan Calculator &amp; Recommendation
           </div>
@@ -91,12 +91,13 @@ export const SolarCareTeaser: React.FC = () => {
         </div>
 
         {/* Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {SOLARCARE_PLANS.map((plan) => {
             const isRecommended = plan.id === recommendedPlanId;
             return (
               <div
                 key={plan.id}
+                data-reveal="card"
                 className={`p-6 rounded-2xl border transition-all flex flex-col justify-between space-y-6 ${
                   isRecommended
                     ? "border-[#20435F] bg-[#F7F8F5] shadow-sm"

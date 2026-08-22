@@ -16,6 +16,7 @@ export const Hero: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const brandTextRef = useRef<HTMLDivElement>(null);
+  const credentialsRef = useRef<HTMLDivElement>(null);
 
   const [imagesLoaded, setImagesLoaded] = useState<boolean>(false);
   const imagesRef = useRef<HTMLImageElement[]>([]);
@@ -103,74 +104,101 @@ export const Hero: React.FC = () => {
     }
   }, [imagesLoaded]);
 
-  // GSAP ScrollTrigger Sequence & Overlay Exit Animation
+  // GSAP ScrollTrigger Sequence & Credentials Exit/Entrance Animation
   useEffect(() => {
     if (!sectionRef.current || !imagesLoaded) return;
+
+    const isReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targetY = typeof window !== "undefined" && window.innerWidth < 768 ? -35 : -60;
 
     const ctx = gsap.context(() => {
       const sequenceObj = currentFrameRef.current;
 
-      // 1. Scroll-driven canvas frame sequence scrub (0 -> 59 across 100% scroll timeline)
-      gsap.to(sequenceObj, {
-        frame: HERO_FRAME_SOURCES.length - 1,
-        snap: "frame",
-        ease: "none",
+      if (isReducedMotion) {
+        if (credentialsRef.current) {
+          gsap.set(credentialsRef.current, { opacity: 1, y: targetY });
+        }
+        return;
+      }
+
+      // Master Timeline for Hero scroll scrub across pinned section
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
           end: "bottom bottom",
           scrub: 0.5,
+        },
+      });
+
+      // 1. Frame sequence scrub 0 -> 59 across entire timeline (0 -> 1)
+      tl.to(
+        sequenceObj,
+        {
+          frame: HERO_FRAME_SOURCES.length - 1,
+          snap: "frame",
+          ease: "none",
+          duration: 1,
           onUpdate: () => {
             renderFrame(sequenceObj.frame);
           },
         },
-      });
+        0
+      );
 
-      // 2. Fast & smooth overlay content exit between 5% and 15% scroll
-      if (overlayRef.current) {
-        gsap.to(overlayRef.current, {
-          opacity: 0,
-          y: -30,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "5% top",
-            end: "15% top",
-            scrub: 0.2,
-          },
-        });
-      }
-
-      // 3. Oversized FIVEFOLD typography exit between 5% and 15% scroll
-      if (brandTextRef.current) {
-        gsap.to(brandTextRef.current, {
-          opacity: 0,
-          y: 20,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "5% top",
-            end: "15% top",
-            scrub: 0.2,
-          },
-        });
-      }
-
-      // 4. Smooth image opacity transition from 60% (0.6) to 100% (1.0) on scroll (0% -> 15%)
+      // 2. Canvas opacity: 0.6 -> 1.0 (0% -> 20% scroll)
       if (canvasRef.current) {
-        gsap.fromTo(
+        tl.fromTo(
           canvasRef.current,
           { opacity: 0.6 },
+          { opacity: 1.0, ease: "power1.out", duration: 0.2 },
+          0
+        );
+      }
+
+      // 3. Hero content (Title, Paragraph, CTA) exits (20% -> 40% scroll)
+      if (overlayRef.current) {
+        tl.to(
+          overlayRef.current,
           {
-            opacity: 1.0,
-            ease: "power1.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top top",
-              end: "15% top",
-              scrub: 0.2,
-            },
-          }
+            opacity: 0,
+            y: -30,
+            ease: "power2.out",
+            duration: 0.2,
+          },
+          0.2
+        );
+      }
+
+      // 4. FIVEFOLD background typography exits (20% -> 40% scroll)
+      if (brandTextRef.current) {
+        tl.to(
+          brandTextRef.current,
+          {
+            opacity: 0,
+            y: 30,
+            ease: "power2.out",
+            duration: 0.2,
+          },
+          0.2
+        );
+      }
+
+      // 5. Credentials move UPWARD from current position (30% -> 65% scroll) and hold in place
+      if (credentialsRef.current) {
+        tl.fromTo(
+          credentialsRef.current,
+          {
+            opacity: 0,
+            y: 0,
+          },
+          {
+            opacity: 1,
+            y: targetY,
+            ease: "power2.out",
+            duration: 0.35,
+          },
+          0.3
         );
       }
     }, sectionRef);
@@ -181,7 +209,7 @@ export const Hero: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[250vh] bg-[#0C3046] text-white select-none"
+      className="relative h-[320vh] bg-[#0C3046] text-white"
     >
       {/* STICKY FULL-VIEWPORT STAGE (100vh) */}
       <div className="sticky top-0 h-screen h-[100svh] w-full overflow-hidden flex flex-col justify-between pt-20 sm:pt-24 pb-0">
@@ -206,30 +234,28 @@ export const Hero: React.FC = () => {
           />
         </div>
 
-        {/* 2. Main Hero Content Container (Fades out between 5-15% scroll) */}
-        <Container className="relative z-10 my-auto py-3 sm:py-5 text-center space-y-3 sm:space-y-5 max-h-full">
-          <div ref={overlayRef} className="space-y-3 sm:space-y-5">
-            {/* Small Editorial Label */}
-            <span className="text-[clamp(0.7rem,1vw,0.8rem)] font-sans font-semibold uppercase tracking-wider text-[#00A9D6] block mx-auto">
-              • CINEMATIC SOLAR EPC &amp; DECISION PLATFORM
-            </span>
-
-            {/* Editorial Headline */}
-            <div className="space-y-2 sm:space-y-3 max-w-4xl mx-auto">
-              <h1 className="font-heading text-[clamp(2.25rem,4.5vw+0.75rem,5.25rem)] font-extrabold tracking-tight leading-[1.06] text-center">
-                <span className="text-[#00A9D6] block sm:inline">Powering Odisha with </span>
-                <br className="hidden sm:inline" />
-                <span className="text-white">Smarter Solar Energy</span>
+        {/* 2. Main Hero Content Container (Fades out between 20-40% scroll) */}
+        <Container className="relative z-10 my-auto py-3 sm:py-5 text-left md:text-center space-y-3 sm:space-y-5 max-h-full">
+          <div ref={overlayRef} className="space-y-4 sm:space-y-5">
+            {/* Editorial Headline & Paragraph Container */}
+            <div className="relative w-[75vw] max-w-[75vw] md:max-w-4xl md:w-auto mr-auto md:mx-auto p-0 md:p-6 md:rounded-3xl md:bg-[radial-gradient(ellipse_at_center,rgba(12,48,70,0.55)_0%,rgba(12,48,70,0.2)_50%,transparent_75%)] space-y-3 sm:space-y-4">
+              <h1 className="font-heading text-[clamp(1.75rem,5vw+0.25rem,5.25rem)] font-extrabold tracking-tight leading-[1.08] text-left md:text-center text-white">
+                <span className="block whitespace-normal sm:whitespace-nowrap">
+                  Powering Odisha&nbsp;with
+                </span>
+                <span className="block">
+                  Smarter Solar Energy
+                </span>
               </h1>
 
               {/* Supporting Paragraph */}
-              <p className="font-sans text-[clamp(0.85rem,1.1vw+0.4rem,1.1rem)] text-[#F2F2F2] font-normal max-w-lg mx-auto leading-relaxed pt-0.5">
+              <p className="font-sans text-[clamp(0.85rem,1.1vw+0.3rem,1.1rem)] text-white font-normal max-w-[75vw] md:max-w-lg text-left md:text-center md:mx-auto leading-relaxed">
                 Engineering-led solar EPC solutions for smarter energy and long-term performance.
               </p>
             </div>
 
             {/* Primary CTA Button */}
-            <div className="pt-1 flex justify-center">
+            <div className="pt-1 flex justify-start md:justify-center">
               <Button
                 href="/contact"
                 variant="primary"
@@ -241,13 +267,74 @@ export const Hero: React.FC = () => {
           </div>
         </Container>
 
-        {/* 3. OVERSIZED BRAND TYPOGRAPHY (Fades out between 5-15% scroll) */}
+        {/* 3. OVERSIZED BRAND TYPOGRAPHY (Fades out between 20-40% scroll) */}
         <div
           ref={brandTextRef}
           className="relative z-0 w-full overflow-hidden pointer-events-none select-none shrink-0 flex justify-center items-end opacity-20"
         >
           <div className="font-heading text-[19.5vw] font-extrabold text-center leading-none tracking-tighter text-[#00A9D6] uppercase whitespace-nowrap w-[110vw] max-w-none transform translate-y-[38%] shrink-0">
             FIVEFOLD
+          </div>
+        </div>
+
+        {/* 4. REDESIGNED BOLD MAXIMALIST NUMBERS LAYOUT (Positions across bottom of viewport) */}
+        <div
+          ref={credentialsRef}
+          className="absolute inset-x-0 bottom-6 sm:bottom-10 lg:bottom-12 z-20 flex flex-col justify-end items-center pointer-events-none px-5 sm:px-6 lg:px-8 opacity-0"
+        >
+          <div className="w-full max-w-7xl mx-auto pointer-events-auto space-y-6 sm:space-y-8">
+            {/* Desktop: 4 Columns across bottom width | Mobile/Tablet: 2 Columns */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-3 sm:gap-x-8 text-center items-start">
+              {/* Stat 1 */}
+              <div className="space-y-1 sm:space-y-1.5 flex flex-col items-center">
+                <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                  10+ Years
+                </div>
+                <div className="font-sans text-xs sm:text-sm font-medium text-white/70 tracking-wide text-center">
+                  Renewable Energy
+                </div>
+              </div>
+
+              {/* Stat 2 */}
+              <div className="space-y-1 sm:space-y-1.5 flex flex-col items-center">
+                <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                  20+ MW
+                </div>
+                <div className="font-sans text-xs sm:text-sm font-medium text-white/70 tracking-wide text-center">
+                  Installed
+                </div>
+              </div>
+
+              {/* Stat 3 */}
+              <div className="space-y-1 sm:space-y-1.5 flex flex-col items-center">
+                <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                  30+ Projects
+                </div>
+                <div className="font-sans text-xs sm:text-sm font-medium text-white/70 tracking-wide text-center">
+                  Delivered
+                </div>
+              </div>
+
+              {/* Stat 4 */}
+              <div className="space-y-1 sm:space-y-1.5 flex flex-col items-center">
+                <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                  800+ MW
+                </div>
+                <div className="font-sans text-xs sm:text-sm font-medium text-white/70 tracking-wide text-center">
+                  Engineering Experience
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Row / 5th Stat: 10+ States Center Anchor (60% Larger Font) */}
+            <div className="text-center pt-3 sm:pt-5 space-y-1 sm:space-y-2 flex flex-col items-center border-t border-white/10 max-w-md sm:max-w-xl mx-auto">
+              <div className="font-heading text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                10+ States
+              </div>
+              <div className="font-sans text-xs sm:text-base font-semibold text-white/70 tracking-wider uppercase text-center">
+                Engineering Reach
+              </div>
+            </div>
           </div>
         </div>
 

@@ -100,7 +100,7 @@ export const ServicesGrid: React.FC = () => {
   };
 
   return (
-    <section className="py-8 sm:py-12 bg-white font-sans select-none">
+    <section className="py-8 sm:py-12 bg-white font-sans">
       {/* 98% VIEWPORT WIDTH CONTAINER (1% Breathing Room Each Side) */}
       <div className="w-[98%] max-w-[98vw] mx-auto px-0">
         <div

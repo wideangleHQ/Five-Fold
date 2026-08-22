@@ -1,5 +1,4 @@
 import { Hero } from "@/components/hero/Hero";
-import { TrustMetrics } from "@/components/sections/TrustMetrics";
 import { SolarDecisionPlatform } from "@/components/sections/SolarDecisionPlatform";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { EngineeringCapabilities } from "@/components/sections/EngineeringCapabilities";
@@ -13,13 +12,10 @@ import { FinalCta } from "@/components/sections/FinalCta";
 export default function HomePage() {
   return (
     <>
-      {/* 01 — HERO */}
+      {/* 01 — HERO & CREDENTIALS TRANSITION */}
       <Hero />
 
-      {/* 02 — TRUST / CREDENTIALS */}
-      <TrustMetrics />
-
-      {/* 03 — FIND YOUR SOLAR SOLUTION (SOLAR DECISION PLATFORM) */}
+      {/* 02 — FIND YOUR SOLAR SOLUTION (SOLAR DECISION PLATFORM) */}
       <SolarDecisionPlatform />
 
       {/* 04 — RESIDENTIAL / COMMERCIAL / INDUSTRIAL SOLUTIONS GRID */}

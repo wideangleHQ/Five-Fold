@@ -44,7 +44,7 @@ export const EngineeringCapabilities: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-stretch">
           
           {/* LEFT COLUMN: Section Header & Editorial Process Accordion (~50% width) */}
-          <div className="lg:col-span-6 flex flex-col justify-between space-y-8">
+          <div data-reveal="text" className="lg:col-span-6 flex flex-col justify-between space-y-8">
             {/* Section Header */}
             <div className="space-y-3">
               <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
@@ -143,7 +143,7 @@ export const EngineeringCapabilities: React.FC = () => {
           </div>
 
           {/* RIGHT COLUMN: Large Visual Image Panel (~50% width) */}
-          <div className="lg:col-span-6 flex">
+          <div data-reveal="image-container" className="lg:col-span-6 flex overflow-hidden rounded-2xl sm:rounded-3xl">
             <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200 w-full min-h-[420px] lg:min-h-[540px] flex flex-col justify-end p-6 bg-slate-900 group">
               <Image
                 src={engineeringImg}
@@ -156,7 +156,7 @@ export const EngineeringCapabilities: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
 
               {/* Minimal On-Image Metadata Overlay */}
-              <div className="relative z-10 p-5 rounded-2xl bg-[#0C3046]/90 backdrop-blur-md border border-sky-800/80 text-white space-y-1">
+              <div data-reveal="card" className="relative z-10 p-5 rounded-2xl bg-[#0C3046]/90 backdrop-blur-md border border-sky-800/80 text-white space-y-1">
                 <div className="flex items-center gap-2 text-[#00A9D6] font-sans text-xs font-bold uppercase tracking-wider">
                   <CheckCircle2 className="h-4 w-4" />
                   <span>Quality Assurance Standard</span>

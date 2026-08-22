@@ -42,7 +42,7 @@ export const WhyFivefold: React.FC = () => {
     <section className="py-16 sm:py-24 bg-white text-[#111615] border-b border-slate-200 font-sans">
       <Container>
         {/* Section Header */}
-        <div className="max-w-3xl mb-12 space-y-3">
+        <div data-reveal="text" className="max-w-3xl mb-12 space-y-3">
           <span className="font-sans text-xs font-semibold uppercase tracking-wider text-[#20435F] block">
             Why Choose Fivefold
           </span>
@@ -55,12 +55,13 @@ export const WhyFivefold: React.FC = () => {
         </div>
 
         {/* Feature Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {WHY_POINTS.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={idx}
+                data-reveal="card"
                 className="rounded-2xl border border-slate-200 p-6 sm:p-8 bg-[#F7F8F5] flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-3">

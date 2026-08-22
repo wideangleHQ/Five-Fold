@@ -11,7 +11,7 @@ export const FaqSection: React.FC = () => {
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* LEFT COLUMN: Reference Heading & Contact Note (~40% width) */}
-          <div className="lg:col-span-5 space-y-4">
+          <div data-reveal="text" className="lg:col-span-5 space-y-4">
             <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
               • FAQ
             </span>
@@ -36,7 +36,7 @@ export const FaqSection: React.FC = () => {
           </div>
 
           {/* RIGHT COLUMN: Clean Numbered Accordion List (~60% width) */}
-          <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
+          <div data-reveal="card" className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
             <Accordion items={FAQS_DATA} />
           </div>
         </div>

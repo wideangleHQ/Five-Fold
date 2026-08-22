@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/layout/Footer";
-import { StickyMobileCTA } from "@/components/navigation/StickyMobileCTA";
+import { ScrollRevealInitializer } from "@/components/ui/ScrollRevealInitializer";
 import { constructMetadata, generateOrganizationSchema } from "@/lib/seo";
 
 // Load local Inter font files from src/assets/fonts/Inter
@@ -49,10 +49,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col font-sans bg-white text-brand-charcoal antialiased pb-0 mb-0">
+        <ScrollRevealInitializer />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        <StickyMobileCTA />
       </body>
     </html>
   );
