@@ -43,6 +43,12 @@ export const Hero: React.FC = () => {
           setImagesLoaded(true);
         }
       };
+      img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === HERO_FRAME_SOURCES.length) {
+          setImagesLoaded(true);
+        }
+      };
       loadedImages[idx] = img;
     });
 
