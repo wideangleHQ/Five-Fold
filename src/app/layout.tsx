@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollRevealInitializer } from "@/components/ui/ScrollRevealInitializer";
+import { ProgressiveBlur } from "@/components/ui/ProgressiveBlur";
 import { constructMetadata, generateOrganizationSchema } from "@/lib/seo";
 
 // Load local Inter font files from src/assets/fonts/Inter
@@ -50,6 +51,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col font-sans bg-white text-brand-charcoal antialiased pb-0 mb-0">
         <ScrollRevealInitializer />
+        <ProgressiveBlur position="top" height="100px" blurAmount="6px" />
+        <ProgressiveBlur position="bottom" height="100px" blurAmount="6px" />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

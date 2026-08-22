@@ -110,6 +110,66 @@ export const Hero: React.FC = () => {
     }
   }, [imagesLoaded]);
 
+  // Hero Page-Load Entrance Animation Timeline (FIVEFOLD typography & text composition)
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const isReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      const loadTl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
+
+      // 1. FIVEFOLD oversized typography slides upward from below
+      if (brandTextRef.current) {
+        loadTl.fromTo(
+          brandTextRef.current,
+          { opacity: 0, y: 80 },
+          { opacity: 0.2, y: 0, duration: 1.0 },
+          0.1
+        );
+      }
+
+      // 2. Hero content sequence: Heading -> Paragraph -> CTA Button
+      if (overlayRef.current) {
+        const heading = overlayRef.current.querySelector("h1");
+        const paragraph = overlayRef.current.querySelector("p");
+        const button = overlayRef.current.querySelector("a, button");
+
+        if (heading) {
+          loadTl.fromTo(
+            heading,
+            { opacity: 0, y: 28 },
+            { opacity: 1, y: 0, duration: 0.9 },
+            0.2
+          );
+        }
+
+        if (paragraph) {
+          loadTl.fromTo(
+            paragraph,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.8 },
+            0.35
+          );
+        }
+
+        if (button) {
+          loadTl.fromTo(
+            button,
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: 0.75 },
+            0.5
+          );
+        }
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   // GSAP ScrollTrigger Sequence & Credentials Exit/Entrance Animation
   useEffect(() => {
     if (!sectionRef.current || !imagesLoaded) return;
