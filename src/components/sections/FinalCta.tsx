@@ -8,7 +8,7 @@ import { PhoneCall } from "lucide-react";
 export const FinalCta: React.FC = () => {
   return (
     <section className="py-20 lg:py-24 bg-[#0C3046] text-white border-t border-sky-900/60 font-sans">
-      <Container className="text-center space-y-6 max-w-4xl mx-auto">
+      <Container data-reveal="card" className="text-center space-y-6 max-w-4xl mx-auto">
         <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#00A9D6] block">
           Engineering Consultation Ready
         </span>

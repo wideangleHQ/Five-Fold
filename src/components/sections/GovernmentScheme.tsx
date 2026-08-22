@@ -105,7 +105,7 @@ export const GovernmentScheme: React.FC = () => {
   return (
     <section
       ref={containerRef}
-      className="relative bg-[#0C3046] text-white font-sans border-t border-b border-slate-800/80 md:h-[220vh] select-none"
+      className="relative bg-[#0C3046] text-white font-sans border-t border-b border-slate-800/80 md:h-[220vh]"
     >
       {/* Ambient Background Glow */}
       <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-[#20435F] blur-[140px] rounded-full pointer-events-none opacity-25" />

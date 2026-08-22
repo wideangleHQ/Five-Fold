@@ -15,7 +15,7 @@ export const SolarDecisionPlatform: React.FC = () => {
     <section className="py-16 sm:py-24 bg-white border-b border-slate-200/80 font-sans">
       <Container>
         {/* 1. ASYMMETRIC EDITORIAL HEADER (Matching Reference) */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-end mb-12">
+        <div data-reveal="text" className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-end mb-12">
           <div className="md:col-span-7 space-y-2">
             <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
               • FIND YOUR SOLAR SOLUTION
@@ -33,9 +33,9 @@ export const SolarDecisionPlatform: React.FC = () => {
         </div>
 
         {/* 2. THREE FEATURE DATA CARDS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* CARD 01: YOUR ENERGY REQUIREMENT */}
-          <div className="rounded-2xl p-7 bg-[#20435F] text-white flex flex-col justify-between min-h-[300px] border border-[#20435F]">
+          <div data-reveal="card" className="rounded-2xl p-7 bg-[#20435F] text-white flex flex-col justify-between min-h-[300px] border border-[#20435F]">
             <div className="space-y-3">
               <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#00A9D6] block">
                 Energy Requirement
@@ -50,14 +50,16 @@ export const SolarDecisionPlatform: React.FC = () => {
           </div>
 
           {/* CARD 02: YOUR SOLAR REQUIREMENT */}
-          <div className="rounded-2xl p-7 bg-slate-900 text-white flex flex-col justify-between relative min-h-[300px] overflow-hidden group">
-            <Image
-              src={solarCardImg}
-              alt="Fivefold Solar Solution Recommendation"
-              fill
-              sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-            />
+          <div data-reveal="card" className="rounded-2xl p-7 bg-slate-900 text-white flex flex-col justify-between relative min-h-[300px] overflow-hidden group">
+            <div data-reveal="image-container" className="absolute inset-0 z-0 overflow-hidden">
+              <Image
+                src={solarCardImg}
+                alt="Fivefold Solar Solution Recommendation"
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+              />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/30 z-0" />
 
             <div className="relative z-10 space-y-2">
@@ -77,7 +79,7 @@ export const SolarDecisionPlatform: React.FC = () => {
           </div>
 
           {/* CARD 03: POTENTIAL SAVINGS & SUPPORT */}
-          <div className="rounded-2xl p-7 bg-[#F7F8F5] border border-slate-200 text-[#111615] flex flex-col justify-between min-h-[300px]">
+          <div data-reveal="card" className="rounded-2xl p-7 bg-[#F7F8F5] border border-slate-200 text-[#111615] flex flex-col justify-between min-h-[300px]">
             <div className="space-y-3">
               <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
                 Schemes &amp; Savings
@@ -93,7 +95,7 @@ export const SolarDecisionPlatform: React.FC = () => {
         </div>
 
         {/* 3. BOTTOM HORIZONTAL CTA BANNER */}
-        <div className="p-5 sm:p-6 rounded-2xl bg-[#F7F8F5] border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div data-reveal="card" className="p-5 sm:p-6 rounded-2xl bg-[#F7F8F5] border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <h4 className="font-heading text-base sm:text-lg font-bold text-[#111615]">
               Precision insights. Smarter decisions. Maximum savings.

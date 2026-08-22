@@ -60,10 +60,10 @@ export const ProjectsTeaser: React.FC = () => {
   };
 
   return (
-    <section className="py-16 sm:py-24 bg-white text-[#111615] font-sans select-none border-t border-b border-slate-200 font-sans">
+    <section className="py-16 sm:py-24 bg-white text-[#111615] font-sans border-t border-b border-slate-200">
       <Container>
         {/* 1. EDITORIAL SECTION HEADER (Light Theme) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-end mb-10 sm:mb-12">
+        <div data-reveal="text" className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-end mb-10 sm:mb-12">
           {/* Header Left */}
           <div className="lg:col-span-7 space-y-2">
             <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
@@ -126,9 +126,10 @@ export const ProjectsTeaser: React.FC = () => {
         {/* 2. HORIZONTAL PROPORTIONAL CARD SLIDER (Light Theme) */}
         <div
           ref={sliderRef}
+          data-reveal="cards-container"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 scrollbar-none snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none"
+          className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 scrollbar-none snap-x snap-mandatory cursor-grab active:cursor-grabbing"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {publishedProjects.map((project, idx) => {
@@ -137,6 +138,7 @@ export const ProjectsTeaser: React.FC = () => {
             return (
               <div
                 key={project.id}
+                data-reveal="card"
                 className="w-[84%] sm:w-[46%] lg:w-[31%] xl:w-[24%] flex-shrink-0 snap-start flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-300 group"
                 style={{ aspectRatio: "3 / 4.15" }}
               >

@@ -32,6 +32,17 @@
     color: #111615;
     background-color: #FFFFFF;
     font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
+  body {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -53,4 +64,14 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #00A9D6;
+}
+
+/* Custom Global Text Selection */
+::selection {
+  background-color: #20435F;
+  color: #FFFFFF;
+}
+::-moz-selection {
+  background-color: #20435F;
+  color: #FFFFFF;
 }
