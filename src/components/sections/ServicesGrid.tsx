@@ -19,68 +19,68 @@ import stock2Img from "@/assets/Images/Five_fold_stock_2.png";
 import heroBgImg from "@/assets/Images/hero section background.png";
 import skyImg from "@/assets/Images/Five_fold_sky.png";
 
-const SLIDES = [
+const SOLUTIONS = [
   {
     id: "residential",
     number: "01",
-    category: "Residential",
+    category: "RESIDENTIAL",
     icon: Home,
-    href: "/solar-calculator",
+    href: "/smart-solar-calculator",
     title: "Smart solar solutions for homes.",
     description:
-      "Engineered rooftop solar systems designed for residential energy needs, savings and long-term performance.",
+      "Engineered rooftop solar systems designed for residential energy needs, savings, PM Surya Ghar subsidies, and 25-year bankable performance.",
     image: stock1Img,
-    ctaText: "Calculate Home Solar Requirement",
+    ctaText: "Calculate My Home Solar",
   },
   {
     id: "commercial",
     number: "02",
-    category: "Commercial",
+    category: "COMMERCIAL",
     icon: Building2,
-    href: "/commercial-solar",
+    href: "/contact",
     title: "Efficient solar for smarter businesses.",
     description:
-      "Solar systems designed around your energy requirement, available space, investment and long-term returns.",
+      "Turn unused commercial rooftops into high-yield energy generating assets with 40% Accelerated Depreciation tax benefits and low OPEX.",
     image: stock2Img,
-    ctaText: "Plan Solar for Business",
+    ctaText: "Plan My Business Solar",
   },
   {
     id: "industrial",
     number: "03",
-    category: "Industrial",
+    category: "INDUSTRIAL",
     icon: Factory,
-    href: "/industrial-solar",
+    href: "/contact",
     title: "Engineered solar for high-demand industry.",
     description:
-      "Engineering-first solar solutions focused on system optimisation, reliability and long-term performance.",
+      "Megawatt-scale industrial solar plants engineered for factories, manufacturing facilities, and warehouses with SCADA monitoring.",
     image: heroBgImg,
-    ctaText: "Discuss Industrial Project",
+    ctaText: "Discuss My Industrial Project",
   },
   {
     id: "institutional",
     number: "04",
-    category: "Institutional",
+    category: "INSTITUTIONAL",
     icon: Landmark,
-    href: "/services",
+    href: "/contact",
     title: "Reliable solar for essential infrastructure.",
     description:
-      "Purpose-built solar solutions for institutions seeking dependable energy performance and long-term value.",
+      "Purpose-built solar systems for schools, hospitals, universities, and government campuses seeking dependable long-term clean power.",
     image: skyImg,
-    ctaText: "Explore Institutional Solar",
+    ctaText: "Discuss My Requirement",
   },
 ];
 
 export const ServicesGrid: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
-  const activeSlide = SLIDES[activeIndex];
+  const activeSlide = SOLUTIONS[activeIndex];
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % SLIDES.length);
+    setActiveIndex((prev) => (prev + 1) % SOLUTIONS.length);
   };
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+    setActiveIndex((prev) => (prev - 1 + SOLUTIONS.length) % SOLUTIONS.length);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -100,22 +100,22 @@ export const ServicesGrid: React.FC = () => {
   };
 
   return (
-    <section className="py-8 sm:py-12 bg-white font-sans">
-      {/* 98% VIEWPORT WIDTH CONTAINER (1% Breathing Room Each Side) */}
+    <section className="py-16 sm:py-24 bg-white font-sans border-b border-slate-200/80 relative">
+      {/* 98% VIEWPORT CONTAINER (1% Breathing Room Each Side) */}
       <div className="w-[98%] max-w-[98vw] mx-auto px-0">
         <div
-          className="relative rounded-2xl sm:rounded-3xl bg-[#0C3046] text-white overflow-hidden border border-slate-800 shadow-xl p-6 sm:p-10 lg:p-12 min-h-[540px] sm:min-h-[600px] flex flex-col justify-between"
+          className="relative rounded-3xl bg-[#0C3046] text-white overflow-hidden border border-slate-800 shadow-2xl p-6 sm:p-10 lg:p-12 min-h-[560px] sm:min-h-[620px] flex flex-col justify-between"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Background Image Layer (~90% Visually Exposed) */}
+          {/* Background Image Layer */}
           <div className="absolute inset-0 z-0 overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.9 }}
-                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 0.9, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
                 className="absolute inset-0"
               >
@@ -130,86 +130,81 @@ export const ServicesGrid: React.FC = () => {
               </motion.div>
             </AnimatePresence>
 
-            {/* Subtle Gradient Overlay for Text Readability (~90% Photo Visibility) */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/95 via-[#0C3046]/40 to-[#0C3046]/10 z-[1]" />
+            {/* Gradient Overlay for Readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/95 via-[#0C3046]/50 to-[#0C3046]/20 z-[1]" />
           </div>
 
-          {/* 1. FIXED & CONSTANT HEADER */}
-          <div className="relative z-10">
-            <div className="flex items-center justify-between font-sans text-xs font-semibold uppercase tracking-wider text-slate-400">
-              <div className="flex items-center gap-2 text-[#00A9D6]">
-                <span className="h-2 w-2 rounded-full bg-[#00A9D6]" />
-                <span>OUR OFFERINGS</span>
-              </div>
-              <div className="hidden sm:block text-slate-400">
-                / SOLAR OFFERINGS BY PROPERTY CATEGORY
-              </div>
-            </div>
-          </div>
-
-          {/* 2. MINIMAL DYNAMIC SLIDE CONTENT */}
+          {/* 2. DYNAMIC CONTENT AREA */}
           <div className="relative z-10 my-auto py-6 sm:py-8 max-w-3xl">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.id}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.35, ease: "easeInOut" }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
                 className="space-y-4 sm:space-y-6"
               >
-                {/* Category Pill Tag */}
+                {/* Category Pill */}
                 <div>
-                  <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[#00A9D6] text-xs font-sans font-medium uppercase tracking-wider border border-white/10">
-                    SLIDE {activeSlide.number} — {activeSlide.category}
+                  <span className="inline-block px-3.5 py-1 rounded-full bg-white/10 text-[#00A9D6] text-xs font-mono font-bold uppercase tracking-wider border border-white/15">
+                    {activeSlide.number} — {activeSlide.category}
                   </span>
                 </div>
 
-                {/* Main Heading */}
-                <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
+                {/* Heading */}
+                <h3 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
                   {activeSlide.title}
-                </h2>
+                </h3>
 
-                {/* Short Supporting Description */}
-                <p className="font-sans text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                {/* Description */}
+                <p className="font-sans text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl">
                   {activeSlide.description}
                 </p>
 
-                {/* Minimal Single CTA Button */}
+                {/* Contextual CTA */}
                 <div className="pt-2">
-                  <Link
-                    href={activeSlide.href}
-                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-lg bg-[#20435F] hover:bg-[#0C3046] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md group"
+                  <motion.div
+                    whileHover={{ scale: 1.025, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="inline-block"
                   >
-                    <span>{activeSlide.ctaText}</span>
-                    <ArrowRight className="h-4 w-4 text-sky-200 group-hover:translate-x-0.5 transition-transform" />
-                  </Link>
+                    <Link
+                      href={activeSlide.href}
+                      className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-lg bg-[#20435F] hover:bg-[#0C3046] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-lg group border border-sky-400/20"
+                    >
+                      <span>{activeSlide.ctaText}</span>
+                      <ArrowRight className="h-4 w-4 text-[#00A9D6] group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </motion.div>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* 3. LOWER SLIDE NAVIGATION CONTROLS */}
+          {/* 3. LOWER CATEGORY SELECTION CONTROLS */}
           <div className="relative z-10 pt-6 border-t border-white/15">
-            {/* Category Tab Buttons */}
+            {/* Category Selector Tabs */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pb-5">
-              {SLIDES.map((slide, idx) => {
-                const Icon = slide.icon;
+              {SOLUTIONS.map((item, idx) => {
+                const Icon = item.icon;
                 const isActive = idx === activeIndex;
                 return (
                   <button
-                    key={slide.id}
+                    key={item.id}
                     type="button"
                     onClick={() => setActiveIndex(idx)}
-                    className={`flex items-center gap-2.5 px-4 py-3 rounded-lg transition-all text-left focus:outline-none ${
+                    onMouseEnter={() => setActiveIndex(idx)}
+                    className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all text-left focus:outline-none border ${
                       isActive
-                        ? "bg-[#20435F] text-white font-semibold shadow-md"
-                        : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
+                        ? "bg-[#20435F] border-[#00A9D6] text-white font-bold shadow-lg scale-[1.01]"
+                        : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:text-white opacity-80 hover:opacity-100"
                     }`}
                   >
                     <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[#00A9D6]" : "text-slate-400"}`} />
-                    <span className="font-heading text-xs sm:text-sm font-bold">
-                      {slide.category}
+                    <span className="font-heading text-xs sm:text-sm font-bold tracking-tight">
+                      {item.category}
                     </span>
                   </button>
                 );
@@ -218,7 +213,6 @@ export const ServicesGrid: React.FC = () => {
 
             {/* Bottom Progress Line & Arrow Navigation */}
             <div className="flex items-center justify-between border-t border-white/10 pt-4">
-              {/* Progress Line */}
               <div className="flex items-center gap-3">
                 <span className="font-mono text-xs text-[#00A9D6] font-bold">
                   0{activeIndex + 1}
@@ -227,21 +221,20 @@ export const ServicesGrid: React.FC = () => {
                   <div
                     className="h-full bg-[#00A9D6] transition-all duration-500 ease-out"
                     style={{
-                      width: `${((activeIndex + 1) / SLIDES.length) * 100}%`,
+                      width: `${((activeIndex + 1) / SOLUTIONS.length) * 100}%`,
                     }}
                   />
                 </div>
-                <span className="font-mono text-xs text-slate-500">
-                  0{SLIDES.length}
+                <span className="font-mono text-xs text-slate-400">
+                  0{SOLUTIONS.length}
                 </span>
               </div>
 
-              {/* Prev / Next Buttons */}
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={handlePrev}
-                  aria-label="Previous Slide"
+                  aria-label="Previous Solution"
                   className="h-9 w-9 rounded-full bg-white/10 hover:bg-[#20435F] text-white flex items-center justify-center transition-colors focus:outline-none"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -249,7 +242,7 @@ export const ServicesGrid: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleNext}
-                  aria-label="Next Slide"
+                  aria-label="Next Solution"
                   className="h-9 w-9 rounded-full bg-white/10 hover:bg-[#20435F] text-white flex items-center justify-center transition-colors focus:outline-none"
                 >
                   <ArrowRight className="h-4 w-4" />
@@ -263,4 +256,3 @@ export const ServicesGrid: React.FC = () => {
     </section>
   );
 };
-
