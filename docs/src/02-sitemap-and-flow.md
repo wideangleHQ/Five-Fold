@@ -1,73 +1,238 @@
 # 02 — Site Map & Website Flow
 
-## Primary Navigation Structure
+## Purpose
 
-```
-HOME
-├── 02  Smart Solar Calculator
-├── 03  Government Schemes
-├── 04  Residential Solar
-├── 05  Commercial Solar
-├── 06  Industrial Solar
-├── 07  Engineering Capability
-├── 08  Projects & Credentials
-├── 09  SolarCare AMC
-├── 10  Warranty & Support
-├── 11  About Us
-├── 12  FAQ
-└── 13  Contact / Enquiry
-```
+Define the website's information architecture and user journeys.
 
-## Header (Persistent)
+This document defines **what the website needs to communicate and how users move through it**. It does not prescribe a component-heavy visual implementation.
 
-- Logo
-- Smart Calculator
-- Schemes
-- Solutions (dropdown or mega for Residential / Commercial / Industrial)
-- Projects
-- SolarCare
-- Contact
-- Primary CTA button: **Get Free Consultation**
-
-## Footer
-
-Quick links + confirmed contact details + Privacy / Terms
+Visual decisions must follow `09-design-guidelines.md`.
 
 ---
 
-## Page-by-Page Flow (Clean & Interactive)
+## Primary Navigation
 
-### PAGE 01 — HOME
+HOME
+├── Smart Solar Calculator
+├── Government Schemes
+├── Solutions
+│   ├── Residential Solar
+│   ├── Commercial Solar
+│   └── Industrial Solar
+├── Engineering
+├── Projects
+├── SolarCare
+├── Warranty & Support
+├── About
+├── FAQ
+└── Contact / Enquiry
 
-**Hero**
-- Headline: “Powering Odisha with Smarter Solar Energy”
-- Supporting: Engineering-Led Solar EPC Solutions Since 2016
-- Primary actions:
-  - Explore Solar Solutions
-  - Find My Solar Solution (→ Calculator)
-  - Government Schemes
-  - Talk to an Expert
+## Header
 
-**Below the fold (in order)**
-1. Trust metrics (10+ years · 20+ MW · 30+ projects · 800+ MW engineering)
-2. Three solution cards → deep links
-3. Mini calculator teaser → full Calculator
-4. Featured / filtered project preview
-5. Engineering philosophy strip
-6. SolarCare teaser
-7. Final CTA band
+Keep navigation simple and task-oriented.
 
-Modern, lightweight motion only. No heavy animations that compromise performance.
+Primary destinations:
+- Smart Calculator
+- Schemes
+- Solutions
+- Projects
+- SolarCare
+- Contact
 
-### PAGE 02 — SMART SOLAR CALCULATOR
-See dedicated document: `03-smart-solar-calculator.md`
+Primary conversion action:
+**Find My Solar Solution**
 
-### PAGE 03 — GOVERNMENT SCHEMES
-See dedicated document: `04-government-schemes.md`
+Do not create competing primary actions.
 
-### PAGE 04 — RESIDENTIAL SOLAR
-Interactive presentation of residential rooftop solar covering:
-- Residential rooftop systems
+The header must remain visually minimal and consistent across the website.
+
+---
+
+# PAGE 01 — HOME
+
+## Hero
+
+Core message:
+
+**Powering Odisha with Smarter Solar Energy**
+
+Supporting positioning:
+
+**Engineering-Led Solar EPC Solutions Since 2016**
+
+The Hero should establish Fivefold's positioning immediately.
+
+Primary action:
+**Find My Solar Solution**
+
+Secondary action:
+**Talk to an Engineer**
+
+Keep the first viewport visually quiet and focused.
+
+Do not overload the Hero with statistics, feature lists, multiple buttons or explanatory copy.
+
+---
+
+## Homepage Story
+
+The homepage should communicate the following story in order:
+
+1. Fivefold's engineering credibility
+2. Solar solutions for different customer needs
+3. Help finding the right solar requirement
+4. Evidence through real projects
+5. Engineering capability
+6. Government assistance
+7. Long-term SolarCare / support
+8. Why Fivefold
+9. FAQ
+10. Final enquiry
+
+This is the user journey.
+
+The visual implementation should NOT turn every item into a separate card grid.
+
+Sections may be combined, visually overlapped or presented through strong editorial compositions where appropriate.
+
+---
+
+## Credentials
+
+Communicate the verified Fivefold proof points:
+
+- 10+ years
+- 20+ MW installed
+- 30+ projects
+- 800+ MW engineering experience
+- 10+ states
+
+Prioritize large numbers and whitespace.
+
+Do not add decorative icons or badges simply to display these metrics.
+
+---
+
+## Solutions
+
+Introduce the major customer segments:
+
+- Residential
+- Commercial
+- Industrial
+- Institutional
+
+Use one strong visual composition rather than automatically creating four cards.
+
+Each segment must provide a clear route to its existing solution experience.
+
+---
+
+## Smart Solar Finder
+
+Introduce the calculator as a useful product experience.
+
+Primary message:
+
+**Find Your Solar Requirement**
+
+The user should understand that Fivefold can help estimate an appropriate solar requirement.
+
+Do not expose every calculator input on the homepage.
+
+The homepage should act as an invitation into the calculator.
+
+---
+
+## Projects
+
+Introduce selected project proof through a strong visual portfolio composition.
+
+Prioritize:
+
+- real imagery
+- project capacity
+- location
+- project type
+
+Do not default to a repetitive card grid.
+
+---
+
+## Engineering
+
+Introduce Fivefold's engineering-led differentiation.
+
+Primary idea:
+
+**Engineering before installation.**
+
+The detailed Engineering page contains the full process.
+
+The homepage should communicate the philosophy briefly and visually.
+
+---
+
+## Government Schemes
+
+Introduce government assistance without presenting a large information block.
+
+Primary action:
+
+**Check Eligibility**
+
+Detailed scheme discovery belongs to the Government Schemes experience.
+
+---
+
+## SolarCare
+
+Introduce long-term support as part of the Fivefold proposition.
+
+Do not show every plan detail on the homepage.
+
+Use a concise visual teaser leading to SolarCare.
+
+---
+
+## Final CTA
+
+End the homepage with a clear conversion moment.
+
+Primary:
+**Find My Solar Solution**
+
+Secondary:
+**Talk to an Engineer**
+
+Avoid multiple competing actions.
+
+---
+
+# PAGE 02 — SMART SOLAR CALCULATOR
+
+See `03-smart-solar-calculator.md`.
+
+The calculator is a decision tool, not merely a form.
+
+---
+
+# PAGE 03 — GOVERNMENT SCHEMES
+
+See `04-government-schemes.md`.
+
+The experience should help visitors understand possible options without overwhelming them with policy information.
+
+---
+
+# PAGE 04 — RESIDENTIAL SOLAR
+
+Audience:
+Homeowners
+
+Communicate the existing residential offering:
+
+- Rooftop systems
 - Site assessment
 - System design
 - Installation
@@ -76,19 +241,36 @@ Interactive presentation of residential rooftop solar covering:
 - Commissioning
 - Long-term technical support
 
-**CTA:** Calculate My Home Solar Requirement
+Primary action:
+**Calculate My Home Solar Requirement**
 
-### PAGE 05 — COMMERCIAL SOLAR
-Focused on offices, retail, hotels, hospitals, educational institutions and commercial buildings.
+Keep the visible story concise.
 
-Flow emphasis: Energy Requirement → Available Space → System Design → Investment → Generation → Long-Term Returns
+---
 
-**CTA:** Plan Solar for My Business
+# PAGE 05 — COMMERCIAL SOLAR
 
-### PAGE 06 — INDUSTRIAL SOLAR
-Technical focus on factories, manufacturing facilities, warehouses and large industrial sites.
+Audience:
+Offices, retail outlets, hotels, hospitals, educational institutions and commercial buildings.
 
-Highlights:
+Core journey:
+
+Energy Requirement → Available Space → System Design → Investment → Generation → Long-Term Returns
+
+Primary action:
+**Plan Solar for My Business**
+
+Present the journey visually rather than as a dense information list.
+
+---
+
+# PAGE 06 — INDUSTRIAL SOLAR
+
+Audience:
+Factories, manufacturing facilities, warehouses and large industrial facilities.
+
+Communicate:
+
 - System optimisation
 - Generation performance
 - Structural requirements
@@ -96,54 +278,97 @@ Highlights:
 - Reliability
 - Long-term performance
 
-**CTA:** Discuss My Industrial Project
+Primary action:
+**Discuss My Industrial Project**
 
-### PAGE 07 — ENGINEERING CAPABILITY
-Visual interactive journey / timeline (not a static list):
+Prioritize engineering credibility over sales language.
 
-**Pre-Construction**  
-Feasibility → Shadow Analysis → 3D Layout → PVsyst → DPR → Financial Modelling → Risk Review
+---
 
-**Execution**  
-Engineering → Procurement → Installation → Commissioning → Performance Assurance
+# PAGE 07 — ENGINEERING
 
-**Quality**  
-Tier-1 Components → QA → Testing → Documentation → Traceability
+See `06-engineering-projects-solarcare.md`.
 
-### PAGE 08 — PROJECTS & CREDENTIALS
-Visual project explorer with filters:
-- Type (Residential / Commercial / Industrial / Institutional)
-- Location
-- Capacity
+Present the engineering capability as a visual journey, not a static technical list.
 
-Each card: Project Name · Location · Capacity · Project Type  
-(Only publish names with client permission)
+---
 
-### PAGE 09 — SOLARCARE AMC
-Four clear tiers:
-- Essential — 1 Year
-- Plus — 3 Years
-- Premium — 5 Years
-- Elite — 10 Years
+# PAGE 08 — PROJECTS
 
-Interactive “Find the Right AMC Plan” selector (system size, age, condition, frequency).
+See `06-engineering-projects-solarcare.md`.
 
-### PAGE 10 — WARRANTY & SUPPORT
-Clear breakdown of:
-- System warranty support
-- Solar panel manufacturer warranty
-- Inverter warranty
-- Installation workmanship
-- BOS component warranty
-- Warranty claim assistance
-- Technical support
+Present projects as evidence and case-study material.
 
-### PAGE 11 — ABOUT US
-Strong visual narrative:
-Who We Are → 10+ Years → 20+ MW Installed → 30+ Projects → 800+ MW Engineering Experience → 10+ States → Engineering-Led Philosophy
+---
 
-### PAGE 12 — FAQ
-Interactive accordion covering common queries on savings, subsidy, timelines, weather, maintenance, net metering, schemes, SolarCare and warranty.
+# PAGE 09 — SOLARCARE
 
-### PAGE 13 — CONTACT / ENQUIRY
-Structured, intent-based lead form (see `07-about-faq-contact.md`).
+See `06-engineering-projects-solarcare.md`.
+
+Present SolarCare as long-term asset support.
+
+---
+
+# PAGE 10 — WARRANTY & SUPPORT
+
+Communicate warranty and technical support clearly.
+
+Avoid sales-heavy presentation.
+
+---
+
+# PAGE 11 — ABOUT
+
+See `07-about-faq-contact.md`.
+
+Tell the company story visually and concisely.
+
+---
+
+# PAGE 12 — FAQ
+
+Use concise, scannable answers.
+
+The FAQ should solve user uncertainty rather than become a content-heavy section.
+
+---
+
+# PAGE 13 — CONTACT / ENQUIRY
+
+Use the existing structured enquiry flow.
+
+The form should remain focused and easy to complete.
+
+---
+
+# FLOW PRINCIPLES
+
+The site should continuously move users toward one of three actions:
+
+1. Understand Fivefold
+2. Find the right solar solution
+3. Talk to Fivefold
+
+Do not add interactions merely because they are technically possible.
+
+Every major section should have a clear purpose.
+
+Every interaction must support understanding, trust or conversion.
+
+---
+
+# VISUAL IMPLEMENTATION RULE
+
+This document defines the **information architecture and user flow**.
+
+It does NOT require:
+
+- cards
+- icon grids
+- dashboards
+- badges
+- multiple UI panels
+- decorative diagrams
+- excessive pop-ups
+
+The visual composition is governed by `09-design-guidelines.md`.

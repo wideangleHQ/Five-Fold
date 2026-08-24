@@ -1,57 +1,150 @@
 # 08 — Interactive Features & Technology
 
-## Key Interactive Features (Kept Minimal)
+This document defines functionality and technical requirements.
 
-| # | Feature | Purpose |
-|---|---------|---------|
-| 01 | Smart Solar Finder / Calculator | Customer enters basic requirements → receives indicative solution |
-| 02 | Government Scheme Finder | Question-based interactive discovery |
-| 03 | Product / Solution Recommendation | Suggests suitable Fivefold category based on inputs |
-| 04 | Interactive Pop-ups / Contextual CTAs | Schemes, benefits, FAQs, AMC plans, enquiry forms appear in context |
-| 05 | Project Explorer | Interactive filtering by type, location, capacity |
-| 06 | Dynamic Results | User inputs dynamically update recommendations |
-| 07 | Lead Capture | Every major interaction ends with a clear path to talk to Fivefold |
-
-No unnecessary motion or decorative interactions. Every interactive element must serve conversion or clarity.
+Functional requirements must NOT be interpreted as instructions to create visible UI elements for every feature.
 
 ---
 
-## Technology Stack
+# INTERACTIVE FEATURES
 
-**Frontend**  
-React.js  
-- Fast interactions  
-- Component-based architecture  
-- Smooth transitions  
-- Dynamic user flows  
-- Scalable structure  
+## 01 — Smart Solar Finder / Calculator
 
-**Database**  
-Supabase  
-- Customer enquiries  
-- Calculator submissions  
-- Scheme-assessment submissions  
-- Contact forms  
-- Project & content data (future dynamic capability)  
+Customer enters basic requirements and receives an indicative solution.
 
-**Hosting**  
-Railway  
+Purpose:
+Help visitors understand their potential solar requirement.
 
-**Architecture**  
+The calculator should feel simple and guided.
+
+See `03-smart-solar-calculator.md`.
+
+---
+
+## 02 — Government Scheme Finder
+
+Question-based discovery of possible government scheme options.
+
+Purpose:
+Help visitors understand what may apply to them.
+
+See `04-government-schemes.md`.
+
+---
+
+## 03 — Product / Solution Recommendation
+
+Use available customer inputs to suggest a suitable Fivefold solution category.
+
+Recommendations must remain indicative where applicable.
+
+---
+
+## 04 — Contextual Interactions
+
+Information such as schemes, benefits, FAQs, AMC details and enquiry paths may appear contextually.
+
+Use contextual interaction only when it improves clarity.
+
+Do not create pop-ups simply to add interaction.
+
+---
+
+## 05 — Project Explorer
+
+Allow project filtering by:
+
+- Type
+- Location
+- Capacity
+
+The visual implementation should remain editorial and lightweight.
+
+---
+
+## 06 — Dynamic Results
+
+User inputs dynamically update recommendations.
+
+Results must be clear and concise.
+
+Do not turn dynamic results into a dashboard unless the user journey genuinely requires it.
+
+---
+
+## 07 — Lead Capture
+
+Every major decision-making journey should provide a clear path to contact Fivefold.
+
+Lead capture should feel like a natural next step.
+
+Do not add unnecessary forms or repeated CTAs.
+
+---
+
+# INTERACTION PRINCIPLES
+
+Every interactive element must serve at least one of:
+
+1. Understanding
+2. Decision-making
+3. Conversion
+
+If it does none of these, do not implement it.
+
+Motion is not a feature by itself.
+
+---
+
+# TECHNOLOGY STACK
+
+## Frontend
+
+React.js
+
+Used for:
+
+- fast interactions
+- component-based architecture
+- smooth transitions
+- dynamic user flows
+- scalable structure
+
+## Database
+
+Supabase
+
+Used for:
+
+- customer enquiries
+- calculator submissions
+- scheme-assessment submissions
+- contact forms
+- project and content data where required
+
+## Hosting
+
+Railway
+
+## Architecture
+
 React.js → Application / API Layer → Supabase Database
 
-This foundation allows selected content to become dynamic later without a full frontend rebuild.
+---
+
+# HOSTING & RECURRING COST
+
+Estimated infrastructure cost to be borne by the client:
+
+≈ ₹3,000/- per month
+
+Actual charges may vary with usage, traffic and service-plan changes.
 
 ---
 
-## Hosting & Recurring Cost
+# PROJECT SCOPE
 
-Estimated infrastructure cost to be borne by the client: **≈ ₹3,000/- per month**  
-(Actual charges may vary with usage, traffic and plan changes.)
-
----
-
-## Project Scope (Included in ₹35,000)
+Included:
 
 - Custom UI/UX implementation
 - React.js development
@@ -59,35 +152,53 @@ Estimated infrastructure cost to be borne by the client: **≈ ₹3,000/- per mo
 - Page-wise development
 - Interactive user journeys
 - Smart Solar Calculator
-- Government Scheme Finder flow
+- Government Scheme Finder
 - Lead-generation forms
 - Dynamic recommendation logic
 - Supabase integration
 - Railway deployment
 - Project showcase
 - Interactive FAQ
-- AMC / SolarCare presentation
+- SolarCare presentation
 - Contact / enquiry system
 - Basic SEO-ready structure
 - Performance-focused development
 
 ---
 
-## Recommended Build Priority
+# BUILD PRIORITY
 
-**Phase 1 (Highest commercial value)**
+## Phase 1 — Highest Commercial Value
+
 1. Home
 2. Smart Solar Calculator
-3. Contact / Enquiry form
-4. Solutions (Residential, Commercial, Industrial)
-5. Government Schemes Finder
+3. Contact / Enquiry
+4. Solutions
+5. Government Scheme Finder
 
-**Phase 2**
-6. Projects (filterable)
-7. Engineering Capability
+## Phase 2
+
+6. Projects
+7. Engineering
 8. SolarCare
 9. Warranty & Support
 10. FAQ
 11. About
 
-Secondary pages can be added later without changing the design system.
+---
+
+# IMPORTANT DISTINCTION
+
+This document defines:
+
+**WHAT THE PLATFORM DOES**
+
+It does NOT define:
+
+**HOW MANY CARDS, ICONS, PANELS OR VISUAL EFFECTS SHOULD APPEAR.**
+
+Visual implementation must follow:
+
+`09-design-guidelines.md`
+
+Functional richness must not result in visual clutter.

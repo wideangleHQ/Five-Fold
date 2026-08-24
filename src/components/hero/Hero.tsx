@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { ArrowRight } from "lucide-react";
 import { HERO_FRAME_SOURCES } from "@/data/heroFrames";
 
 // Fallback initial static hero background image
@@ -55,7 +56,7 @@ export const Hero: React.FC = () => {
     imagesRef.current = loadedImages;
   }, []);
 
-  // Helper to draw image cover on canvas at 100% full opacity
+  // Helper to draw image cover on canvas
   const renderFrame = (frameIndex: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -84,7 +85,7 @@ export const Hero: React.FC = () => {
     }
 
     ctx.clearRect(0, 0, width, height);
-    ctx.globalAlpha = 1.0; // Always 100% pure image opacity
+    ctx.globalAlpha = 1.0;
     ctx.drawImage(img, offsetX, offsetY, renderWidth, renderHeight);
   };
 
@@ -110,6 +111,64 @@ export const Hero: React.FC = () => {
     }
   }, [imagesLoaded]);
 
+  // Hero Page-Load Entrance Animation Timeline
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const isReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      const loadTl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
+
+      if (brandTextRef.current) {
+        loadTl.fromTo(
+          brandTextRef.current,
+          { opacity: 0, y: 80 },
+          { opacity: 0.2, y: 0, duration: 1.0 },
+          0.1
+        );
+      }
+
+      if (overlayRef.current) {
+        const heading = overlayRef.current.querySelector("h1");
+        const paragraph = overlayRef.current.querySelector("p");
+        const buttons = overlayRef.current.querySelector(".hero-ctas");
+
+        if (heading) {
+          loadTl.fromTo(
+            heading,
+            { opacity: 0, y: 28 },
+            { opacity: 1, y: 0, duration: 0.9 },
+            0.15
+          );
+        }
+
+        if (paragraph) {
+          loadTl.fromTo(
+            paragraph,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.8 },
+            0.3
+          );
+        }
+
+        if (buttons) {
+          loadTl.fromTo(
+            buttons,
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: 0.75 },
+            0.45
+          );
+        }
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   // GSAP ScrollTrigger Sequence & Credentials Exit/Entrance Animation
   useEffect(() => {
     if (!sectionRef.current || !imagesLoaded) return;
@@ -127,7 +186,6 @@ export const Hero: React.FC = () => {
         return;
       }
 
-      // Master Timeline for Hero scroll scrub across pinned section
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -137,7 +195,6 @@ export const Hero: React.FC = () => {
         },
       });
 
-      // 1. Frame sequence scrub 0 -> 59 across entire timeline (0 -> 1)
       tl.to(
         sequenceObj,
         {
@@ -152,7 +209,6 @@ export const Hero: React.FC = () => {
         0
       );
 
-      // 2. Canvas opacity: 0.6 -> 1.0 (0% -> 20% scroll)
       if (canvasRef.current) {
         tl.fromTo(
           canvasRef.current,
@@ -162,7 +218,6 @@ export const Hero: React.FC = () => {
         );
       }
 
-      // 3. Hero content (Title, Paragraph, CTA) exits (20% -> 40% scroll)
       if (overlayRef.current) {
         tl.to(
           overlayRef.current,
@@ -176,7 +231,6 @@ export const Hero: React.FC = () => {
         );
       }
 
-      // 4. FIVEFOLD background typography exits (20% -> 40% scroll)
       if (brandTextRef.current) {
         tl.to(
           brandTextRef.current,
@@ -190,7 +244,6 @@ export const Hero: React.FC = () => {
         );
       }
 
-      // 5. Credentials move UPWARD from current position (30% -> 65% scroll) and hold in place
       if (credentialsRef.current) {
         tl.fromTo(
           credentialsRef.current,
@@ -217,10 +270,10 @@ export const Hero: React.FC = () => {
       ref={sectionRef}
       className="relative h-[320vh] bg-[#0C3046] text-white"
     >
-      {/* STICKY FULL-VIEWPORT STAGE (100vh) */}
+      {/* STICKY FULL-VIEWPORT STAGE */}
       <div className="sticky top-0 h-screen h-[100svh] w-full overflow-hidden flex flex-col justify-between pt-20 sm:pt-24 pb-0">
         
-        {/* 1. Canvas Layer / Starts at 60% Opacity and transitions to 100% on scroll */}
+        {/* 1. Canvas Layer */}
         <div className="absolute inset-0 z-0">
           {!imagesLoaded && (
             <Image
@@ -240,40 +293,43 @@ export const Hero: React.FC = () => {
           />
         </div>
 
-        {/* 2. Main Hero Content Container (Fades out between 20-40% scroll) */}
+        {/* 2. Main Hero Content Container */}
         <Container className="relative z-10 my-auto py-3 sm:py-5 text-left md:text-center space-y-3 sm:space-y-5 max-h-full">
           <div ref={overlayRef} className="space-y-4 sm:space-y-5">
+
             {/* Editorial Headline & Paragraph Container */}
-            <div className="relative w-[75vw] max-w-[75vw] md:max-w-4xl md:w-auto mr-auto md:mx-auto p-0 md:p-6 md:rounded-3xl md:bg-[radial-gradient(ellipse_at_center,rgba(12,48,70,0.55)_0%,rgba(12,48,70,0.2)_50%,transparent_75%)] space-y-3 sm:space-y-4">
-              <h1 className="font-heading text-[clamp(1.75rem,5vw+0.25rem,5.25rem)] font-extrabold tracking-tight leading-[1.08] text-left md:text-center text-white">
+            <div className="relative w-[85vw] max-w-[85vw] md:max-w-4xl md:w-auto mr-auto md:mx-auto p-0 md:p-6 md:rounded-3xl md:bg-[radial-gradient(ellipse_at_center,rgba(12,48,70,0.65)_0%,rgba(12,48,70,0.25)_50%,transparent_75%)] space-y-3 sm:space-y-4">
+              <h1 className="font-heading text-[clamp(2rem,5vw+0.25rem,5.5rem)] font-extrabold tracking-tight leading-[1.08] text-left md:text-center text-white">
                 <span className="block whitespace-normal sm:whitespace-nowrap">
                   Powering Odisha&nbsp;with
                 </span>
-                <span className="block">
+                <span className="block text-white">
                   Smarter Solar Energy
                 </span>
               </h1>
 
               {/* Supporting Paragraph */}
-              <p className="font-sans text-[clamp(0.85rem,1.1vw+0.3rem,1.1rem)] text-white font-normal max-w-[75vw] md:max-w-lg text-left md:text-center md:mx-auto leading-relaxed">
-                Engineering-led solar EPC solutions for smarter energy and long-term performance.
+              <p className="font-sans text-[clamp(0.9rem,1.1vw+0.3rem,1.15rem)] text-slate-200 font-normal max-w-[85vw] md:max-w-xl text-left md:text-center md:mx-auto leading-relaxed">
+                Bankable rooftop and megawatt-scale solar engineering, DISCOM net metering, and 25-year performance assurance.
               </p>
             </div>
 
-            {/* Primary CTA Button */}
-            <div className="pt-1 flex justify-start md:justify-center">
+            {/* CTA Button Group */}
+            <div className="hero-ctas pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-start md:justify-center gap-3">
               <Button
-                href="/contact"
+                href="/smart-solar-calculator"
                 variant="primary"
-                className="bg-[#20435F] hover:bg-[#0C3046] text-white px-6 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md transition-all duration-200"
+                className="w-full sm:w-auto bg-[#20435F] hover:bg-[#0C3046] text-white px-7 py-3 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
               >
-                Get a Free Consultation
+                <span>Find My Solar Solution</span>
+                <ArrowRight className="h-4 w-4 text-[#00A9D6]" />
               </Button>
             </div>
+
           </div>
         </Container>
 
-        {/* 3. OVERSIZED BRAND TYPOGRAPHY (Fades out between 20-40% scroll) */}
+        {/* 3. OVERSIZED BRAND TYPOGRAPHY */}
         <div
           ref={brandTextRef}
           className="relative z-0 w-full overflow-hidden pointer-events-none select-none shrink-0 flex justify-center items-end opacity-20"
@@ -283,21 +339,20 @@ export const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* 4. REDESIGNED BOLD MAXIMALIST NUMBERS LAYOUT (Positions across bottom of viewport) */}
+        {/* 4. REDESIGNED BOLD EDITORIAL NUMBERS LAYOUT */}
         <div
           ref={credentialsRef}
           className="absolute inset-x-0 bottom-6 sm:bottom-10 lg:bottom-12 z-20 flex flex-col justify-end items-center pointer-events-none px-5 sm:px-6 lg:px-8 opacity-0"
         >
           <div className="w-full max-w-7xl mx-auto pointer-events-auto space-y-6 sm:space-y-8">
-            {/* Desktop: 4 Columns across bottom width | Mobile/Tablet: 2 Columns */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-3 sm:gap-x-8 text-center items-start">
               {/* Stat 1 */}
               <div className="space-y-1 sm:space-y-1.5 flex flex-col items-center">
                 <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
                   10+ Years
                 </div>
-                <div className="font-sans text-xs sm:text-sm font-medium text-white/70 tracking-wide text-center">
-                  Renewable Energy
+                <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
+                  Engineering Experience
                 </div>
               </div>
 
@@ -306,8 +361,8 @@ export const Hero: React.FC = () => {
                 <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
                   20+ MW
                 </div>
-                <div className="font-sans text-xs sm:text-sm font-medium text-white/70 tracking-wide text-center">
-                  Installed
+                <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
+                  Installed Capacity
                 </div>
               </div>
 
@@ -316,8 +371,8 @@ export const Hero: React.FC = () => {
                 <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
                   30+ Projects
                 </div>
-                <div className="font-sans text-xs sm:text-sm font-medium text-white/70 tracking-wide text-center">
-                  Delivered
+                <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
+                  Projects Delivered
                 </div>
               </div>
 
@@ -326,19 +381,19 @@ export const Hero: React.FC = () => {
                 <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
                   800+ MW
                 </div>
-                <div className="font-sans text-xs sm:text-sm font-medium text-white/70 tracking-wide text-center">
-                  Engineering Experience
+                <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
+                  Design &amp; Consultation
                 </div>
               </div>
             </div>
 
-            {/* Bottom Row / 5th Stat: 10+ States Center Anchor (60% Larger Font) */}
-            <div className="text-center pt-3 sm:pt-5 space-y-1 sm:space-y-2 flex flex-col items-center border-t border-white/10 max-w-md sm:max-w-xl mx-auto">
+            {/* Bottom Row: 10+ States Center Anchor */}
+            <div className="text-center pt-3 sm:pt-5 space-y-1 sm:space-y-2 flex flex-col items-center border-t border-white/15 max-w-md sm:max-w-xl mx-auto">
               <div className="font-heading text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
                 10+ States
               </div>
-              <div className="font-sans text-xs sm:text-base font-semibold text-white/70 tracking-wider uppercase text-center">
-                Engineering Reach
+              <div className="font-sans text-xs sm:text-base font-semibold text-white/80 tracking-wider uppercase text-center">
+                Regional Engineering Footprint
               </div>
             </div>
           </div>
@@ -348,4 +403,3 @@ export const Hero: React.FC = () => {
     </section>
   );
 };
-

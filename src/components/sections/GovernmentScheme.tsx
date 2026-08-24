@@ -1,39 +1,41 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/ui/Container";
-import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { ArrowRight, Info, ChevronDown } from "lucide-react";
+import { SchemeModal } from "@/components/schemes/SchemeModal";
 
 // Import approved local image assets
 import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
 import stock2Img from "@/assets/Images/Five_fold_stock_2.png";
 import skyImg from "@/assets/Images/Five_fold_sky.png";
 
-// Scheme Data preserving exact factual content
 const SCHEMES = [
   {
     id: "surya-ghar",
     num: "01",
-    category: "Residential Scheme",
-    badge: "PM Surya Ghar",
-    title: "PM Surya Ghar: Muft Bijli Yojana",
+    name: "PM SURYA GHAR",
+    category: "Residential",
+    benefitShort: "Up to ₹78,000 Direct Credit",
+    fullTitle: "PM Surya Ghar: Muft Bijli Yojana",
     description:
-      "End-to-end guidance for portal application filing, approvals and compliant rooftop installation.",
+      "Central government rooftop solar scheme providing up to ₹78,000 direct subsidy credited into your bank account. Fivefold handles all portal filings.",
     image: stock1Img,
-    ctaText: "Apply for Guidance",
-    ctaHref: "/contact",
+    ctaText: "Check Eligibility",
+    ctaHref: "/government-schemes",
   },
   {
     id: "c-and-i",
     num: "02",
+    name: "C&I TAX BENEFITS",
     category: "Commercial & Industrial",
-    badge: "Tax & Net Metering",
-    title: "C&I Tax Benefits & Net Metering Support",
+    benefitShort: "40% Accelerated Depreciation",
+    fullTitle: "C&I Tax Benefits & DISCOM Net Metering",
     description:
-      "Accelerated depreciation, GST benefits, and DISCOM grid-export approvals.",
+      "Industrial & commercial enterprises benefit from 40% Accelerated Depreciation, GST input tax offsets, and DISCOM grid-export banking.",
     image: stock2Img,
     ctaText: "Discuss Commercial Project",
     ctaHref: "/contact",
@@ -41,11 +43,12 @@ const SCHEMES = [
   {
     id: "discom-liaison",
     num: "03",
-    category: "Grid Interconnection",
-    badge: "Odisha DISCOM Liaison",
-    title: "Odisha DISCOM Liaison & Utility Approvals",
+    name: "DISCOM SUPPORT",
+    category: "Odisha Grid Liaison",
+    benefitShort: "End-to-End Approval",
+    fullTitle: "Odisha DISCOM Liaison & Net Metering",
     description:
-      "Statutory approvals, net metering and grid interconnection support.",
+      "Complete technical liaison, bi-directional solar meter installation, and statutory safety approvals across TPCODL, TPNODL, TPSODL, and TPWODL.",
     image: skyImg,
     ctaText: "Check DISCOM Eligibility",
     ctaHref: "/government-schemes",
@@ -53,165 +56,147 @@ const SCHEMES = [
 ];
 
 export const GovernmentScheme: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isDesktop, setIsDesktop] = useState<boolean>(true);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const touchStartX = useRef<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeSchemeId, setActiveSchemeId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Scroll-driven sticky progress calculation
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const maxIndex = isDesktop ? 1 : 2;
-    if (latest < 0.4) {
-      setActiveIndex(0);
-    } else if (latest < 0.75) {
-      setActiveIndex(1);
-    } else {
-      setActiveIndex(maxIndex);
-    }
-  });
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX;
-    const maxIndex = isDesktop ? 1 : 2;
-
-    if (diff > 40 && activeIndex < maxIndex) {
-      setActiveIndex((prev) => prev + 1);
-    } else if (diff < -40 && activeIndex > 0) {
-      setActiveIndex((prev) => prev - 1);
-    }
-    touchStartX.current = null;
+  const toggleScheme = (id: string) => {
+    setActiveSchemeId(activeSchemeId === id ? null : id);
   };
 
   return (
-    <section
-      ref={containerRef}
-      className="relative bg-[#0C3046] text-white font-sans border-t border-b border-slate-800/80 md:h-[220vh]"
-    >
-      {/* Ambient Background Glow */}
-      <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-[#20435F] blur-[140px] rounded-full pointer-events-none opacity-25" />
-
-      {/* Sticky Viewport Container — Pinned strictly to 100vh / 100svh */}
-      <div className="sticky top-0 h-[100svh] max-h-screen flex flex-col justify-between py-5 sm:py-8 lg:py-10 overflow-hidden">
-        <Container className="relative z-10 h-full flex flex-col justify-between max-w-6xl px-4 sm:px-6 lg:px-8">
-          {/* 1. EDITORIAL HEADER (Reference Style: Left Heading, Right Minimal Progress) */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 shrink-0 mb-3 sm:mb-6">
-            <div className="space-y-1">
-              <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#00A9D6] block">
-                Government Scheme Support
-              </span>
-              <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                PM Surya Ghar &amp; Solar Subsidy Facilitation
-              </h2>
-            </div>
-
-            {/* Minimal Progress Indicator */}
-            <div className="flex items-center gap-3 shrink-0 self-start sm:self-auto">
-              <span className="font-mono text-xs text-slate-400 font-bold">
-                0{activeIndex + 1} / 0{SCHEMES.length}
-              </span>
-              <div className="w-16 sm:w-24 h-1 bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-[#00A9D6] transition-all duration-500 ease-out"
-                  style={{
-                    width: `${((activeIndex + 1) / SCHEMES.length) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
+    <section className="py-20 sm:py-28 lg:py-32 bg-[#F7F8F5] text-[#111615] font-sans border-b border-slate-200/80">
+      <Container>
+        {/* Section Header with Generous Whitespace */}
+        <div data-reveal="text" className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 lg:mb-20">
+          <div className="space-y-3 max-w-2xl">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#20435F] block">
+              • GOVERNMENT SUPPORT &amp; SCHEMES
+            </span>
+            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#111615] tracking-tight leading-[1.08]">
+              Which solar scheme applies to your project?
+            </h2>
           </div>
 
-          {/* 2. WIDE CARDS SLIDER (2 Wide Cards Side-by-Side on Desktop Matching Reference) */}
-          <div
-            className="flex-1 my-auto flex items-center overflow-hidden py-2 sm:py-4"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
-            <div className="w-full overflow-hidden">
-              <motion.div
-                className="flex gap-5 lg:gap-8"
-                animate={{
-                  x: isDesktop
-                    ? `calc(-${activeIndex * 50}% - ${activeIndex * 16}px)`
-                    : `calc(-${activeIndex * 100}% - ${activeIndex * 20}px)`,
-                }}
-                transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+          <div className="shrink-0 pt-2 md:pt-0">
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              variant="primary"
+              className="bg-[#20435F] hover:bg-[#0C3046] text-white px-7 py-3.5 text-xs sm:text-sm font-sans font-semibold rounded-xl inline-flex items-center gap-2 transition-all shadow-md group"
+            >
+              <span>Check Eligibility</span>
+              <ArrowRight className="h-4 w-4 text-[#00A9D6] group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Minimal Editorial Scheme Showcase (3 Schemes) */}
+        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12">
+          {SCHEMES.map((scheme) => {
+            const isExpanded = activeSchemeId === scheme.id;
+            return (
+              <div
+                key={scheme.id}
+                data-reveal="card"
+                className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
               >
-                {SCHEMES.map((scheme) => (
-                  <div
-                    key={scheme.id}
-                    className="w-full md:w-[calc(50%-10px)] lg:w-[calc(50%-16px)] shrink-0 flex flex-col group cursor-pointer"
-                  >
-                    {/* Wide Image Area (Matching Reference Aspect Ratio) */}
-                    <div className="relative w-full aspect-[16/9.5] rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 group-hover:border-slate-700 transition-all duration-300">
-                      <Image
-                        src={scheme.image}
-                        alt={scheme.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                      />
-                    </div>
-
-                    {/* Minimal Information Panel Beneath Image */}
-                    <div className="pt-3 sm:pt-4 space-y-1.5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[11px] sm:text-xs font-sans font-semibold text-[#00A9D6] uppercase tracking-wide">
-                          {scheme.category}
-                        </span>
-                      </div>
-
-                      <h3 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-[#00A9D6] transition-colors line-clamp-1">
-                        {scheme.title}
-                      </h3>
-
-                      <p className="font-sans text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-2">
-                        {scheme.description}
-                      </p>
-
-                      <div className="pt-1">
-                        <Link
-                          href={scheme.ctaHref}
-                          className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-[#00A9D6] hover:text-sky-300 transition-colors"
-                        >
-                          <span>{scheme.ctaText}</span>
-                          <ArrowRight className="h-3.5 w-3.5" />
-                        </Link>
-                      </div>
-                    </div>
+                <div className="space-y-5">
+                  {/* Scheme Number & Category Descriptor */}
+                  <div className="flex items-center justify-between font-mono text-xs font-bold text-[#20435F]">
+                    <span>{scheme.num}</span>
+                    <span className="text-slate-500 font-sans font-medium">{scheme.category}</span>
                   </div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
 
-          {/* 3. MINIMAL LEGAL DISCLAIMER FOOTER */}
-          <div className="pt-3 border-t border-slate-800/80 shrink-0">
-            <p className="text-[10px] sm:text-[11px] text-slate-500 font-sans leading-relaxed line-clamp-2">
-              * Final scheme eligibility, subsidy disbursal amounts, and DISCOM grid interconnection approvals remain strictly governed by prevailing Central Government (MNRE) and Odisha DISCOM (TPCODL / TPNODL / TPSODL / TPWODL) guidelines.
-            </p>
-          </div>
-        </Container>
-      </div>
+                  {/* Large Dominant Image */}
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-slate-900 border border-slate-200/80 group">
+                    <Image
+                      src={scheme.image}
+                      alt={scheme.fullTitle}
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-95"
+                    />
+                  </div>
+
+                  {/* Scheme Name */}
+                  <h3 className="font-heading text-xl sm:text-2xl font-extrabold text-[#111615] tracking-tight">
+                    {scheme.name}
+                  </h3>
+
+                  {/* Progressive Disclosure: Details revealed on interaction */}
+                  <AnimatePresence initial={false}>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="overflow-hidden space-y-4 pt-2 border-t border-slate-100"
+                      >
+                        <h4 className="font-heading text-sm font-bold text-[#20435F]">
+                          {scheme.fullTitle}
+                        </h4>
+                        <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed">
+                          {scheme.description}
+                        </p>
+                        <div className="text-xs font-mono font-semibold text-[#00A9D6] bg-sky-50 px-3 py-1.5 rounded-lg border border-sky-100 inline-block">
+                          Key Benefit: {scheme.benefitShort}
+                        </div>
+                        <div className="pt-2">
+                          <Button
+                            href={scheme.ctaHref}
+                            variant="outline"
+                            className="w-full justify-between border-slate-200 hover:border-[#20435F] text-[#111615] text-xs font-sans font-semibold rounded-lg py-2 px-3.5"
+                          >
+                            <span>{scheme.ctaText}</span>
+                            <ArrowRight className="h-3.5 w-3.5 text-[#00A9D6]" />
+                          </Button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Minimal Interactive Trigger */}
+                <div className="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between">
+                  <span className="font-sans text-xs text-slate-500 font-medium">
+                    {scheme.benefitShort}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => toggleScheme(scheme.id)}
+                    className="text-xs font-mono font-bold text-[#20435F] hover:text-[#0C3046] inline-flex items-center gap-1 transition-colors"
+                  >
+                    <span>{isExpanded ? "Collapse" : "Explore"}</span>
+                    <ChevronDown
+                      className={`h-4 w-4 transition-transform duration-300 ${
+                        isExpanded ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Statutory Disclaimer */}
+        <div className="mt-8 text-center">
+          <p className="font-sans text-[11px] text-slate-400 inline-flex items-center gap-1.5 justify-center max-w-3xl mx-auto">
+            <Info className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+            <span>
+              Indicative estimates only. Final scheme eligibility, subsidy disbursal amounts, and DISCOM grid interconnection approvals remain strictly governed by prevailing Central Government (MNRE) and Odisha DISCOM guidelines.
+            </span>
+          </p>
+        </div>
+      </Container>
+
+      {/* Scheme Discovery Modal */}
+      <SchemeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </section>
   );
 };
+

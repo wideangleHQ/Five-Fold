@@ -4,170 +4,194 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/ui/Container";
-import { Plus, Minus, CheckCircle2, ShieldCheck } from "lucide-react";
+import { Plus, Minus, Shield, CheckCircle2 } from "lucide-react";
 
 // Use approved local image asset for right visual panel
 import engineeringImg from "@/assets/Images/hero section background.png";
 
-const ENGINEERING_JOURNEY = [
+const STAGES = [
   {
-    phase: "01",
+    id: "pre-construction",
+    num: "(01)",
     title: "PRE-CONSTRUCTION",
-    desc: "Feasibility, design and bankable project preparation.",
-    steps: ["Feasibility", "Shadow Analysis", "3D Layout", "PVsyst Yield Simulation"],
+    subtitle: "Feasibility, design and bankable project preparation.",
+    tags: [
+      "Feasibility Analysis",
+      "3D Shadow Path Modelling",
+      "PVsyst Yield Simulation",
+      "Bankable DPR",
+    ],
   },
   {
-    phase: "02",
+    id: "execution",
+    num: "(02)",
     title: "EXECUTION",
-    desc: "Precision procurement, installation and grid synchronisation.",
-    steps: ["Engineering", "Procurement", "Installation", "Grid Synchronization"],
+    subtitle: "Precision procurement, installation and grid synchronisation.",
+    tags: [
+      "Engineering",
+      "Procurement",
+      "Installation",
+      "Grid Synchronization",
+    ],
   },
   {
-    phase: "03",
+    id: "quality",
+    num: "(03)",
     title: "QUALITY & TRACEABILITY",
-    desc: "Tier-1 equipment selection, testing and QA protocols.",
-    steps: ["Tier-1 Modules", "String Inverters", "Flash Data QA", "Traceability"],
+    subtitle: "Tier-1 equipment selection, testing and QA protocols.",
+    tags: [
+      "Tier-1 Component Selection",
+      "Factory Flash Data Audit",
+      "Thermal Imaging",
+      "25-Year Support Continuum",
+    ],
   },
 ];
 
 export const EngineeringCapabilities: React.FC = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  // Item 02 (EXECUTION) active by default as shown in reference design
+  const [openIndex, setOpenIndex] = useState<number | null>(1);
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <section className="py-16 sm:py-24 bg-white text-[#111615] border-b border-slate-200/80 font-sans">
+    <section className="py-16 sm:py-24 bg-white text-[#111615] font-sans border-b border-slate-200/80">
       <Container>
-        {/* TWO-COLUMN EDITORIAL LAYOUT */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           
-          {/* LEFT COLUMN: Section Header & Editorial Process Accordion (~50% width) */}
-          <div data-reveal="text" className="lg:col-span-6 flex flex-col justify-between space-y-8">
+          {/* LEFT COLUMN: Header & Interactive Accordion (~50% width) */}
+          <div className="lg:col-span-6 space-y-8">
+            
             {/* Section Header */}
-            <div className="space-y-3">
-              <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
+            <div data-reveal="text" className="space-y-3">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#20435F] block">
                 • ENGINEERING PRECISION
               </span>
-              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.1]">
-                Engineering Capability & Journey
+              <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.1]">
+                Engineering Capability &amp; Journey
               </h2>
-              <p className="font-sans text-slate-600 text-sm sm:text-base leading-relaxed pt-1">
+              <p className="font-sans text-slate-600 text-sm sm:text-base leading-relaxed pt-1 max-w-xl">
                 Every solar power plant engineered by Fivefold follows a strict three-tier engineering framework designed for 25–30 year bankability.
               </p>
             </div>
 
-            {/* Editorial Accordion Timeline */}
+            {/* Accordion Stage List */}
             <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
-              {ENGINEERING_JOURNEY.map((group, idx) => {
+              {STAGES.map((stg, idx) => {
                 const isOpen = openIndex === idx;
                 return (
-                  <div key={group.phase} className="py-4 sm:py-5">
+                  <div key={stg.id} className="py-5 sm:py-6 transition-colors">
+                    
+                    {/* Clickable Header Row */}
                     <button
                       type="button"
                       onClick={() => toggleAccordion(idx)}
-                      className="w-full flex items-center justify-between text-left focus:outline-none group"
-                      aria-expanded={isOpen}
+                      className="w-full flex items-start justify-between gap-4 text-left group focus:outline-none"
                     >
-                      <div className="flex items-center gap-4">
-                        <span
-                          className={`font-mono text-sm font-bold transition-colors ${
-                            isOpen ? "text-[#20435F]" : "text-slate-400 group-hover:text-slate-700"
-                          }`}
-                        >
-                          ({group.phase})
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <span className="font-mono text-xs sm:text-sm font-bold text-slate-400 pt-0.5 shrink-0">
+                          {stg.num}
                         </span>
-                        <div>
-                          <h3
-                            className={`font-heading text-base sm:text-lg font-bold transition-colors ${
-                              isOpen ? "text-[#20435F]" : "text-[#111615] group-hover:text-[#20435F]"
-                            }`}
-                          >
-                            {group.title}
+                        <div className="space-y-1">
+                          <h3 className="font-heading text-base sm:text-lg font-extrabold text-[#111615] tracking-tight group-hover:text-[#20435F] transition-colors">
+                            {stg.title}
                           </h3>
-                          <p className="font-sans text-xs text-slate-500 font-normal">
-                            {group.desc}
+                          <p className="font-sans text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
+                            {stg.subtitle}
                           </p>
                         </div>
                       </div>
 
-                      {/* Minimal +/- Toggle Control */}
+                      {/* Plus/Minus Toggle Circle */}
                       <div
-                        className={`h-7 w-7 rounded-full flex items-center justify-center transition-colors shrink-0 ${
-                          isOpen ? "bg-[#20435F] text-white" : "bg-slate-100 text-slate-500 group-hover:bg-slate-200"
+                        className={`h-7 w-7 rounded-full flex items-center justify-center shrink-0 transition-colors mt-0.5 ${
+                          isOpen
+                            ? "bg-[#20435F] text-white"
+                            : "bg-slate-100 text-slate-600 group-hover:bg-slate-200"
                         }`}
                       >
-                        {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                        {isOpen ? (
+                          <Minus className="h-4 w-4" />
+                        ) : (
+                          <Plus className="h-4 w-4" />
+                        )}
                       </div>
                     </button>
 
-                    {/* Smooth Expanded Details */}
+                    {/* Expandable Sub-Pills Container */}
                     <AnimatePresence initial={false}>
                       {isOpen && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.35, ease: "easeInOut" }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
                           className="overflow-hidden"
                         >
-                          <div className="pt-4 pb-2 pl-9 sm:pl-10 space-y-3">
-                            <div className="flex flex-wrap items-center gap-2">
-                              {group.steps.map((step) => (
-                                <span
-                                  key={step}
-                                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#F7F8F5] border border-slate-200 text-xs font-sans font-medium text-slate-700"
-                                >
-                                  <span className="h-1.5 w-1.5 rounded-full bg-[#20435F]" />
-                                  {step}
-                                </span>
-                              ))}
-                            </div>
+                          <div className="pt-4 pl-7 sm:pl-9 flex flex-wrap gap-2">
+                            {stg.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F7F8F5] border border-slate-200/80 text-xs font-sans font-medium text-slate-700"
+                              >
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#20435F]" />
+                                {tag}
+                              </span>
+                            ))}
                           </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
+
                   </div>
                 );
               })}
             </div>
 
-            {/* Quality & Bankability Trust Callout */}
-            <div className="pt-2 flex items-center gap-3 text-xs font-sans font-semibold text-slate-700">
-              <div className="h-8 w-8 rounded-lg bg-[#20435F]/10 flex items-center justify-center text-[#20435F]">
-                <ShieldCheck className="h-4 w-4" />
+            {/* Bottom Framework Badge */}
+            <div className="pt-2 flex items-center gap-3">
+              <div className="h-9 w-9 rounded-xl bg-[#F7F8F5] border border-slate-200/80 flex items-center justify-center shrink-0">
+                <Shield className="h-4 w-4 text-[#20435F]" />
               </div>
-              <span>25–30 Year Bankable Engineering Framework</span>
+              <span className="font-sans text-xs sm:text-sm font-semibold text-slate-700">
+                25–30 Year Bankable Engineering Framework
+              </span>
             </div>
+
           </div>
 
-          {/* RIGHT COLUMN: Large Visual Image Panel (~50% width) */}
-          <div data-reveal="image-container" className="lg:col-span-6 flex overflow-hidden rounded-2xl sm:rounded-3xl">
-            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200 w-full min-h-[420px] lg:min-h-[540px] flex flex-col justify-end p-6 bg-slate-900 group">
+          {/* RIGHT COLUMN: Solar Roof Visual Card (~50% width) */}
+          <div data-reveal="image-container" className="lg:col-span-6 flex">
+            <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 w-full min-h-[460px] lg:min-h-[540px] flex flex-col justify-end p-5 sm:p-7 bg-slate-900 group">
               <Image
                 src={engineeringImg}
-                alt="Fivefold Engineering Precision Solar Installation"
+                alt="Fivefold Tier-1 Equipment & Traceable EPC Execution"
                 fill
+                priority
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 opacity-90"
               />
-              {/* Subtle Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none" />
 
-              {/* Minimal On-Image Metadata Overlay */}
-              <div data-reveal="card" className="relative z-10 p-5 rounded-2xl bg-[#0C3046]/90 backdrop-blur-md border border-sky-800/80 text-white space-y-1">
+              {/* Bottom Dark Overlay Card Badge */}
+              <div
+                data-reveal="card"
+                className="relative z-10 p-6 rounded-2xl bg-[#0C3046]/95 backdrop-blur-md border border-sky-900/50 text-white space-y-2 shadow-2xl"
+              >
                 <div className="flex items-center gap-2 text-[#00A9D6] font-sans text-xs font-bold uppercase tracking-wider">
-                  <CheckCircle2 className="h-4 w-4" />
-                  <span>Quality Assurance Standard</span>
+                  <CheckCircle2 className="h-4 w-4 text-[#00A9D6] shrink-0" />
+                  <span>QUALITY ASSURANCE STANDARD</span>
                 </div>
-                <h4 className="font-heading text-lg font-bold text-white">
-                  Tier-1 Equipment & Traceable EPC Execution
-                </h4>
-                <p className="font-sans text-xs text-slate-200">
+                <h3 className="font-heading text-lg sm:text-xl font-extrabold text-white tracking-tight">
+                  Tier-1 Equipment &amp; Traceable EPC Execution
+                </h3>
+                <p className="font-sans text-xs sm:text-sm text-slate-300 leading-relaxed pt-0.5">
                   Shadow analysis, 3D modelling, PVsyst yield simulations and DISCOM grid compliance.
                 </p>
               </div>
+
             </div>
           </div>
 
@@ -176,3 +200,4 @@ export const EngineeringCapabilities: React.FC = () => {
     </section>
   );
 };
+
