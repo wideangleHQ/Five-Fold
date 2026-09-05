@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/ui/Container";
-import { Plus, Minus, Shield, CheckCircle2 } from "lucide-react";
+import { Plus, Minus, CheckCircle2 } from "lucide-react";
 
 // Use approved local image asset for right visual panel
 import engineeringImg from "@/assets/Images/hero section background.png";
@@ -150,13 +150,10 @@ export const EngineeringCapabilities: React.FC = () => {
               })}
             </div>
 
-            {/* Bottom Framework Badge */}
-            <div className="pt-2 flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-[#F7F8F5] border border-slate-200/80 flex items-center justify-center shrink-0">
-                <Shield className="h-4 w-4 text-[#20435F]" />
-              </div>
-              <span className="font-sans text-xs sm:text-sm font-semibold text-slate-700">
-                25–30 Year Bankable Engineering Framework
+            {/* Framework note */}
+            <div className="pt-2">
+              <span className="font-sans text-xs sm:text-sm font-semibold text-slate-600">
+                25-30 year bankable engineering framework
               </span>
             </div>
 

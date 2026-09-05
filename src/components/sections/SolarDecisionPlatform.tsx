@@ -2,144 +2,106 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { Button } from "@/components/ui/Button";
-import { ArrowRight, Info } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-// Import real high-resolution Fivefold solar installation photography for middle card
-import solarHeroImg from "@/assets/Images/hero section background.png";
+import solarImg from "@/assets/Images/Five_Fold_stock_1.png";
+
+const STEPS = [
+  {
+    num: "01",
+    label: "Energy Requirement",
+    desc: "Tell us about your property, usage and available rooftop space.",
+  },
+  {
+    num: "02",
+    label: "System Sizing",
+    desc: "Get an indicative recommendation based on your requirements.",
+  },
+  {
+    num: "03",
+    label: "Schemes & Savings",
+    desc: "Understand applicable government schemes and potential savings.",
+  },
+];
 
 export const SolarDecisionPlatform: React.FC = () => {
   return (
-    <section className="py-16 sm:py-24 bg-white text-[#111615] font-sans border-b border-slate-200/80">
+    <section className="py-20 sm:py-28 lg:py-32 bg-white font-sans border-b border-slate-200/80">
       <Container>
-        {/* 1. ASYMMETRIC EDITORIAL HEADER */}
-        <div data-reveal="text" className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-end mb-12 sm:mb-14">
-          <div className="md:col-span-7 space-y-3">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#20435F] block">
-              • FIND YOUR SOLAR SOLUTION
-            </span>
-            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#111615] tracking-tight leading-[1.1]">
-              Find the right solar solution for you
-            </h2>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 
-          <div className="md:col-span-5 text-left md:text-right">
-            <p className="font-sans text-slate-600 text-sm sm:text-base leading-relaxed max-w-xs ml-auto">
-              Smart calculations to help you choose the right solar solution.
-            </p>
-          </div>
-        </div>
+          {/* Left: editorial numbered steps */}
+          <div className="lg:col-span-6 space-y-12 sm:space-y-14">
+            <div data-reveal="text" className="space-y-3">
+              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.1]">
+                Find the right solar solution for your needs.
+              </h2>
+              <p className="font-sans text-slate-500 text-sm sm:text-base leading-relaxed max-w-md">
+                Smart calculations to help you choose correctly.
+              </p>
+            </div>
 
-        {/* 2. THREE FEATURE DATA CARDS */}
-        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* CARD 01: YOUR ENERGY REQUIREMENT */}
-          <div
-            data-reveal="card"
-            className="rounded-2xl p-7 sm:p-8 bg-[#20435F] text-white flex flex-col justify-start space-y-6 min-h-[340px] shadow-sm border border-[#20435F]"
-          >
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#00A9D6] block">
-              ENERGY REQUIREMENT
-            </span>
-            <div className="space-y-3">
-              <h3 className="font-heading text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
-                Your Energy Requirement
-              </h3>
-              <p className="font-sans text-xs sm:text-sm text-slate-200 leading-relaxed">
-                Tell us about your property, usage and available rooftop space.
+            {/* Numbered steps - editorial list, no cards */}
+            <div data-reveal="cards-container" className="space-y-0 divide-y divide-slate-100">
+              {STEPS.map((step) => (
+                <div
+                  key={step.num}
+                  data-reveal="card"
+                  className="flex items-start gap-6 py-6 sm:py-7"
+                >
+                  <span className="font-mono text-3xl sm:text-4xl font-bold text-slate-200 leading-none shrink-0 w-12 text-right">
+                    {step.num}
+                  </span>
+                  <div className="space-y-1 pt-1">
+                    <h3 className="font-heading text-base sm:text-lg font-bold text-[#111615] tracking-tight">
+                      {step.label}
+                    </h3>
+                    <p className="font-sans text-xs sm:text-sm text-slate-500 leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-2">
+              <Link
+                href="/solar-calculator"
+                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-lg bg-[#20435F] hover:bg-[#0C3046] text-white text-sm font-sans font-semibold transition-all shadow-md group"
+              >
+                <span>Find My Solar Solution</span>
+                <ArrowRight className="h-4 w-4 text-[#00A9D6] group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <p className="mt-3 font-sans text-[11px] text-slate-400">
+                Indicative estimates only. Subject to professional site assessment.
               </p>
             </div>
           </div>
 
-          {/* CARD 02: YOUR SOLAR REQUIREMENT (IMAGE CARD) */}
-          <div
-            data-reveal="card"
-            className="rounded-2xl p-7 sm:p-8 bg-slate-900 text-white flex flex-col justify-between relative min-h-[340px] overflow-hidden group shadow-sm border border-slate-800"
-          >
-            {/* Background Image Layer */}
-            <div className="absolute inset-0 z-0 overflow-hidden">
+          {/* Right: dominant solar image */}
+          <div data-reveal="image-container" className="lg:col-span-6">
+            <div className="relative rounded-2xl overflow-hidden bg-slate-900 aspect-[4/5] lg:aspect-[3/4] w-full">
               <Image
-                src={solarHeroImg}
-                alt="Fivefold Solar Solution Recommendation"
+                src={solarImg}
+                alt="Fivefold solar installation"
                 fill
                 priority
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-90"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center"
               />
-            </div>
-            {/* Gradient Dark Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-950/40 z-0" />
-
-            {/* Top Tag */}
-            <div className="relative z-10">
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#00A9D6] block">
-                SYSTEM SIZING
-              </span>
-            </div>
-
-            {/* Bottom Content */}
-            <div className="relative z-10 space-y-2 pt-12">
-              <h3 className="font-heading text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
-                Your Solar Requirement
-              </h3>
-              <p className="font-sans text-xs sm:text-sm text-slate-200 leading-relaxed">
-                Get an indicative recommendation based on your requirements.
-              </p>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/60 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/15">
+                  <span className="font-sans text-xs font-semibold text-white">Precision insights. Maximum savings.</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* CARD 03: POTENTIAL SAVINGS & SUPPORT */}
-          <div
-            data-reveal="card"
-            className="rounded-2xl p-7 sm:p-8 bg-[#F7F8F5] border border-slate-200/90 text-[#111615] flex flex-col justify-start space-y-6 min-h-[340px] shadow-sm"
-          >
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#20435F] block">
-              SCHEMES &amp; SAVINGS
-            </span>
-            <div className="space-y-3">
-              <h3 className="font-heading text-2xl sm:text-3xl font-extrabold text-[#111615] tracking-tight leading-snug">
-                Potential Savings &amp; Support
-              </h3>
-              <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Understand potential savings and applicable government schemes.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* 3. BOTTOM HORIZONTAL CTA BANNER */}
-        <div
-          data-reveal="card"
-          className="p-6 sm:p-7 rounded-2xl bg-[#F7F8F5] border border-slate-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-sm"
-        >
-          <div className="space-y-1">
-            <h4 className="font-heading text-lg sm:text-xl font-bold text-[#111615]">
-              Precision insights. Smarter decisions. Maximum savings.
-            </h4>
-            <p className="font-sans text-xs sm:text-sm text-slate-600">
-              Calculate your solar ROI with Fivefold Renewable
-            </p>
-          </div>
-
-          <Button
-            href="/smart-solar-calculator"
-            variant="primary"
-            className="w-full sm:w-auto bg-[#20435F] hover:bg-[#0C3046] text-white px-6 py-3.5 text-xs sm:text-sm font-sans font-semibold rounded-xl shrink-0 flex items-center justify-center gap-2 transition-all shadow-md group"
-          >
-            <span>Find My Solar Solution</span>
-            <ArrowRight className="h-4 w-4 text-[#00A9D6] group-hover:translate-x-1 transition-transform" />
-          </Button>
-        </div>
-
-        {/* 4. DISCLAIMER */}
-        <div className="mt-5 text-center">
-          <p className="font-sans text-[11px] text-slate-400 inline-flex items-center gap-1.5 justify-center">
-            <Info className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-            <span>Indicative estimates only. Final system sizing is subject to professional site assessment and engineering.</span>
-          </p>
         </div>
       </Container>
     </section>
   );
 };
-

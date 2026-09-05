@@ -145,10 +145,10 @@ export const ServicesGrid: React.FC = () => {
                 transition={{ duration: 0.35, ease: "easeOut" }}
                 className="space-y-4 sm:space-y-6"
               >
-                {/* Category Pill */}
+                {/* Category label */}
                 <div>
-                  <span className="inline-block px-3.5 py-1 rounded-full bg-white/10 text-[#00A9D6] text-xs font-mono font-bold uppercase tracking-wider border border-white/15">
-                    {activeSlide.number} — {activeSlide.category}
+                  <span className="font-mono text-xs font-bold uppercase tracking-wider text-[#00A9D6]">
+                    {activeSlide.number} / {activeSlide.category}
                   </span>
                 </div>
 

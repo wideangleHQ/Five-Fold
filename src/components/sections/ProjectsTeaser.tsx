@@ -8,7 +8,6 @@ import { getPublishedProjects, ProjectCategory } from "@/data/projects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Import approved local image assets
 import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
 import stock2Img from "@/assets/Images/Five_fold_stock_2.png";
 import heroBgImg from "@/assets/Images/hero section background.png";
@@ -32,15 +31,11 @@ export const ProjectsTeaser: React.FC = () => {
   const publishedProjects = getPublishedProjects(activeCategory);
 
   const scrollLeft = () => {
-    if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: -340, behavior: "smooth" });
-    }
+    sliderRef.current?.scrollBy({ left: -380, behavior: "smooth" });
   };
 
   const scrollRight = () => {
-    if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: 340, behavior: "smooth" });
-    }
+    sliderRef.current?.scrollBy({ left: 380, behavior: "smooth" });
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -49,125 +44,100 @@ export const ProjectsTeaser: React.FC = () => {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStartX.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX;
-    if (diff > 50) {
-      scrollRight();
-    } else if (diff < -50) {
-      scrollLeft();
-    }
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (diff > 50) scrollRight();
+    else if (diff < -50) scrollLeft();
     touchStartX.current = null;
   };
 
   return (
-    <section className="py-16 sm:py-24 bg-white text-[#111615] font-sans border-t border-b border-slate-200">
+    <section className="py-20 sm:py-28 lg:py-32 bg-[#F7F8F5] text-[#111615] font-sans border-b border-slate-200">
       <Container>
-        {/* 1. EDITORIAL SECTION HEADER (Light Theme) */}
-        <div data-reveal="text" className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-end mb-10 sm:mb-12">
-          {/* Header Left */}
-          <div className="lg:col-span-7 space-y-2">
-            <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#20435F] block">
-              Our Work
-            </span>
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.15]">
-              Real Projects. Measurable Impact.
+
+        {/* Header */}
+        <div data-reveal="text" className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 sm:mb-12">
+          <div className="space-y-2">
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.1]">
+              Real Projects.<br className="hidden sm:block" /> Measurable Impact.
             </h2>
           </div>
-
-          {/* Header Right */}
-          <div className="lg:col-span-5 space-y-4">
-            <p className="font-sans text-slate-600 text-sm sm:text-base leading-relaxed">
-              Explore selected solar projects delivered across sectors.
-            </p>
-          </div>
-        </div>
-
-        {/* Filter Categories Bar */}
-        <div className="flex items-center justify-between gap-4 mb-8">
-          <div className="flex flex-wrap items-center gap-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setActiveCategory(cat)}
-                className={cn(
-                  "px-3.5 py-1.5 text-xs font-sans font-semibold rounded-full border transition-all duration-200 focus:outline-none",
-                  activeCategory === cat
-                    ? "bg-[#20435F] text-white border-[#20435F] shadow-xs"
-                    : "bg-[#F7F8F5] text-slate-700 border-slate-200 hover:border-slate-300 hover:text-slate-900"
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Subtle Slider Navigation Controls */}
-          <div className="hidden sm:flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={scrollLeft}
-              aria-label="Previous Projects"
-              className="w-9 h-9 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-[#20435F] hover:border-[#20435F] hover:text-white flex items-center justify-center transition-all focus:outline-none shadow-xs"
+              aria-label="Previous"
+              className="w-9 h-9 rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-[#20435F] hover:border-[#20435F] hover:text-white flex items-center justify-center transition-all"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
             <button
               type="button"
               onClick={scrollRight}
-              aria-label="Next Projects"
-              className="w-9 h-9 rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-[#20435F] hover:border-[#20435F] hover:text-white flex items-center justify-center transition-all focus:outline-none shadow-xs"
+              aria-label="Next"
+              className="w-9 h-9 rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-[#20435F] hover:border-[#20435F] hover:text-white flex items-center justify-center transition-all"
             >
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>
 
-        {/* 2. HORIZONTAL PROPORTIONAL CARD SLIDER (Light Theme) */}
+        {/* Category filter */}
+        <div className="flex flex-wrap items-center gap-2 mb-8">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setActiveCategory(cat)}
+              className={cn(
+                "px-3.5 py-1.5 text-xs font-sans font-semibold rounded-full border transition-all focus:outline-none",
+                activeCategory === cat
+                  ? "bg-[#20435F] text-white border-[#20435F]"
+                  : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+              )}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Image-dominant card slider */}
         <div
           ref={sliderRef}
           data-reveal="cards-container"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 scrollbar-none snap-x snap-mandatory cursor-grab active:cursor-grabbing"
+          className="flex gap-4 sm:gap-5 overflow-x-auto pb-6 scrollbar-none snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {publishedProjects.map((project, idx) => {
             const projectImg = LOCAL_IMAGES[idx % LOCAL_IMAGES.length];
-
             return (
               <div
                 key={project.id}
                 data-reveal="card"
-                className="w-[84%] sm:w-[46%] lg:w-[31%] xl:w-[24%] flex-shrink-0 snap-start flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-300 group"
-                style={{ aspectRatio: "3 / 4.15" }}
+                className="w-[78%] sm:w-[42%] lg:w-[29%] xl:w-[23%] flex-shrink-0 snap-start group"
               >
-                {/* Tall Image Area (~68% height) */}
-                <div className="relative w-full h-[68%] bg-slate-100 overflow-hidden">
+                {/* Large image - 80% of visual weight */}
+                <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-slate-900">
                   <Image
                     src={projectImg}
                     alt={project.name}
                     fill
-                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 46vw, 25vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    sizes="(max-width: 640px) 80vw, (max-width: 1024px) 44vw, 28vw"
+                    className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700"
                   />
-                </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/80 via-[#0C3046]/10 to-transparent" />
 
-                {/* Solid Bottom Information Panel (Light) */}
-                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between bg-white text-[#111615]">
-                  <div className="space-y-2">
-                    <div>
-                      <span className="inline-block px-3 py-1 rounded-full text-[11px] font-sans font-semibold bg-sky-50 text-[#20435F] border border-sky-200/80">
-                        {project.category}
-                      </span>
-                    </div>
-
-                    <h3 className="font-heading text-lg sm:text-xl font-bold text-[#111615] tracking-tight leading-snug line-clamp-1">
+                  {/* Info overlay at image bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5 space-y-1">
+                    <p className="font-sans text-[10px] font-semibold uppercase tracking-wider text-white/60">
+                      {project.category} &bull; {project.location}
+                    </p>
+                    <h3 className="font-heading text-base sm:text-lg font-bold text-white tracking-tight leading-snug">
                       {project.name}
                     </h3>
-
-                    <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-2">
-                      {project.description}
+                    <p className="font-mono text-sm font-bold text-[#00A9D6]">
+                      {project.capacity}
                     </p>
                   </div>
                 </div>
@@ -176,18 +146,18 @@ export const ProjectsTeaser: React.FC = () => {
           })}
         </div>
 
-        {/* 3. MINIMAL CTA BUTTON */}
-        <div className="pt-8 text-center">
+        {/* Bottom CTA */}
+        <div className="pt-8 flex justify-center sm:justify-start">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#20435F] hover:bg-[#0C3046] text-white text-xs sm:text-sm font-sans font-semibold transition-all shadow-md"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#20435F] hover:text-[#0C3046] transition-colors group"
           >
-            <span>View All Projects</span>
+            <span>View all projects</span>
+            <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
+
       </Container>
     </section>
   );
 };
-
-

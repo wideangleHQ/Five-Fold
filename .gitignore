@@ -1,38 +1,96 @@
-# dependencies
-/node_modules
-/.pnp
+# ============================================
+# Dependencies
+# ============================================
+node_modules/
+.pnp/
 .pnp.js
 
-# testing
-/coverage
+# ============================================
+# Testing
+# ============================================
+coverage/
 
-# next.js build output
-/.next/
-/out/
+# ============================================
+# Next.js
+# ============================================
+.next/
+out/
 
-# production
-/build
+# ============================================
+# Production
+# ============================================
+build/
 
-# debug logs
+# ============================================
+# Debug / Logs
+# ============================================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+*.log
 
-# local env files
-.env*.local
+# ============================================
+# Environment / Secrets
+# ============================================
 .env
+.env.*
+!.env.example
+!.env.local.example
 
-# vercel
-.vercel
+# ============================================
+# Vercel
+# ============================================
+.vercel/
 
-# typescript
+# ============================================
+# TypeScript
+# ============================================
 *.tsbuildinfo
 
-# IDE & OS files
-.DS_Store
-Thumbs.db
+# ============================================
+# IDE / Editor
+# ============================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
 .idea/
-.vscode/
 *.swp
 *.swo
+
+# ============================================
+# OS
+# ============================================
+.DS_Store
+Thumbs.db
+
+# ============================================
+# Temporary Files
+# ============================================
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# ============================================
+# Claude Code
+# Keep CLAUDE.md and project skills tracked.
+# Ignore only local Claude state/settings.
+# ============================================
+.claude/settings.local.json
+.claude/*.local.md
+
+# ============================================
+# Antigravity / Agent Local State
+# Keep project Skills and Rules tracked.
+# ============================================
+.agents/*.local/
+.agents/local/
+
+# ============================================
+# Generated / Cache
+# ============================================
+.cache/
+.turbo/
+.eslintcache
