@@ -30,11 +30,11 @@ export default function HomePage() {
       {/* 07 — PROJECTS & CREDENTIALS */}
       <ProjectsTeaser />
 
-      {/* 08 — SOLARCARE / LONG-TERM SUPPORT */}
-      <SolarCareTeaser />
-
-      {/* 09 — WHY FIVEFOLD */}
+      {/* 08 — LIGHT ENGINEERING STATEMENT (VISUAL RESET) */}
       <WhyFivefold />
+
+      {/* 09 — SOLARCARE AMC PLANS (HORIZONTAL PLAN COMPARISON) */}
+      <SolarCareTeaser />
 
       {/* 10 — FAQ */}
       <FaqSection />

@@ -272,7 +272,7 @@ export const Hero: React.FC = () => {
     >
       {/* STICKY FULL-VIEWPORT STAGE */}
       <div className="sticky top-0 h-screen h-[100svh] w-full overflow-hidden flex flex-col justify-between pt-20 sm:pt-24 pb-0">
-        
+
         {/* 1. Canvas Layer */}
         <div className="absolute inset-0 z-0">
           {!imagesLoaded && (

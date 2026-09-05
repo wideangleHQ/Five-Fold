@@ -1,202 +1,225 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useRef, useEffect, useState } from "react";
+import Image, { type StaticImageData } from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { useReducedMotion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { ArrowRight, Info, ChevronDown } from "lucide-react";
 import { SchemeModal } from "@/components/schemes/SchemeModal";
 
-// Import approved local image assets
 import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
 import stock2Img from "@/assets/Images/Five_fold_stock_2.png";
-import skyImg from "@/assets/Images/Five_fold_sky.png";
+import heroBgImg from "@/assets/Images/hero section background.png";
 
-const SCHEMES = [
+gsap.registerPlugin(ScrollTrigger);
+
+interface SchemeData {
+  id: string;
+  num: string;
+  name: string;
+  descriptor: string;
+  ctaHref: string;
+  image: StaticImageData;
+}
+
+const SCHEMES: SchemeData[] = [
   {
     id: "surya-ghar",
     num: "01",
-    name: "PM SURYA GHAR",
-    category: "Residential",
-    benefitShort: "Up to ₹78,000 Direct Credit",
-    fullTitle: "PM Surya Ghar: Muft Bijli Yojana",
-    description:
-      "Central government rooftop solar scheme providing up to ₹78,000 direct subsidy credited into your bank account. Fivefold handles all portal filings.",
+    name: "PM Surya Ghar",
+    descriptor: "Residential subsidy up to Rs 78,000 direct credit",
+    ctaHref: "/government-schemes",
     image: stock1Img,
-    ctaText: "Check Eligibility",
-    ctaHref: "/government-schemes",
   },
   {
-    id: "c-and-i",
+    id: "ci-tax",
     num: "02",
-    name: "C&I TAX BENEFITS",
-    category: "Commercial & Industrial",
-    benefitShort: "40% Accelerated Depreciation",
-    fullTitle: "C&I Tax Benefits & DISCOM Net Metering",
-    description:
-      "Industrial & commercial enterprises benefit from 40% Accelerated Depreciation, GST input tax offsets, and DISCOM grid-export banking.",
-    image: stock2Img,
-    ctaText: "Discuss Commercial Project",
+    name: "C&I Tax Benefits",
+    descriptor: "40% Accelerated Depreciation for commercial projects",
     ctaHref: "/contact",
+    image: stock2Img,
   },
   {
-    id: "discom-liaison",
+    id: "discom",
     num: "03",
-    name: "DISCOM SUPPORT",
-    category: "Odisha Grid Liaison",
-    benefitShort: "End-to-End Approval",
-    fullTitle: "Odisha DISCOM Liaison & Net Metering",
-    description:
-      "Complete technical liaison, bi-directional solar meter installation, and statutory safety approvals across TPCODL, TPNODL, TPSODL, and TPWODL.",
-    image: skyImg,
-    ctaText: "Check DISCOM Eligibility",
+    name: "DISCOM Liaison",
+    descriptor: "End-to-end Odisha grid approvals and net metering",
     ctaHref: "/government-schemes",
+    image: heroBgImg,
   },
 ];
 
+function DesktopCard({ scheme }: { scheme: SchemeData }) {
+  return (
+    <div className="relative rounded-2xl overflow-hidden bg-[#0C3046] w-[80vw] h-[85dvh] shrink-0 group flex flex-col justify-end">
+      <Image
+        src={scheme.image}
+        alt={scheme.name}
+        fill
+        priority
+        sizes="80vw"
+        className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/75 via-[#0C3046]/10 to-transparent pointer-events-none" />
+
+      <div className="relative z-10 p-10 xl:p-12 space-y-3">
+        <span className="font-mono text-[11px] text-white/40 font-medium tracking-[0.2em] uppercase block">
+          {scheme.num}
+        </span>
+        <h3 className="font-heading text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white tracking-tight leading-[1.05]">
+          {scheme.name}
+        </h3>
+        <p className="font-sans text-sm sm:text-base text-white/65 leading-relaxed max-w-sm">
+          {scheme.descriptor}
+        </p>
+        <div className="pt-3">
+          <Link
+            href={scheme.ctaHref}
+            className="inline-flex items-center gap-2 text-sm font-sans font-semibold text-white/80 hover:text-white transition-colors group/link"
+          >
+            <span>Explore scheme</span>
+            <ArrowRight className="h-4 w-4 group-hover/link:translate-x-0.5 transition-transform" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MobileCard({ scheme }: { scheme: SchemeData }) {
+  return (
+    <div className="relative rounded-xl overflow-hidden bg-[#0C3046] w-full aspect-[3/4] flex flex-col justify-end">
+      <Image
+        src={scheme.image}
+        alt={scheme.name}
+        fill
+        sizes="85vw"
+        className="object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/80 via-[#0C3046]/10 to-transparent pointer-events-none" />
+      <div className="relative z-10 p-6 space-y-2">
+        <span className="font-mono text-[10px] text-white/40 font-medium tracking-[0.2em] uppercase block">
+          {scheme.num}
+        </span>
+        <h3 className="font-heading text-2xl font-extrabold text-white tracking-tight leading-snug">
+          {scheme.name}
+        </h3>
+        <p className="font-sans text-xs text-white/65 leading-relaxed">
+          {scheme.descriptor}
+        </p>
+        <div className="pt-1">
+          <Link
+            href={scheme.ctaHref}
+            className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-white/80 hover:text-white transition-colors"
+          >
+            <span>Explore scheme</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export const GovernmentScheme: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeSchemeId, setActiveSchemeId] = useState<string | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
-  const toggleScheme = (id: string) => {
-    setActiveSchemeId(activeSchemeId === id ? null : id);
-  };
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
+      const wrap = wrapRef.current;
+      const track = trackRef.current;
+      if (!wrap || !track) return;
+
+      const ctx = gsap.context(() => {
+        const getDistance = () => track.scrollWidth - window.innerWidth;
+
+        gsap.to(track, {
+          x: () => -getDistance(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: wrap,
+            start: "top top",
+            end: () => `+=${getDistance()}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+      }, wrap);
+
+      return () => ctx.revert();
+    });
+
+    return () => mm.revert();
+  }, [prefersReducedMotion]);
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 bg-[#F7F8F5] text-[#111615] font-sans border-b border-slate-200/80">
-      <Container>
-        {/* Section Header with Generous Whitespace */}
-        <div data-reveal="text" className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 lg:mb-20">
-          <div className="space-y-3 max-w-2xl">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#20435F] block">
-              • GOVERNMENT SUPPORT &amp; SCHEMES
-            </span>
-            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#111615] tracking-tight leading-[1.08]">
-              Which solar scheme applies to your project?
-            </h2>
-          </div>
+    <section className="bg-[#F7F8F5] font-sans border-b border-slate-200/80">
 
-          <div className="shrink-0 pt-2 md:pt-0">
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              variant="primary"
-              className="bg-[#20435F] hover:bg-[#0C3046] text-white px-7 py-3.5 text-xs sm:text-sm font-sans font-semibold rounded-xl inline-flex items-center gap-2 transition-all shadow-md group"
-            >
-              <span>Check Eligibility</span>
-              <ArrowRight className="h-4 w-4 text-[#00A9D6] group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Minimal Editorial Scheme Showcase (3 Schemes) */}
-        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12">
-          {SCHEMES.map((scheme) => {
-            const isExpanded = activeSchemeId === scheme.id;
-            return (
-              <div
-                key={scheme.id}
-                data-reveal="card"
-                className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
-              >
-                <div className="space-y-5">
-                  {/* Scheme Number & Category Descriptor */}
-                  <div className="flex items-center justify-between font-mono text-xs font-bold text-[#20435F]">
-                    <span>{scheme.num}</span>
-                    <span className="text-slate-500 font-sans font-medium">{scheme.category}</span>
-                  </div>
-
-                  {/* Large Dominant Image */}
-                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-slate-900 border border-slate-200/80 group">
-                    <Image
-                      src={scheme.image}
-                      alt={scheme.fullTitle}
-                      fill
-                      priority
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-95"
-                    />
-                  </div>
-
-                  {/* Scheme Name */}
-                  <h3 className="font-heading text-xl sm:text-2xl font-extrabold text-[#111615] tracking-tight">
-                    {scheme.name}
-                  </h3>
-
-                  {/* Progressive Disclosure: Details revealed on interaction */}
-                  <AnimatePresence initial={false}>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="overflow-hidden space-y-4 pt-2 border-t border-slate-100"
-                      >
-                        <h4 className="font-heading text-sm font-bold text-[#20435F]">
-                          {scheme.fullTitle}
-                        </h4>
-                        <p className="font-sans text-xs sm:text-sm text-slate-600 leading-relaxed">
-                          {scheme.description}
-                        </p>
-                        <div className="text-xs font-mono font-semibold text-[#00A9D6] bg-sky-50 px-3 py-1.5 rounded-lg border border-sky-100 inline-block">
-                          Key Benefit: {scheme.benefitShort}
-                        </div>
-                        <div className="pt-2">
-                          <Button
-                            href={scheme.ctaHref}
-                            variant="outline"
-                            className="w-full justify-between border-slate-200 hover:border-[#20435F] text-[#111615] text-xs font-sans font-semibold rounded-lg py-2 px-3.5"
-                          >
-                            <span>{scheme.ctaText}</span>
-                            <ArrowRight className="h-3.5 w-3.5 text-[#00A9D6]" />
-                          </Button>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* Minimal Interactive Trigger */}
-                <div className="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="font-sans text-xs text-slate-500 font-medium">
-                    {scheme.benefitShort}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => toggleScheme(scheme.id)}
-                    className="text-xs font-mono font-bold text-[#20435F] hover:text-[#0C3046] inline-flex items-center gap-1 transition-colors"
-                  >
-                    <span>{isExpanded ? "Collapse" : "Explore"}</span>
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-300 ${
-                        isExpanded ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Statutory Disclaimer */}
-        <div className="mt-8 text-center">
-          <p className="font-sans text-[11px] text-slate-400 inline-flex items-center gap-1.5 justify-center max-w-3xl mx-auto">
-            <Info className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-            <span>
-              Indicative estimates only. Final scheme eligibility, subsidy disbursal amounts, and DISCOM grid interconnection approvals remain strictly governed by prevailing Central Government (MNRE) and Odisha DISCOM guidelines.
-            </span>
+      {/* Section header - normal scroll, above the pin */}
+      <Container className="pt-20 sm:pt-28 lg:pt-32 pb-14 sm:pb-16 lg:pb-20">
+        <div data-reveal="text" className="space-y-6 max-w-2xl">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-[#111615] tracking-tight leading-[1.05]">
+            Which scheme applies to your project?
+          </h2>
+          <p className="font-sans text-slate-500 text-sm sm:text-base leading-relaxed max-w-lg">
+            Government support and financial incentives designed to make solar accessible.
           </p>
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            variant="primary"
+            className="bg-[#20435F] hover:bg-[#0C3046] text-white px-6 py-3 text-sm font-sans font-semibold rounded-lg inline-flex items-center gap-2 transition-all group"
+          >
+            <span>Check Eligibility</span>
+            <ArrowRight className="h-4 w-4 text-[#00A9D6] group-hover:translate-x-0.5 transition-transform" />
+          </Button>
         </div>
       </Container>
 
-      {/* Scheme Discovery Modal */}
-      <SchemeModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      {/* Desktop: GSAP horizontal pan */}
+      <div
+        ref={wrapRef}
+        className="relative hidden md:block bg-[#0C3046] overflow-hidden"
+      >
+        <div
+          ref={trackRef}
+          className="flex items-center h-[100dvh] pl-[4vw] gap-5"
+          style={{ width: "max-content" }}
+        >
+          {SCHEMES.map((scheme) => (
+            <DesktopCard key={scheme.id} scheme={scheme} />
+          ))}
+          {/* Exit breathing room */}
+          <div className="w-[8vw] shrink-0" aria-hidden="true" />
+        </div>
+      </div>
+
+      {/* Mobile: native horizontal scroll snap */}
+      <div className="md:hidden pb-16">
+        <div
+          className="flex gap-4 overflow-x-auto px-4 sm:px-6 pb-6 snap-x snap-mandatory"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {SCHEMES.map((scheme) => (
+            <div key={scheme.id} className="w-[85vw] shrink-0 snap-center">
+              <MobileCard scheme={scheme} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <SchemeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 };
-
