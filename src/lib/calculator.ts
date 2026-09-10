@@ -1,15 +1,18 @@
 /**
- * Solar Savings Calculator Logic
- * 
- * IMPORTANT: Underlying calculation methodology (irradiance, tariff, degradation, payback formula)
- * is pending final engineering sign-off from Fivefold Renewable.
- * 
- * All outputs generated here are marked as draft preliminary estimates.
+ * Solar Savings Calculator — Backward-Compatibility Shim
+ *
+ * The v1 interface is preserved here for any code that imports it directly.
+ * New code should import from "@/lib/solar-engine" instead.
+ *
+ * The implementation now delegates to the production engine.
  */
 
+import { calculateSolarRequirement } from "@/lib/solar-engine";
+import { sqFtToM2 } from "@/lib/solar-engine/roof-feasibility";
+
 export interface CalculatorInputs {
-  monthlyBill: number; // in INR
-  monthlyConsumption?: number; // in kWh
+  monthlyBill: number;
+  monthlyConsumption?: number;
   location: string;
   roofType: string;
   roofAreaSqFt: number;
@@ -25,45 +28,28 @@ export interface CalculatorOutputs {
   disclaimer: string;
 }
 
-/**
- * Computes preliminary conservative solar estimates based on monthly bill or roof area.
- * Keeps all calculation logic isolated from UI components.
- */
 export function calculateSolarEstimate(inputs: CalculatorInputs): CalculatorOutputs {
-  const { monthlyBill, roofAreaSqFt } = inputs;
-  
-  // Conservative indicative benchmark logic (Draft Only)
-  // ~₹8 per unit indicative tariff rate in Odisha C&I / Residential average
-  const estimatedUnitsPerMonth = monthlyBill > 0 ? monthlyBill / 7.5 : (roofAreaSqFt * 0.8);
-  
-  // 1 kWp system produces approx 120 kWh (units) per month in Odisha climate
-  const capacityFromBill = estimatedUnitsPerMonth / 120;
-  
-  // 1 kWp requires approx 80-100 sq ft of shadow-free roof space
-  const capacityFromRoof = roofAreaSqFt > 0 ? roofAreaSqFt / 90 : capacityFromBill;
-  
-  // Recommended capacity is constrained by both roof area and energy consumption
-  const recommendedCapacityKw = Math.max(1, Math.min(Math.round(capacityFromBill * 10) / 10, Math.round(capacityFromRoof * 10) / 10 || 10));
-  
-  // Annual Generation ~ 1400 kWh per kWp annually (conservative for Eastern India)
-  const estimatedAnnualGenerationKwh = Math.round(recommendedCapacityKw * 1400);
-  
-  // Estimated annual savings = annual generation * average unit rate
-  const estimatedAnnualSavingsInr = Math.round(estimatedAnnualGenerationKwh * 7.5);
-  
-  // CO2 reduction: approx 0.82 kg CO2 per kWh of solar energy generated
-  const estimatedCo2ReductionTons = Math.round((estimatedAnnualGenerationKwh * 0.82 / 1000) * 10) / 10;
-  
-  // Simple payback estimation window (indicative 4-5.5 years for commercial/industrial, 5-6 years residential)
-  const estimatedPaybackYears = 4.5;
+  const result = calculateSolarRequirement({
+    inputMode: inputs.monthlyConsumption ? "consumption" : "bill",
+    propertyType: "residential",
+    monthlyBillINR: inputs.monthlyBill || null,
+    monthlyConsumptionKWh: inputs.monthlyConsumption ?? null,
+    appliances: null,
+    roofAreaM2: inputs.roofAreaSqFt > 0 ? sqFtToM2(inputs.roofAreaSqFt) : null,
+    location: inputs.location,
+    shading: "unknown",
+    daytimeUsage: "unknown",
+    targetOffset: 1.0,
+    sanctionedLoadKW: null,
+  });
 
   return {
-    recommendedCapacityKw,
-    estimatedAnnualGenerationKwh,
-    estimatedAnnualSavingsInr,
-    estimatedCo2ReductionTons,
-    estimatedPaybackYears,
+    recommendedCapacityKw: result.recommendedSystemKWp,
+    estimatedAnnualGenerationKwh: Math.round(result.estimatedAnnualGenerationKWh),
+    estimatedAnnualSavingsInr: Math.round(result.estimatedAnnualSavingsINR),
+    estimatedCo2ReductionTons: Math.round(result.estimatedCO2ReductionTonnesPerYear * 10) / 10,
+    estimatedPaybackYears: result.estimatedPaybackYears ?? 5,
     isDraftEstimate: true,
-    disclaimer: "These figures are preliminary draft estimates based on standard regional solar irradiance models. Final plant capacity, yield simulations (PVsyst), shadow analysis, and financial returns require engineering evaluation.",
+    disclaimer: result.disclaimer,
   };
 }
