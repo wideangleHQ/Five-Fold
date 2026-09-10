@@ -1,25 +1,26 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
-import { HERO_FRAME_SOURCES } from "@/data/heroFrames";
-
-// Fallback initial static hero background image
-import heroBg from "@/assets/Images/hero section background.png";
+import skyBg from "@/assets/Images/Five_fold_sky.png";
+import { HERO_FRAME_SOURCES, HERO_FIRST_FRAME } from "@/data/heroFrames";
 
 export const Hero: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const brandTextRef = useRef<HTMLDivElement>(null);
+  const frameWrapperRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const vignetteRef = useRef<HTMLDivElement>(null);
   const credentialsRef = useRef<HTMLDivElement>(null);
 
   const [imagesLoaded, setImagesLoaded] = useState<boolean>(false);
+  const [frameVisible, setFrameVisible] = useState<boolean>(false);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameRef = useRef<{ frame: number }>({ frame: 0 });
 
@@ -30,14 +31,35 @@ export const Hero: React.FC = () => {
     }
   }, []);
 
-  // Preload sequence frames
+  // Preload sequence frames with frame 0 prioritized
   useEffect(() => {
     let loadedCount = 0;
     const loadedImages: HTMLImageElement[] = [];
 
-    HERO_FRAME_SOURCES.forEach((src, idx) => {
+    // Priority load first frame
+    const firstImg = new window.Image();
+    firstImg.src = HERO_FRAME_SOURCES[0];
+    firstImg.onload = () => {
+      loadedCount++;
+      if (canvasRef.current && currentFrameRef.current.frame === 0) {
+        renderFrame(0);
+      }
+      if (loadedCount === HERO_FRAME_SOURCES.length) {
+        setImagesLoaded(true);
+      }
+    };
+    firstImg.onerror = () => {
+      loadedCount++;
+      if (loadedCount === HERO_FRAME_SOURCES.length) {
+        setImagesLoaded(true);
+      }
+    };
+    loadedImages[0] = firstImg;
+
+    // Load remaining frames
+    for (let idx = 1; idx < HERO_FRAME_SOURCES.length; idx++) {
       const img = new window.Image();
-      img.src = src;
+      img.src = HERO_FRAME_SOURCES[idx];
       img.onload = () => {
         loadedCount++;
         if (loadedCount === HERO_FRAME_SOURCES.length) {
@@ -51,7 +73,7 @@ export const Hero: React.FC = () => {
         }
       };
       loadedImages[idx] = img;
-    });
+    }
 
     imagesRef.current = loadedImages;
   }, []);
@@ -102,20 +124,49 @@ export const Hero: React.FC = () => {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [imagesLoaded]);
+  }, []);
 
-  // Initial draw when images load
+  // Draw frame 0 on canvas as soon as canvas is mounted or images load
   useEffect(() => {
-    if (imagesLoaded) {
+    if (canvasRef.current) {
+      canvasRef.current.width = window.innerWidth;
+      canvasRef.current.height = window.innerHeight;
       renderFrame(0);
     }
   }, [imagesLoaded]);
 
-  // Hero Page-Load Entrance Animation Timeline
-  useEffect(() => {
-    if (!sectionRef.current) return;
+  // Set initial frame position before paint — positioned safely below the CTA button with zero overlap
+  useLayoutEffect(() => {
+    const updateFramePosition = () => {
+      if (!frameRef.current) return;
+      const ctaEl = overlayRef.current?.querySelector(".hero-ctas");
+      let safeY = window.innerHeight * 0.58;
+      if (ctaEl) {
+        const ctaBottom = ctaEl.getBoundingClientRect().bottom;
+        // Ensure at least 24px-32px clear breathing space below the CTA button
+        safeY = Math.max(ctaBottom + 28, window.innerHeight * 0.52);
+      }
+      gsap.set(frameRef.current, {
+        xPercent: -50,
+        y: safeY,
+      });
+    };
 
-    const isReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    updateFramePosition();
+    window.addEventListener("resize", updateFramePosition);
+    return () => window.removeEventListener("resize", updateFramePosition);
+  }, []);
+
+  // Frame fade-in — set visible immediately; 300ms delay lives in CSS transition-delay.
+  useEffect(() => { setFrameVisible(true); }, []);
+
+  // Hero Page-Load Entrance Animation Timeline (text elements only)
+  useEffect(() => {
+    if (!sectionRef.current || !overlayRef.current) return;
+
+    const isReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (isReducedMotion) return;
 
     const ctx = gsap.context(() => {
@@ -123,279 +174,330 @@ export const Hero: React.FC = () => {
         defaults: { ease: "power3.out" },
       });
 
-      if (brandTextRef.current) {
+      const eyebrow = overlayRef.current!.querySelector(".hero-eyebrow");
+      const heading = overlayRef.current!.querySelector("h1");
+      const paragraph = overlayRef.current!.querySelector("p");
+      const buttons = overlayRef.current!.querySelector(".hero-ctas");
+
+      if (eyebrow) {
         loadTl.fromTo(
-          brandTextRef.current,
-          { opacity: 0, y: 80 },
-          { opacity: 0.2, y: 0, duration: 1.0 },
-          0.1
+          eyebrow,
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.7 },
+          0.05
         );
       }
 
-      if (overlayRef.current) {
-        const heading = overlayRef.current.querySelector("h1");
-        const paragraph = overlayRef.current.querySelector("p");
-        const buttons = overlayRef.current.querySelector(".hero-ctas");
+      if (heading) {
+        loadTl.fromTo(
+          heading,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          0.12
+        );
+      }
 
-        if (heading) {
-          loadTl.fromTo(
-            heading,
-            { opacity: 0, y: 28 },
-            { opacity: 1, y: 0, duration: 0.9 },
-            0.15
-          );
-        }
+      if (paragraph) {
+        loadTl.fromTo(
+          paragraph,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.7 },
+          0.24
+        );
+      }
 
-        if (paragraph) {
-          loadTl.fromTo(
-            paragraph,
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.8 },
-            0.3
-          );
-        }
-
-        if (buttons) {
-          loadTl.fromTo(
-            buttons,
-            { opacity: 0, y: 18 },
-            { opacity: 1, y: 0, duration: 0.75 },
-            0.45
-          );
-        }
+      if (buttons) {
+        loadTl.fromTo(
+          buttons,
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.65 },
+          0.36
+        );
       }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  // GSAP ScrollTrigger Sequence & Credentials Exit/Entrance Animation
+  // GSAP ScrollTrigger Sequence: Text Exits -> Framed Image Expands -> Fullscreen Climax
+  // No gsap.context() here — ctx.revert() clears _gsap on frameRef, overriding the
+  // useLayoutEffect initial positioning. tl.kill() stops without reverting element state.
   useEffect(() => {
-    if (!sectionRef.current || !imagesLoaded) return;
+    if (!sectionRef.current) return;
 
-    const isReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const targetY = typeof window !== "undefined" && window.innerWidth < 768 ? -35 : -60;
+    const isReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const ctx = gsap.context(() => {
-      const sequenceObj = currentFrameRef.current;
+    if (isReducedMotion) {
+      if (frameRef.current) gsap.set(frameRef.current, { y: 0 });
+      if (credentialsRef.current) gsap.set(credentialsRef.current, { opacity: 1 });
+      return;
+    }
 
-      if (isReducedMotion) {
-        if (credentialsRef.current) {
-          gsap.set(credentialsRef.current, { opacity: 1, y: targetY });
-        }
-        return;
-      }
+    const sequenceObj = currentFrameRef.current;
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.5,
-        },
-      });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.5,
+      },
+    });
 
+    // 1. Text Exits smoothly upward independently
+    if (overlayRef.current) {
       tl.to(
-        sequenceObj,
-        {
-          frame: HERO_FRAME_SOURCES.length - 1,
-          snap: "frame",
-          ease: "none",
-          duration: 1,
-          onUpdate: () => {
-            renderFrame(sequenceObj.frame);
-          },
-        },
+        overlayRef.current,
+        { y: -100, opacity: 0, ease: "power2.inOut", duration: 0.28 },
         0
       );
+    }
 
-      if (canvasRef.current) {
-        tl.fromTo(
-          canvasRef.current,
-          { opacity: 0.6 },
-          { opacity: 1.0, ease: "power1.out", duration: 0.2 },
-          0
-        );
+    // 2. Frame rises from bottom-peek and expands to fullscreen
+    // fromTo with immediateRender:true (GSAP default) applies the "from" state at tween creation,
+    // making initial positioning independent of whether useLayoutEffect's gsap.set has run yet.
+    if (frameRef.current) {
+      const ctaEl = overlayRef.current?.querySelector(".hero-ctas");
+      let safeY = window.innerHeight * 0.58;
+      if (ctaEl) {
+        const ctaBottom = ctaEl.getBoundingClientRect().bottom;
+        safeY = Math.max(ctaBottom + 28, window.innerHeight * 0.52);
       }
+      tl.fromTo(
+        frameRef.current,
+        {
+          y: safeY,
+          xPercent: -50,
+          width: "70vw",
+          borderRadius: "1.5rem",
+          border: "1px solid #DCE2E2",
+          boxShadow: "0 20px 50px -15px rgba(23,59,83,0.14)",
+        },
+        {
+          y: 0,
+          xPercent: -50,
+          width: "100vw",
+          borderRadius: "0px",
+          borderWidth: "0px",
+          boxShadow: "none",
+          ease: "power2.inOut",
+          duration: 0.58,
+        },
+        0.04
+      );
+    }
 
-      if (overlayRef.current) {
-        tl.to(
-          overlayRef.current,
-          {
-            opacity: 0,
-            y: -30,
-            ease: "power2.out",
-            duration: 0.2,
-          },
-          0.2
-        );
-      }
+    // 3. Image sequence scrubs through solar frames
+    tl.to(
+      sequenceObj,
+      {
+        frame: HERO_FRAME_SOURCES.length - 1,
+        snap: "frame",
+        ease: "none",
+        duration: 0.88,
+        onUpdate: () => { renderFrame(sequenceObj.frame); },
+      },
+      0.04
+    );
 
-      if (brandTextRef.current) {
-        tl.to(
-          brandTextRef.current,
-          {
-            opacity: 0,
-            y: 30,
-            ease: "power2.out",
-            duration: 0.2,
-          },
-          0.2
-        );
-      }
+    // 4. Vignette darkens for credentials contrast
+    if (vignetteRef.current) {
+      tl.fromTo(
+        vignetteRef.current,
+        { opacity: 0 },
+        { opacity: 1, ease: "power2.out", duration: 0.22 },
+        0.52
+      );
+    }
 
-      if (credentialsRef.current) {
-        tl.fromTo(
-          credentialsRef.current,
-          {
-            opacity: 0,
-            y: 0,
-          },
-          {
-            opacity: 1,
-            y: targetY,
-            ease: "power2.out",
-            duration: 0.35,
-          },
-          0.3
-        );
-      }
-    }, sectionRef);
+    // 5. Climax credentials fade in, then out
+    if (credentialsRef.current) {
+      tl.fromTo(
+        credentialsRef.current,
+        { opacity: 0, y: 28 },
+        { opacity: 1, y: 0, ease: "power2.out", duration: 0.24 },
+        0.6
+      );
+      tl.to(
+        credentialsRef.current,
+        { opacity: 0, y: -16, ease: "power1.in", duration: 0.08 },
+        0.92
+      );
+    }
 
-    return () => ctx.revert();
-  }, [imagesLoaded]);
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
+  }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="relative h-[320vh] bg-[#0C3046] text-white"
+      className="relative h-[280vh] bg-white text-[#173B53]"
     >
       {/* STICKY FULL-VIEWPORT STAGE */}
-      <div className="sticky top-0 h-screen h-[100svh] w-full overflow-hidden flex flex-col justify-between pt-20 sm:pt-24 pb-0">
-
-        {/* 1. Canvas Layer */}
-        <div className="absolute inset-0 z-0">
-          {!imagesLoaded && (
-            <Image
-              src={heroBg}
-              alt="Fivefold Renewable Solar Energy Installation"
-              fill
-              priority
-              placeholder="blur"
-              sizes="100vw"
-              className="object-cover object-center opacity-60"
-            />
-          )}
-
-          <canvas
-            ref={canvasRef}
-            className="w-full h-full object-cover block relative z-0 opacity-60"
+      <div
+        ref={stickyRef}
+        className="sticky top-0 h-screen h-[100svh] w-full overflow-hidden bg-white flex flex-col justify-start"
+      >
+        {/* ATMOSPHERIC CLOUD BACKGROUND LAYER (Opacity 20%) */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <Image
+            src={skyBg}
+            alt="Fivefold Atmosphere Sky Background"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-top opacity-20"
           />
         </div>
 
-        {/* 2. Main Hero Content Container */}
-        <Container className="relative z-10 my-auto py-3 sm:py-5 text-left md:text-center space-y-3 sm:space-y-5 max-h-full">
-          <div ref={overlayRef} className="space-y-4 sm:space-y-5">
-
-            {/* Editorial Headline & Paragraph Container */}
-            <div className="relative w-[85vw] max-w-[85vw] md:max-w-4xl md:w-auto mr-auto md:mx-auto p-0 md:p-6 md:rounded-3xl md:bg-[radial-gradient(ellipse_at_center,rgba(12,48,70,0.65)_0%,rgba(12,48,70,0.25)_50%,transparent_75%)] space-y-3 sm:space-y-4">
-              <h1 className="font-heading text-[clamp(2rem,5vw+0.25rem,5.5rem)] font-extrabold tracking-tight leading-[1.08] text-left md:text-center text-white">
-                <span className="block whitespace-normal sm:whitespace-nowrap">
-                  Powering Odisha&nbsp;with
-                </span>
-                <span className="block text-white">
-                  Smarter Solar Energy
-                </span>
-              </h1>
-
-              {/* Supporting Paragraph */}
-              <p className="font-sans text-[clamp(0.9rem,1.1vw+0.3rem,1.15rem)] text-slate-200 font-normal max-w-[85vw] md:max-w-xl text-left md:text-center md:mx-auto leading-relaxed">
-                Bankable rooftop and megawatt-scale solar engineering, DISCOM net metering, and 25-year performance assurance.
-              </p>
+        {/* 1. EDITORIAL HERO COPY CONTAINER (Controlled Max-Width & Generous Breathing Space) */}
+        <div
+          ref={overlayRef}
+          className="relative z-20 w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-2 sm:pb-3 px-4 sm:px-6 md:px-8 text-center shrink-0 pointer-events-auto"
+        >
+          <div className="max-w-3xl lg:max-w-4xl mx-auto space-y-2.5 sm:space-y-3.5">
+            
+            {/* Understated Eyebrow */}
+            <div className="hero-eyebrow">
+              <span className="font-mono text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-[#526673] block">
+                ENGINEERING A SUSTAINABLE ODISHA
+              </span>
             </div>
 
-            {/* CTA Button Group */}
-            <div className="hero-ctas pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-start md:justify-center gap-3">
+            {/* Main Hero Headline with deliberate line breaks */}
+            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.08] text-[#173B53]">
+              <span className="block whitespace-normal sm:whitespace-nowrap">
+                Powering Odisha with
+              </span>
+              <span className="block text-[#1684C7] mt-0.5">
+                Smarter Solar Energy
+              </span>
+            </h1>
+
+            {/* Supporting Copy */}
+            <p className="font-sans text-xs sm:text-sm md:text-[0.95rem] text-[#526673] font-normal max-w-md md:max-w-xl mx-auto leading-relaxed pt-0.5">
+              Bankable rooftop and megawatt-scale solar engineering, DISCOM net metering, and 25-year performance assurance.
+            </p>
+
+            {/* Primary CTA */}
+            <div className="hero-ctas pt-2 sm:pt-2.5 flex items-center justify-center">
               <Button
                 href="/smart-solar-calculator"
                 variant="primary"
-                className="w-full sm:w-auto bg-[#20435F] hover:bg-[#0C3046] text-white px-7 py-3 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+                className="bg-[#173B53] hover:bg-[#0f2738] text-white px-7 sm:px-8 py-3 sm:py-3.5 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 inline-flex items-center justify-center gap-2 group border-0"
               >
                 <span>Find My Solar Solution</span>
-                <ArrowRight className="h-4 w-4 text-[#00A9D6]" />
+                <ArrowRight className="h-4 w-4 text-[#1684C7] group-hover:translate-x-0.5 transition-transform" />
               </Button>
             </div>
-
-          </div>
-        </Container>
-
-        {/* 3. OVERSIZED BRAND TYPOGRAPHY */}
-        <div
-          ref={brandTextRef}
-          className="relative z-0 w-full overflow-hidden pointer-events-none select-none shrink-0 flex justify-center items-end opacity-20"
-        >
-          <div className="font-heading text-[19.5vw] font-extrabold text-center leading-none tracking-tighter text-[#00A9D6] uppercase whitespace-nowrap w-[110vw] max-w-none transform translate-y-[38%] shrink-0">
-            FIVEFOLD
           </div>
         </div>
 
-        {/* 4. REDESIGNED BOLD EDITORIAL NUMBERS LAYOUT */}
+        {/* 2. FRAMED SOLAR VISUAL STAGE (Rises from bottom, expands to fullscreen on scroll) */}
         <div
-          ref={credentialsRef}
-          className="absolute inset-x-0 bottom-6 sm:bottom-10 lg:bottom-12 z-20 flex flex-col justify-end items-center pointer-events-none px-5 sm:px-6 lg:px-8 opacity-0"
+          ref={frameWrapperRef}
+          className="absolute inset-0 z-10 overflow-hidden pointer-events-none"
         >
-          <div className="w-full max-w-7xl mx-auto pointer-events-auto space-y-6 sm:space-y-8">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-3 sm:gap-x-8 text-center items-start">
-              {/* Stat 1 */}
-              <div className="space-y-1 sm:space-y-1.5 flex flex-col items-center">
-                <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
-                  10+ Years
-                </div>
-                <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
-                  Engineering Experience
-                </div>
-              </div>
+          <div
+            ref={frameRef}
+            className="absolute bottom-0 left-1/2 h-[100svh] w-[88vw] sm:w-[82vw] lg:w-[72vw] xl:w-[70vw] overflow-hidden bg-[#173B53] pointer-events-auto"
+            style={{
+              borderRadius: "1.5rem",
+              border: "1px solid #DCE2E2",
+              boxShadow: "0 20px 50px -15px rgba(23,59,83,0.14)",
+              opacity: frameVisible ? 1 : 0,
+              transition: "opacity 850ms ease-out",
+              transitionDelay: frameVisible ? "300ms" : "0ms",
+            }}
+          >
+            {/* Deterministic Static First Frame - Always rendered synchronously with zero flash */}
+            <div className="absolute inset-0 w-full h-full bg-[#173B53]">
+              <Image
+                src={HERO_FIRST_FRAME}
+                alt="Fivefold Renewable Solar Energy Installation"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-center"
+              />
 
-              {/* Stat 2 */}
-              <div className="space-y-1 sm:space-y-1.5 flex flex-col items-center">
-                <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
-                  20+ MW
-                </div>
-                <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
-                  Installed Capacity
-                </div>
-              </div>
+              <canvas
+                ref={canvasRef}
+                className="w-full h-full object-cover block relative z-0"
+              />
+            </div>
 
-              {/* Stat 3 */}
-              <div className="space-y-1 sm:space-y-1.5 flex flex-col items-center">
-                <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
-                  30+ Projects
-                </div>
-                <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
-                  Projects Delivered
-                </div>
-              </div>
+            {/* Subtle Vignette Gradient for Fullscreen Climax Readability */}
+            <div
+              ref={vignetteRef}
+              className="absolute inset-0 bg-gradient-to-t from-[#173B53]/90 via-[#173B53]/25 to-transparent pointer-events-none opacity-0"
+            />
 
-              {/* Stat 4 */}
-              <div className="space-y-1 sm:space-y-1.5 flex flex-col items-center">
-                <div className="font-heading text-2.5xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
-                  800+ MW
+            {/* 3. CLIMAX CREDENTIALS (EDITORIAL NUMBERS) */}
+            <div
+              ref={credentialsRef}
+              className="absolute inset-x-0 bottom-6 sm:bottom-10 lg:bottom-12 z-20 flex flex-col justify-end items-center pointer-events-none px-5 sm:px-6 lg:px-8 opacity-0"
+            >
+              <div className="w-full max-w-7xl mx-auto pointer-events-auto space-y-5 sm:space-y-7">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-5 gap-x-3 sm:gap-x-8 text-center items-start">
+                  {/* Stat 1 */}
+                  <div className="space-y-1 flex flex-col items-center">
+                    <div className="font-heading text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                      10+ Years
+                    </div>
+                    <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
+                      Engineering Experience
+                    </div>
+                  </div>
+
+                  {/* Stat 2 */}
+                  <div className="space-y-1 flex flex-col items-center">
+                    <div className="font-heading text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                      20+ MW
+                    </div>
+                    <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
+                      Installed Capacity
+                    </div>
+                  </div>
+
+                  {/* Stat 3 */}
+                  <div className="space-y-1 flex flex-col items-center">
+                    <div className="font-heading text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                      30+ Projects
+                    </div>
+                    <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
+                      Projects Delivered
+                    </div>
+                  </div>
+
+                  {/* Stat 4 */}
+                  <div className="space-y-1 flex flex-col items-center">
+                    <div className="font-heading text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                      800+ MW
+                    </div>
+                    <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
+                      Design &amp; Consultation
+                    </div>
+                  </div>
                 </div>
-                <div className="font-sans text-xs sm:text-sm font-medium text-white/80 tracking-wide text-center">
-                  Design &amp; Consultation
+
+                {/* Bottom Row: 10+ States Center Anchor */}
+                <div className="text-center pt-3 sm:pt-4 space-y-1 flex flex-col items-center border-t border-white/15 max-w-md sm:max-w-lg mx-auto">
+                  <div className="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
+                    10+ States
+                  </div>
+                  <div className="font-sans text-xs sm:text-sm font-semibold text-white/80 tracking-wider uppercase text-center">
+                    Regional Engineering Footprint
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Bottom Row: 10+ States Center Anchor */}
-            <div className="text-center pt-3 sm:pt-5 space-y-1 sm:space-y-2 flex flex-col items-center border-t border-white/15 max-w-md sm:max-w-xl mx-auto">
-              <div className="font-heading text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-white tracking-tight leading-none whitespace-nowrap">
-                10+ States
-              </div>
-              <div className="font-sans text-xs sm:text-base font-semibold text-white/80 tracking-wider uppercase text-center">
-                Regional Engineering Footprint
-              </div>
-            </div>
           </div>
         </div>
 

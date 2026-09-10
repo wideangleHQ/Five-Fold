@@ -20,27 +20,27 @@ export const SolarCareTeaser: React.FC = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-white text-[#111615] border-b border-slate-200/80 font-sans">
+    <section className="py-16 sm:py-20 lg:py-0 lg:min-h-[100svh] flex flex-col justify-center bg-white text-[#173B53] font-sans">
       <Container>
 
         {/* Section Header */}
-        <div data-reveal="group" className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 sm:mb-12">
-          <div className="space-y-3 max-w-2xl">
+        <div data-reveal="group" className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6 sm:mb-8">
+          <div className="space-y-2 max-w-2xl">
             <span
               data-reveal="text"
-              className="text-xs font-mono font-semibold uppercase tracking-wider text-[#20435F] block"
+              className="text-xs font-mono font-semibold uppercase tracking-wider text-[#1684C7] block"
             >
               • SOLARCARE AMC PLANS
             </span>
             <h2
               data-reveal="heading"
-              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-tight"
+              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-tight"
             >
               Horizontal Plan Comparison
             </h2>
             <p
               data-reveal="paragraph"
-              className="font-sans text-slate-600 text-sm sm:text-base leading-relaxed"
+              className="font-sans text-[#526673] text-sm sm:text-base leading-relaxed"
             >
               Annual maintenance contracts engineered to protect asset performance, ensure safety compliance, and maximize generation yield over 25+ years.
             </p>
@@ -49,7 +49,7 @@ export const SolarCareTeaser: React.FC = () => {
           <div data-reveal="button" className="lg:text-right shrink-0">
             <Link
               href="/solarcare"
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#20435F] hover:text-[#0C3046] transition-colors group"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#173B53] hover:text-[#1684C7] transition-colors group"
             >
               <span>Explore comprehensive O&M specs</span>
               <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
@@ -58,8 +58,8 @@ export const SolarCareTeaser: React.FC = () => {
         </div>
 
         {/* Scope Selector Pills */}
-        <div data-reveal="cards-container" className="flex flex-wrap items-center gap-2 mb-8">
-          <span className="font-mono text-xs font-semibold text-slate-500 mr-2">Highlight Scope:</span>
+        <div data-reveal="cards-container" className="flex flex-wrap items-center gap-2 mb-6">
+          <span className="font-mono text-xs font-semibold text-[#526673] mr-2">Highlight Scope:</span>
           {[
             { id: "all", label: "All Plans" },
             { id: "basic", label: "Entry (1 Year)" },
@@ -74,8 +74,8 @@ export const SolarCareTeaser: React.FC = () => {
               className={cn(
                 "px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition-all focus:outline-none",
                 activeFilter === tab.id
-                  ? "bg-[#20435F] text-white shadow-sm"
-                  : "bg-[#F7F8F5] text-slate-600 border border-slate-200 hover:border-slate-300"
+                  ? "bg-[#173B53] text-white shadow-sm"
+                  : "bg-[#F6F3EC] text-[#526673] border border-[#DCE2E2] hover:border-[#173B53]/40"
               )}
             >
               {tab.label}
@@ -86,11 +86,11 @@ export const SolarCareTeaser: React.FC = () => {
         {/* Horizontal Connected Plans Comparison Track */}
         <div data-reveal="cards-container" className="relative">
           {/* Mobile scroll indicator note */}
-          <p className="text-[11px] font-mono text-slate-600 mb-3 block lg:hidden">
+          <p className="text-[11px] font-mono text-[#526673] mb-3 block lg:hidden">
             ← Swipe horizontally to compare plans →
           </p>
 
-          <div className="flex lg:grid lg:grid-cols-4 gap-4 lg:gap-0 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4 lg:pb-0 rounded-2xl lg:border lg:border-slate-200/90 lg:bg-[#F7F8F5] lg:divide-x lg:divide-slate-200/90">
+          <div className="flex lg:grid lg:grid-cols-4 gap-4 lg:gap-0 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4 lg:pb-0 rounded-2xl lg:border lg:border-[#DCE2E2] lg:bg-[#F6F3EC] lg:divide-x lg:divide-[#DCE2E2]">
             {SOLARCARE_PLANS.map((plan) => {
               const isSelected = plan.id === selectedPlanId;
               return (
@@ -99,23 +99,23 @@ export const SolarCareTeaser: React.FC = () => {
                   data-reveal="card"
                   onClick={() => setSelectedPlanId(plan.id)}
                   className={cn(
-                    "w-[85vw] max-w-[320px] sm:w-[300px] lg:w-full shrink-0 snap-center transition-all duration-300 flex flex-col justify-between p-6 sm:p-7 relative cursor-pointer group",
-                    "rounded-2xl lg:rounded-none border border-slate-200/90 lg:border-0",
+                    "w-[85vw] max-w-[320px] sm:w-[300px] lg:w-full shrink-0 snap-center transition-all duration-300 flex flex-col justify-between p-5 sm:p-6 lg:p-5 xl:p-6 relative cursor-pointer group",
+                    "rounded-2xl lg:rounded-none border border-[#DCE2E2] lg:border-0",
                     isSelected
-                      ? "bg-white shadow-lg lg:shadow-none lg:bg-white z-10 ring-2 ring-[#20435F] lg:ring-0"
-                      : "bg-[#F7F8F5] hover:bg-white/80"
+                      ? "bg-white shadow-lg lg:shadow-none lg:bg-white z-10 ring-2 ring-[#173B53] lg:ring-0"
+                      : "bg-[#F6F3EC] hover:bg-white/80"
                   )}
                 >
                   {/* Subtle Top Accent for Active Plan on Desktop */}
                   {isSelected && (
-                    <div className="hidden lg:block absolute top-0 left-0 right-0 h-1 bg-[#20435F]" />
+                    <div className="hidden lg:block absolute top-0 left-0 right-0 h-1 bg-[#173B53]" />
                   )}
 
-                  <div className="space-y-5">
+                  <div className="space-y-4">
                     {/* Header: Name, Duration, Recommendation */}
-                    <div className="space-y-1.5 border-b border-slate-200/70 pb-4">
+                    <div className="space-y-1 border-b border-[#DCE2E2] pb-3.5">
                       <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-heading text-xl font-extrabold text-[#111615] tracking-tight">
+                        <h3 className="font-heading text-lg xl:text-xl font-extrabold text-[#173B53] tracking-tight">
                           {plan.name}
                         </h3>
                         {plan.badge && (
@@ -123,36 +123,36 @@ export const SolarCareTeaser: React.FC = () => {
                             className={cn(
                               "text-[10px] font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded",
                               isSelected
-                                ? "bg-[#20435F] text-white"
-                                : "bg-slate-200/80 text-slate-700"
+                                ? "bg-[#173B53] text-white"
+                                : "bg-[#DCE2E2] text-[#173B53]"
                             )}
                           >
                             {plan.badge}
                           </span>
                         )}
                       </div>
-                      <p className="font-mono text-xs font-bold text-[#20435F]">
+                      <p className="font-mono text-xs font-bold text-[#1684C7]">
                         {plan.duration}
                       </p>
-                      <p className="font-sans text-[11px] text-slate-500 font-medium">
+                      <p className="font-sans text-[11px] text-[#526673] font-medium">
                         {plan.recommendedFor}
                       </p>
                     </div>
 
                     {/* Short Core Description */}
-                    <p className="font-sans text-xs text-slate-600 leading-relaxed min-h-[42px]">
+                    <p className="font-sans text-xs text-[#526673] leading-relaxed min-h-[36px]">
                       {plan.description}
                     </p>
 
                     {/* Key Included Services */}
-                    <div className="space-y-2.5 pt-1">
-                      <p className="font-mono text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                    <div className="space-y-2 pt-0.5">
+                      <p className="font-mono text-[10px] uppercase font-bold text-[#526673]/60 tracking-wider">
                         Included Services
                       </p>
-                      <ul className="space-y-2">
-                        {plan.features.slice(0, 5).map((feat, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-xs text-slate-700 leading-snug">
-                            <Check className="h-3.5 w-3.5 text-[#20435F] shrink-0 mt-0.5" />
+                      <ul className="space-y-1.5">
+                        {plan.features.slice(0, 4).map((feat, idx) => (
+                          <li key={idx} className="flex items-start gap-2 text-xs text-[#173B53] leading-snug">
+                            <Check className="h-3.5 w-3.5 text-[#1684C7] shrink-0 mt-0.5" />
                             <span>{feat}</span>
                           </li>
                         ))}
@@ -161,14 +161,14 @@ export const SolarCareTeaser: React.FC = () => {
                   </div>
 
                   {/* CTA / Action */}
-                  <div className="pt-6 mt-6 border-t border-slate-200/70">
+                  <div className="pt-4 mt-4 border-t border-[#DCE2E2]">
                     <Link
                       href={`/contact?plan=${plan.id}`}
                       className={cn(
-                        "w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-sans font-semibold transition-all group/btn",
+                        "w-full inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-sans font-semibold transition-all group/btn",
                         isSelected
-                          ? "bg-[#20435F] hover:bg-[#0C3046] text-white shadow-sm"
-                          : "border border-slate-300 hover:border-[#20435F] text-[#111615] hover:text-[#20435F] bg-white"
+                          ? "bg-[#173B53] hover:bg-[#0f2738] text-white shadow-sm"
+                          : "border border-[#DCE2E2] hover:border-[#173B53] text-[#173B53] hover:text-[#173B53] bg-white"
                       )}
                     >
                       <span>Enquire for {plan.name}</span>

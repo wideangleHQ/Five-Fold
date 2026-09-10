@@ -51,22 +51,25 @@ export const ProjectsTeaser: React.FC = () => {
   };
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 bg-[#F7F8F5] text-[#111615] font-sans border-b border-slate-200">
+    <section className="py-16 sm:py-20 lg:py-0 lg:min-h-[100svh] flex flex-col justify-center bg-white text-[#173B53] font-sans">
       <Container>
 
         {/* Header */}
-        <div data-reveal="text" className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10 sm:mb-12">
-          <div className="space-y-2">
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#111615] tracking-tight leading-[1.1]">
-              Real Projects.<br className="hidden sm:block" /> Measurable Impact.
+        <div data-reveal="text" className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+          <div className="space-y-1.5">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block">
+              • PORTFOLIO
+            </span>
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.1]">
+              Real Projects. Measurable Impact.
             </h2>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <button
               type="button"
               onClick={scrollLeft}
               aria-label="Previous"
-              className="w-9 h-9 rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-[#20435F] hover:border-[#20435F] hover:text-white flex items-center justify-center transition-all"
+              className="w-9 h-9 rounded-full border border-[#DCE2E2] bg-white text-[#526673] hover:bg-[#173B53] hover:border-[#173B53] hover:text-white flex items-center justify-center transition-all shadow-sm"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
@@ -74,7 +77,7 @@ export const ProjectsTeaser: React.FC = () => {
               type="button"
               onClick={scrollRight}
               aria-label="Next"
-              className="w-9 h-9 rounded-full border border-slate-300 bg-white text-slate-600 hover:bg-[#20435F] hover:border-[#20435F] hover:text-white flex items-center justify-center transition-all"
+              className="w-9 h-9 rounded-full border border-[#DCE2E2] bg-white text-[#526673] hover:bg-[#173B53] hover:border-[#173B53] hover:text-white flex items-center justify-center transition-all shadow-sm"
             >
               <ArrowRight className="h-4 w-4" />
             </button>
@@ -82,7 +85,7 @@ export const ProjectsTeaser: React.FC = () => {
         </div>
 
         {/* Category filter */}
-        <div className="flex flex-wrap items-center gap-2 mb-8">
+        <div className="flex flex-wrap items-center gap-2 mb-6">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
@@ -91,8 +94,8 @@ export const ProjectsTeaser: React.FC = () => {
               className={cn(
                 "px-3.5 py-1.5 text-xs font-sans font-semibold rounded-full border transition-all focus:outline-none",
                 activeCategory === cat
-                  ? "bg-[#20435F] text-white border-[#20435F]"
-                  : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                  ? "bg-[#173B53] text-white border-[#173B53] shadow-sm"
+                  : "bg-white text-[#526673] border-[#DCE2E2] hover:border-[#173B53]/40"
               )}
             >
               {cat}
@@ -106,7 +109,7 @@ export const ProjectsTeaser: React.FC = () => {
           data-reveal="cards-container"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="flex gap-4 sm:gap-5 overflow-x-auto pb-6 scrollbar-none snap-x snap-mandatory"
+          className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 scrollbar-none snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {publishedProjects.map((project, idx) => {
@@ -118,25 +121,25 @@ export const ProjectsTeaser: React.FC = () => {
                 className="w-[78%] sm:w-[42%] lg:w-[29%] xl:w-[23%] flex-shrink-0 snap-start group"
               >
                 {/* Large image - 80% of visual weight */}
-                <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-slate-900">
+                <div className="relative w-full aspect-[3/4] max-h-[46vh] xl:max-h-[50vh] rounded-xl overflow-hidden bg-[#173B53] border border-[#DCE2E2]">
                   <Image
                     src={projectImg}
                     alt={project.name}
                     fill
                     sizes="(max-width: 640px) 80vw, (max-width: 1024px) 44vw, 28vw"
-                    className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700"
+                    className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 opacity-90"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/80 via-[#0C3046]/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#173B53]/90 via-[#173B53]/20 to-transparent" />
 
                   {/* Info overlay at image bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 space-y-1">
-                    <p className="font-sans text-[10px] font-semibold uppercase tracking-wider text-white/60">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 space-y-1">
+                    <p className="font-sans text-[10px] font-semibold uppercase tracking-wider text-white/70">
                       {project.category} &bull; {project.location}
                     </p>
                     <h3 className="font-heading text-base sm:text-lg font-bold text-white tracking-tight leading-snug">
                       {project.name}
                     </h3>
-                    <p className="font-mono text-sm font-bold text-[#00A9D6]">
+                    <p className="font-mono text-sm font-bold text-[#1684C7]">
                       {project.capacity}
                     </p>
                   </div>
@@ -147,10 +150,10 @@ export const ProjectsTeaser: React.FC = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="pt-8 flex justify-center sm:justify-start">
+        <div className="pt-5 flex justify-center sm:justify-start">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#20435F] hover:text-[#0C3046] transition-colors group"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#173B53] hover:text-[#1684C7] transition-colors group"
           >
             <span>View all projects</span>
             <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />

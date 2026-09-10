@@ -4,33 +4,39 @@
 
 @layer base {
   :root {
-    --fivefold-navy: #20435F;
-    --fivefold-dark-navy: #0C3046;
-    --fivefold-cyan: #00A9D6;
+    --fivefold-navy: #173B53;
+    --fivefold-dark-navy: #0f2738;
+    --fivefold-cyan: #1684C7;
+    --fivefold-accent: #1684C7;
     
-    --fivefold-green: #20435F;
-    --fivefold-deep-green: #0C3046;
-    --fivefold-solar-yellow: #00A9D6;
-    --fivefold-off-white: #F7F8F5;
+    --fivefold-green: #173B53;
+    --fivefold-deep-green: #0f2738;
+    --fivefold-solar-yellow: #1684C7;
+    --fivefold-off-white: #F6F3EC;
+    --fivefold-light-bg: #F6F3EC;
     --fivefold-white: #FFFFFF;
-    --fivefold-charcoal: #111615;
-    --fivefold-hero-gray: #F2F2F2;
-    --fivefold-green-hover: #0C3046;
+    --fivefold-charcoal: #173B53;
+    --fivefold-secondary-text: #526673;
+    --fivefold-border: #DCE2E2;
+    --fivefold-hero-gray: #F6F3EC;
+    --fivefold-green-hover: #0f2738;
     
-    --brand-green: #20435F;
-    --brand-green-dark: #0C3046;
-    --brand-navy: #20435F;
-    --brand-navy-dark: #0C3046;
-    --brand-cyan: #00A9D6;
-    --brand-off-white: #F7F8F5;
-    --brand-charcoal: #111615;
-    --brand-amber: #00A9D6;
+    --brand-green: #173B53;
+    --brand-green-dark: #0f2738;
+    --brand-navy: #173B53;
+    --brand-navy-dark: #0f2738;
+    --brand-cyan: #1684C7;
+    --brand-off-white: #F6F3EC;
+    --brand-charcoal: #173B53;
+    --brand-amber: #1684C7;
+    --brand-secondary-text: #526673;
+    --brand-border: #DCE2E2;
   }
 
   html {
     scroll-behavior: smooth;
-    color: #111615;
-    background-color: #FFFFFF;
+    color: #173B53;
+    background-color: #F6F3EC;
     font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
     -webkit-user-select: text;
     -moz-user-select: text;
@@ -48,6 +54,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-manrope), system-ui, -apple-system, sans-serif;
     letter-spacing: -0.02em;
+    color: #173B53;
   }
 }
 
@@ -56,23 +63,23 @@
   width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #0C3046;
+  background: #F6F3EC;
 }
 ::-webkit-scrollbar-thumb {
-  background: #20435F;
+  background: #DCE2E2;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00A9D6;
+  background: #173B53;
 }
 
 /* Custom Global Text Selection */
 ::selection {
-  background-color: #20435F;
+  background-color: #173B53;
   color: #FFFFFF;
 }
 ::-moz-selection {
-  background-color: #20435F;
+  background-color: #173B53;
   color: #FFFFFF;
 }
 

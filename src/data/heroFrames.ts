@@ -69,4 +69,5 @@ const FRAMES = [
 ];
 
 // Resolved static Next.js media URLs for all 60 frames in src/assets
+export const HERO_FIRST_FRAME = frame000;
 export const HERO_FRAME_SOURCES: string[] = FRAMES.map((f) => f.src);

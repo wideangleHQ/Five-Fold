@@ -55,34 +55,34 @@ const SCHEMES: SchemeData[] = [
 
 function DesktopCard({ scheme }: { scheme: SchemeData }) {
   return (
-    <div className="relative rounded-2xl overflow-hidden bg-[#0C3046] w-[80vw] h-[85dvh] shrink-0 group flex flex-col justify-end">
+    <div className="relative rounded-2xl overflow-hidden bg-[#173B53] w-[75vw] xl:w-[72vw] h-[78dvh] max-h-[720px] shrink-0 group flex flex-col justify-end border border-white/10">
       <Image
         src={scheme.image}
         alt={scheme.name}
         fill
         priority
-        sizes="80vw"
-        className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700"
+        sizes="75vw"
+        className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 opacity-90"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/75 via-[#0C3046]/10 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#173B53]/90 via-[#173B53]/30 to-transparent pointer-events-none" />
 
-      <div className="relative z-10 p-10 xl:p-12 space-y-3">
-        <span className="font-mono text-[11px] text-white/40 font-medium tracking-[0.2em] uppercase block">
+      <div className="relative z-10 p-8 xl:p-10 space-y-2.5">
+        <span className="font-mono text-[11px] text-[#1684C7] font-bold tracking-[0.2em] uppercase block">
           {scheme.num}
         </span>
-        <h3 className="font-heading text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white tracking-tight leading-[1.05]">
+        <h3 className="font-heading text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-[1.05]">
           {scheme.name}
         </h3>
-        <p className="font-sans text-sm sm:text-base text-white/65 leading-relaxed max-w-sm">
+        <p className="font-sans text-sm sm:text-base text-white/80 leading-relaxed max-w-sm">
           {scheme.descriptor}
         </p>
-        <div className="pt-3">
+        <div className="pt-2">
           <Link
             href={scheme.ctaHref}
-            className="inline-flex items-center gap-2 text-sm font-sans font-semibold text-white/80 hover:text-white transition-colors group/link"
+            className="inline-flex items-center gap-2 text-sm font-sans font-semibold text-white hover:text-[#1684C7] transition-colors group/link"
           >
             <span>Explore scheme</span>
-            <ArrowRight className="h-4 w-4 group-hover/link:translate-x-0.5 transition-transform" />
+            <ArrowRight className="h-4 w-4 text-[#1684C7] group-hover/link:translate-x-0.5 transition-transform" />
           </Link>
         </div>
       </div>
@@ -92,32 +92,32 @@ function DesktopCard({ scheme }: { scheme: SchemeData }) {
 
 function MobileCard({ scheme }: { scheme: SchemeData }) {
   return (
-    <div className="relative rounded-xl overflow-hidden bg-[#0C3046] w-full aspect-[3/4] flex flex-col justify-end">
+    <div className="relative rounded-xl overflow-hidden bg-[#173B53] w-full aspect-[3/4] flex flex-col justify-end">
       <Image
         src={scheme.image}
         alt={scheme.name}
         fill
         sizes="85vw"
-        className="object-cover object-center"
+        className="object-cover object-center opacity-90"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0C3046]/80 via-[#0C3046]/10 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#173B53]/90 via-[#173B53]/30 to-transparent pointer-events-none" />
       <div className="relative z-10 p-6 space-y-2">
-        <span className="font-mono text-[10px] text-white/40 font-medium tracking-[0.2em] uppercase block">
+        <span className="font-mono text-[10px] text-[#1684C7] font-bold tracking-[0.2em] uppercase block">
           {scheme.num}
         </span>
         <h3 className="font-heading text-2xl font-extrabold text-white tracking-tight leading-snug">
           {scheme.name}
         </h3>
-        <p className="font-sans text-xs text-white/65 leading-relaxed">
+        <p className="font-sans text-xs text-white/80 leading-relaxed">
           {scheme.descriptor}
         </p>
         <div className="pt-1">
           <Link
             href={scheme.ctaHref}
-            className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-white/80 hover:text-white transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-white hover:text-[#1684C7] transition-colors"
           >
             <span>Explore scheme</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-3.5 w-3.5 text-[#1684C7]" />
           </Link>
         </div>
       </div>
@@ -165,36 +165,41 @@ export const GovernmentScheme: React.FC = () => {
   }, [prefersReducedMotion]);
 
   return (
-    <section className="bg-[#F7F8F5] font-sans border-b border-slate-200/80">
+    <section className="bg-white font-sans">
 
       {/* Section header - normal scroll, above the pin */}
-      <Container className="pt-20 sm:pt-28 lg:pt-32 pb-14 sm:pb-16 lg:pb-20">
-        <div data-reveal="text" className="space-y-6 max-w-2xl">
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-[#111615] tracking-tight leading-[1.05]">
+      <Container className="pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-14 lg:pb-16">
+        <div data-reveal="text" className="space-y-4 max-w-2xl">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block">
+            • FINANCIAL SUPPORT
+          </span>
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.1]">
             Which scheme applies to your project?
           </h2>
-          <p className="font-sans text-slate-500 text-sm sm:text-base leading-relaxed max-w-lg">
+          <p className="font-sans text-[#526673] text-sm sm:text-base leading-relaxed max-w-lg">
             Government support and financial incentives designed to make solar accessible.
           </p>
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            variant="primary"
-            className="bg-[#20435F] hover:bg-[#0C3046] text-white px-6 py-3 text-sm font-sans font-semibold rounded-lg inline-flex items-center gap-2 transition-all group"
-          >
-            <span>Check Eligibility</span>
-            <ArrowRight className="h-4 w-4 text-[#00A9D6] group-hover:translate-x-0.5 transition-transform" />
-          </Button>
+          <div className="pt-2">
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              variant="primary"
+              className="bg-[#173B53] hover:bg-[#0f2738] text-white px-6 py-3 text-sm font-sans font-semibold rounded-lg inline-flex items-center gap-2 transition-all group shadow-md"
+            >
+              <span>Check Eligibility</span>
+              <ArrowRight className="h-4 w-4 text-[#1684C7] group-hover:translate-x-0.5 transition-transform" />
+            </Button>
+          </div>
         </div>
       </Container>
 
       {/* Desktop: GSAP horizontal pan */}
       <div
         ref={wrapRef}
-        className="relative hidden md:block bg-[#0C3046] overflow-hidden"
+        className="relative hidden md:block bg-[#173B53] overflow-hidden"
       >
         <div
           ref={trackRef}
-          className="flex items-center h-[100dvh] pl-[4vw] gap-5"
+          className="flex items-center h-[100dvh] pl-[4vw] gap-6"
           style={{ width: "max-content" }}
         >
           {SCHEMES.map((scheme) => (

@@ -83,9 +83,9 @@ export const Header: React.FC = () => {
         className={cn(
           "fixed top-0 left-0 right-0 z-40 transition-transform duration-300 ease-in-out font-sans motion-reduce:transition-none",
           isHeaderVisible ? "translate-y-0" : "-translate-y-full",
-          isLightBackground
-            ? "bg-[#F7F8F5]/95 backdrop-blur-md shadow-xs border-b border-slate-200/80 py-3 text-[#111615]"
-            : "bg-transparent py-5 text-white"
+          isScrolled
+            ? "bg-[#F6F3EC]/95 backdrop-blur-md shadow-xs border-b border-[#DCE2E2] py-3 text-[#173B53]"
+            : "bg-transparent py-4 sm:py-5 text-[#173B53]"
         )}
       >
         <Container className="flex items-center justify-between">
@@ -95,10 +95,7 @@ export const Header: React.FC = () => {
               src={logoImg}
               alt="Fivefold Renewable Logo"
               priority
-              className={cn(
-                "h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-200 group-hover:opacity-90",
-                isLightBackground ? "brightness-0" : ""
-              )}
+              className="h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-200 group-hover:opacity-90 brightness-0"
             />
           </Link>
 
@@ -117,12 +114,10 @@ export const Header: React.FC = () => {
                     <Link
                       href={item.href}
                       className={cn(
-                        "px-2 py-1 text-xs xl:text-sm font-medium transition-colors inline-flex items-center gap-1 font-sans",
+                        "px-2.5 py-1 text-xs xl:text-sm font-medium transition-colors inline-flex items-center gap-1 font-sans",
                         isSubActive
-                          ? "text-[#20435F] font-semibold"
-                          : isLightBackground
-                          ? "text-[#111615] hover:text-[#00A9D6]"
-                          : "text-white hover:text-[#00A9D6]"
+                          ? "text-[#173B53] font-semibold"
+                          : "text-[#173B53]/90 hover:text-[#1684C7]"
                       )}
                     >
                       <span>{item.name}</span>
@@ -131,7 +126,7 @@ export const Header: React.FC = () => {
 
                     {/* Submenu Dropdown */}
                     {isSolutionsOpen && (
-                      <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                      <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-[#DCE2E2] py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                         {item.submenu.map((sub) => (
                           <Link
                             key={sub.href}
@@ -139,8 +134,8 @@ export const Header: React.FC = () => {
                             className={cn(
                               "block px-4 py-2 text-xs xl:text-sm font-medium transition-colors font-sans",
                               pathname === sub.href
-                                ? "text-[#20435F] font-semibold bg-slate-50"
-                                : "text-slate-700 hover:text-[#00A9D6] hover:bg-slate-50"
+                                ? "text-[#173B53] font-semibold bg-[#F6F3EC]"
+                                : "text-[#526673] hover:text-[#1684C7] hover:bg-[#F6F3EC]"
                             )}
                           >
                             {sub.name}
@@ -158,12 +153,10 @@ export const Header: React.FC = () => {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "px-2 py-1 text-xs xl:text-sm font-medium transition-colors font-sans",
+                    "px-2.5 py-1 text-xs xl:text-sm font-medium transition-colors font-sans",
                     isActive
-                      ? "text-[#20435F] font-semibold"
-                      : isLightBackground
-                      ? "text-[#111615] hover:text-[#00A9D6]"
-                      : "text-white hover:text-[#00A9D6]"
+                      ? "text-[#173B53] font-semibold"
+                      : "text-[#173B53]/90 hover:text-[#1684C7]"
                   )}
                 >
                   {item.name}
@@ -176,12 +169,7 @@ export const Header: React.FC = () => {
           <div className="hidden lg:flex items-center gap-3">
             <button
               onClick={() => setIsSchemeModalOpen(true)}
-              className={cn(
-                "px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all duration-200 font-sans",
-                isLightBackground
-                  ? "border-slate-300 bg-white text-[#111615] hover:bg-[#20435F] hover:border-[#20435F] hover:text-white"
-                  : "border-white/40 bg-white/5 text-white hover:bg-[#20435F] hover:border-[#20435F] hover:text-white"
-              )}
+              className="px-3.5 py-1.5 text-xs font-semibold rounded-lg border border-[#DCE2E2] bg-white text-[#173B53] hover:bg-[#173B53] hover:border-[#173B53] hover:text-white transition-all duration-200 font-sans"
             >
               Check Schemes
             </button>
@@ -189,7 +177,7 @@ export const Header: React.FC = () => {
               href="/contact"
               variant="primary"
               size="sm"
-              className="bg-[#20435F] hover:bg-[#0C3046] text-white py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out border-0"
+              className="bg-[#173B53] hover:bg-[#0f2738] text-white py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out border-0"
             >
               Get a Free Consultation
             </Button>
@@ -199,12 +187,7 @@ export const Header: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={cn(
-              "lg:hidden p-2 rounded-md transition-colors focus:outline-none",
-              isLightBackground
-                ? "text-[#111615] hover:bg-slate-100"
-                : "text-white hover:bg-white/10"
-            )}
+            className="lg:hidden p-2 rounded-md transition-colors focus:outline-none text-[#173B53] hover:bg-[#DCE2E2]/60"
             aria-label="Toggle Navigation Menu"
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

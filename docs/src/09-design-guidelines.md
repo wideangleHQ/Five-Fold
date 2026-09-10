@@ -254,26 +254,50 @@ Never mix decorative icon styles.
 
 ---
 
-# 11 — COLOUR
+# 11 — COLOUR SYSTEM
 
-Use the established Fivefold brand palette.
+Use the established Fivefold brand palette:
 
-Preferred foundation:
+### New Fivefold Palette
 
-- White
-- Off-white
-- Black
-- Charcoal
-- Existing brand green
-- Existing brand red where appropriate
+- **PRIMARY DARK**: `#173B53` (primary typography, navigation, primary buttons, important UI, dark sections, footer, strong brand moments)
+- **ACCENT BLUE**: `#1684C7` (controlled emphasis, subtle interactive highlights)
+- **SECONDARY TEXT**: `#526673` (supporting copy, captions, subtitles, body text)
+- **LIGHT BACKGROUND**: `#F6F3EC` (primary page canvas, dominates overall visual field)
+- **SURFACE WHITE**: `#FFFFFF` (clean cards, framed visual containers, modals)
+- **BORDER / SUBTLE NEUTRAL**: `#DCE2E2` (crisp structural borders, subtle framing)
 
-Use accent colours sparingly.
+### Colour Principle
 
-Avoid introducing unrelated neon colours.
+Use approximately:
+**70% light surfaces (`#F6F3EC` / `#FFFFFF`) + 30% dark brand presence (`#173B53`)**
 
-Avoid excessive gradients.
+The dark navy remains Fivefold's primary brand colour.
+The light palette dominates the overall page canvas.
+The accent blue must remain controlled and used sparingly.
+DO NOT use multiple competing blues.
+DO NOT introduce unrelated colours, neon, glow, or decorative gradients.
 
-Solid colour fields should be preferred.
+---
+
+# 11B — HERO SCROLL CHOREOGRAPHY
+
+The Hero operates on a **TEXT → FRAMED IMAGE → FULLSCREEN IMAGE** scroll interaction:
+
+1. **Initial State (Outside)**:
+   - Light canvas (`#F6F3EC`) with clean navigation and dark typography (`#173B53`).
+   - Main Hero Copy ("Powering Odisha with Smarter Solar Energy").
+   - Supporting copy and primary CTA ("Find My Solar Solution →").
+   - Large framed solar visual below copy with restrained borders (`#DCE2E2`) and generous margins.
+2. **Scroll Phase 1 (Text Exits)**:
+   - Headline, supporting copy, and CTA smoothly move upward and leave the primary field.
+3. **Scroll Phase 2 (Image Expands)**:
+   - Framed solar visual smoothly expands: Small/Framed → Large → Edge-to-Edge.
+   - Frame and rounded corners smoothly dissolve.
+4. **Scroll Phase 3 (Fullscreen Visual Climax)**:
+   - Solar installation occupies the full viewport as the camera approaches/enters the scene.
+5. **Seamless Next-Section Flow**:
+   - The full-screen state flows directly into the next homepage section without jarring cuts or flashes.
 
 ---
 

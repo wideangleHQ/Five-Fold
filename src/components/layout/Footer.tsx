@@ -25,7 +25,7 @@ export const Footer: React.FC = () => {
     <footer className="bg-white pt-3 sm:pt-4 pb-0 mb-0 font-sans relative z-10">
       {/* 1. SUBSTANTIALLY WIDER FOOTER CONTAINER WITH FLUSH BOTTOM EDGE */}
       <div className="w-full max-w-[1840px] mx-auto px-1 sm:px-2 pb-0 mb-0">
-        <div className="relative rounded-t-[2.5rem] sm:rounded-t-[3.5rem] rounded-b-none bg-[#0C3046] text-white overflow-hidden shadow-2xl border-t border-l border-r border-sky-900/60 pt-12 sm:pt-16 pb-0 mb-0">
+        <div className="relative rounded-t-[2.5rem] sm:rounded-t-[3.5rem] rounded-b-none bg-[#173B53] text-white overflow-hidden shadow-2xl border-t border-l border-r border-[#173B53]/60 pt-12 sm:pt-16 pb-0 mb-0">
           
           {/* Background Sky Image - 90% Visible at Top, Gradual Vertical Fade Down */}
           <div className="absolute inset-0 z-0">
@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
               className="object-cover object-top opacity-90"
             />
             {/* Seamless Gradient Overlay: Transparent at Top (~90% Visibility), Fading progressively down to Solid Dark Navy */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0C3046]/80 via-40% to-[#0C3046] z-0" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#173B53]/80 via-40% to-[#173B53] z-0" />
           </div>
 
           {/* Usable Wide Content Area */}
