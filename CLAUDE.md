@@ -12,6 +12,21 @@ For all frontend, UI, UX, styling, layout, animation, and responsive-design work
 - `web-design-...` — web design methodology and visual implementation guidance.
 - `image-to-code` — image-first website design and implementation workflow.
 
+### Fivefold Color Palette
+- **Primary Dark**: `#173B53` (primary typography, navigation, primary buttons, dark sections, footer)
+- **Accent Blue**: `#1684C7` (controlled emphasis, subtle highlights, active states)
+- **Secondary Text**: `#526673` (supporting copy, captions, body text)
+- **Light Background**: `#F6F3EC` (primary page canvas, ~70% light surface dominance)
+- **Surface White**: `#FFFFFF` (clean cards, framed containers, modals)
+- **Border / Subtle Neutral**: `#DCE2E2` (crisp structural borders, subtle framing)
+
+### Hero Scroll Architecture
+- **Text → Framed Image → Fullscreen Image**:
+  - Initial: Light `#F6F3EC` canvas, editorial copy & CTA, large framed solar visual below copy.
+  - Phase 1: Copy moves smoothly upward out of primary view.
+  - Phase 2: Solar image container progressively expands from framed to edge-to-edge.
+  - Phase 3: Fullscreen solar installation climax, seamlessly transitioning to subsequent sections.
+
 ### Image-to-Code Workflow
 
 For visually important website/design tasks where image generation is available:

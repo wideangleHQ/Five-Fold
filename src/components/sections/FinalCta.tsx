@@ -9,9 +9,9 @@ import heroBg from "@/assets/Images/hero section background.png";
 
 export const FinalCta: React.FC = () => {
   return (
-    <section className="bg-white py-3 sm:py-4 font-sans relative z-10">
-      <div className="w-full max-w-[1840px] mx-auto px-1 sm:px-2">
-        <div className="relative rounded-[2.5rem] sm:rounded-[3.5rem] bg-[#0C3046] text-white overflow-hidden shadow-2xl border border-sky-900/60 py-20 sm:py-28 lg:py-32">
+    <section className="bg-white py-6 sm:py-8 lg:py-4 lg:min-h-[85svh] flex flex-col justify-center font-sans relative z-10">
+      <div className="w-full max-w-[1840px] mx-auto px-2 sm:px-4">
+        <div className="relative rounded-[2.5rem] sm:rounded-[3.5rem] bg-[#173B53] text-white overflow-hidden shadow-2xl border border-[#173B53] py-16 sm:py-20 lg:py-24">
 
           {/* Background image */}
           <div className="absolute inset-0 z-0">
@@ -22,23 +22,23 @@ export const FinalCta: React.FC = () => {
               sizes="100vw"
               className="object-cover object-center opacity-20"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0C3046]/40 to-[#0C3046]/90" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#173B53]/40 to-[#173B53]/90" />
           </div>
 
-          <Container className="relative z-10 text-center max-w-3xl mx-auto space-y-8">
-            <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.05]">
+          <Container className="relative z-10 text-center max-w-3xl mx-auto space-y-6 sm:space-y-8">
+            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.05]">
               Let&apos;s build your solar future.
             </h2>
 
-            <p className="font-sans text-slate-300 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-relaxed">
+            <p className="font-sans text-slate-200 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-relaxed">
               Talk to our solar engineers about your project.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
               <Button
                 href="/contact"
                 variant="primary"
-                className="w-full sm:w-auto bg-white hover:bg-slate-100 text-[#0C3046] px-8 py-4 text-sm font-sans font-semibold rounded-lg shadow-md transition-all"
+                className="w-full sm:w-auto bg-white hover:bg-slate-100 text-[#173B53] px-8 py-4 text-sm font-sans font-semibold rounded-lg shadow-md transition-all"
               >
                 <span>Get a Free Consultation</span>
               </Button>
@@ -47,7 +47,7 @@ export const FinalCta: React.FC = () => {
                 href="tel:+917008101078"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg border border-white/30 hover:border-white/60 text-white font-sans text-sm font-semibold transition-all"
               >
-                <PhoneCall className="h-4 w-4 text-[#00A9D6]" />
+                <PhoneCall className="h-4 w-4 text-[#1684C7]" />
                 <span>+91 70081 01078</span>
               </a>
             </div>
