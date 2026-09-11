@@ -1,0 +1,39 @@
+// Mirrors the existing Supabase table defined in
+// server/supabase/migrations/001_create_leads_table.sql — this schema
+// describes that table, it does not replace it.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Lead {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  name  String
+  phone String
+  email String?
+  city  String?
+  state String? @default("Odisha")
+
+  leadType String? @map("lead_type")
+  source   String?
+
+  message         String?
+  electricityInfo String? @map("electricity_info")
+
+  monthlyConsumptionKwh     Decimal? @map("monthly_consumption_kwh") @db.Decimal
+  recommendedSystemKwp      Decimal? @map("recommended_system_kwp") @db.Decimal
+  estimatedAnnualSavingsInr Decimal? @map("estimated_annual_savings_inr") @db.Decimal
+  potentialSubsidyInr       Decimal? @map("potential_subsidy_inr") @db.Decimal
+
+  status String @default("new")
+
+  @@map("leads")
+}

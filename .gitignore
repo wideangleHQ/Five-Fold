@@ -1,7 +1,9 @@
 # ============================================
-# Dependencies
+# Dependencies (all workspaces)
 # ============================================
 node_modules/
+client/node_modules/
+server/node_modules/
 .pnp/
 .pnp.js
 
@@ -11,15 +13,23 @@ node_modules/
 coverage/
 
 # ============================================
-# Next.js
+# Next.js (client)
 # ============================================
 .next/
+client/.next/
 out/
+client/out/
 
 # ============================================
-# Production
+# Production builds
 # ============================================
 build/
+server/dist/
+
+# ============================================
+# Server environment (never commit real secrets)
+# ============================================
+server/.env
 
 # ============================================
 # Debug / Logs
