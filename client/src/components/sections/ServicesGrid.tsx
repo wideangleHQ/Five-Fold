@@ -101,8 +101,8 @@ export const ServicesGrid: React.FC = () => {
 
   return (
     <section className="min-h-[100svh] py-4 sm:py-6 lg:py-4 lg:min-h-[100svh] flex flex-col justify-center bg-white font-sans relative">
-      {/* EQUAL SIDE PADDING ON MOBILE (px-4 sm:px-6 matching above sections) & 98% ON DESKTOP/LAPTOP */}
-      <div className="w-full max-w-7xl lg:max-w-[1780px] lg:w-[98%] mx-auto px-4 sm:px-6 lg:px-0 h-full flex flex-col justify-center flex-1">
+      {/* Content Container matching standard side gutters */}
+      <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 h-full flex flex-col justify-center flex-1">
         <div
           className="relative rounded-3xl bg-[#173B53] text-white overflow-hidden border border-[#173B53]/80 p-5 sm:p-8 lg:p-10 xl:p-12 min-h-[calc(100svh-2rem)] sm:min-h-[calc(100svh-3rem)] lg:min-h-[calc(100svh-3.5rem)] lg:max-h-[90vh] flex flex-col justify-between flex-1 shadow-none"
           onTouchStart={handleTouchStart}

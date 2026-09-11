@@ -358,7 +358,7 @@ export const Hero: React.FC = () => {
         {/* 1. EDITORIAL HERO COPY CONTAINER (Controlled Max-Width & Generous Breathing Space) */}
         <div
           ref={overlayRef}
-          className="relative z-20 w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-2 sm:pb-3 px-4 sm:px-6 md:px-8 text-center shrink-0 pointer-events-auto"
+          className="relative z-20 w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-2 sm:pb-3 px-4 sm:px-6 lg:px-8 xl:px-12 text-center shrink-0 pointer-events-auto"
         >
           <div className="max-w-3xl lg:max-w-4xl mx-auto space-y-2.5 sm:space-y-3.5">
             
@@ -441,7 +441,7 @@ export const Hero: React.FC = () => {
             {/* 3. CLIMAX CREDENTIALS (EDITORIAL NUMBERS) */}
             <div
               ref={credentialsRef}
-              className="absolute inset-x-0 bottom-6 sm:bottom-10 lg:bottom-12 z-20 flex flex-col justify-end items-center pointer-events-none px-5 sm:px-6 lg:px-8 opacity-0"
+              className="absolute inset-x-0 bottom-6 sm:bottom-10 lg:bottom-12 z-20 flex flex-col justify-end items-center pointer-events-none px-4 sm:px-6 lg:px-8 xl:px-12 opacity-0"
             >
               <div className="w-full max-w-7xl mx-auto pointer-events-auto space-y-5 sm:space-y-7">
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-5 gap-x-3 sm:gap-x-8 text-center items-start">

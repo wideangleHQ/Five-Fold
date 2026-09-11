@@ -1,8 +1,8 @@
 # 03 — Smart Solar Calculator
 
 **Page route:** `/solar-calculator` (alias: `/smart-solar-calculator`)  
-**Component:** `src/components/calculator/SolarCalculator.tsx`  
-**Engine:** `src/lib/solar-engine/` (version tracked in `src/data/solar/system-assumptions.ts`)  
+**Component:** `client/src/components/calculator/SolarCalculator.tsx`  
+**Engine:** `client/src/lib/solar-engine/` (version tracked in `client/src/data/solar/system-assumptions.ts`)  
 **Purpose:** Lead generation through a self-service indicative solar estimate, Odisha-specific.
 
 ---
@@ -68,29 +68,29 @@ Displays: system capacity, generation, savings, subsidy breakdown, payback, DISC
 ```
 USER INPUT
     ↓
-INPUT VALIDATION          (src/lib/solar-engine/validation.ts)
+INPUT VALIDATION          (client/src/lib/solar-engine/validation.ts)
     ↓
-CONSUMPTION ENGINE        (src/lib/solar-engine/consumption.ts)
+CONSUMPTION ENGINE        (client/src/lib/solar-engine/consumption.ts)
     ↓ monthlyConsumptionKWh, annualConsumptionKWh
-SOLAR RESOURCE ENGINE     (src/lib/solar-engine/solar-resource.ts)
+SOLAR RESOURCE ENGINE     (client/src/lib/solar-engine/solar-resource.ts)
     ↓ pvoutKWhPerKWpPerYear, monthlyFractions
-PERFORMANCE ENGINE        (src/lib/solar-engine/performance.ts)
+PERFORMANCE ENGINE        (client/src/lib/solar-engine/performance.ts)
     ↓ adjustedAnnualYieldKWhPerKWp (PVOUT × PR × shadingFactor)
-ROOF FEASIBILITY ENGINE   (src/lib/solar-engine/roof-feasibility.ts)
+ROOF FEASIBILITY ENGINE   (client/src/lib/solar-engine/roof-feasibility.ts)
     ↓ maxFeasibleCapacityKWp (from roof area)
-REGULATORY ENGINE         (src/lib/solar-engine/regulatory.ts)
+REGULATORY ENGINE         (client/src/lib/solar-engine/regulatory.ts)
     ↓ maxPermissibleKWp (OERC rules + DISCOM)
-SYSTEM SIZING ENGINE      (src/lib/solar-engine/sizing.ts)
+SYSTEM SIZING ENGINE      (client/src/lib/solar-engine/sizing.ts)
     ↓ recommendedSystemKWp = clamp(targetEnergy / adjustedYield, roof, regulatory)
-SUBSIDY ENGINE            (src/lib/solar-engine/subsidy.ts)
+SUBSIDY ENGINE            (client/src/lib/solar-engine/subsidy.ts)
     ↓ centralSubsidyINR (PM Surya Ghar slabs)
-GENERATION ENGINE         (src/lib/solar-engine/generation.ts)
+GENERATION ENGINE         (client/src/lib/solar-engine/generation.ts)
     ↓ annualGenerationKWh, monthlyGenerationKWh[], selfConsumed/exported split
-FINANCIAL ENGINE          (src/lib/solar-engine/savings.ts)
+FINANCIAL ENGINE          (client/src/lib/solar-engine/savings.ts)
     ↓ grossCost, netInvestment, annualSavings, paybackYears
-CONFIDENCE ENGINE         (src/lib/solar-engine/confidence.ts)
+CONFIDENCE ENGINE         (client/src/lib/solar-engine/confidence.ts)
     ↓ level (high/medium/low), score, reasons[]
-RESULT ASSEMBLY           (src/lib/solar-engine/index.ts)
+RESULT ASSEMBLY           (client/src/lib/solar-engine/index.ts)
     ↓ SolarCalculationResult (full structured result)
 ```
 
@@ -125,7 +125,7 @@ paybackYears = netInvestment / annualSavings
 **Metric:** PVOUT (kWh/kWp/year) at optimal fixed tilt (~15° for Odisha)  
 **Coverage:** 24 Odisha districts, 4 DISCOM zones  
 **Fallback:** Odisha state average (1480 kWh/kWp/year) when location is unmatched  
-**Data file:** `src/data/solar/solar-resource.ts`  
+**Data file:** `client/src/data/solar/solar-resource.ts`  
 **Monthly profile:** 12-month GHI fraction array per district (sum = 1.0)
 
 PVOUT ranges:
@@ -138,7 +138,7 @@ PVOUT ranges:
 ## Performance Assumptions
 
 **Aggregate Performance Ratio: 0.77**  
-Derived from individual loss factors (`src/data/solar/system-assumptions.ts`):
+Derived from individual loss factors (`client/src/data/solar/system-assumptions.ts`):
 
 | Factor | Value |
 |--------|-------|
@@ -169,7 +169,7 @@ Shading adjustments (applied on top of PR):
 ## Odisha Regulatory Logic
 
 **Framework:** OERC Net Metering Regulations 2023  
-**Data file:** `src/data/solar/regulatory.ts`
+**Data file:** `client/src/data/solar/regulatory.ts`
 
 System size caps:
 | Property Type | Net Metering Cap |
@@ -183,7 +183,7 @@ System size caps:
 
 ## DISCOM Logic
 
-**Data file:** `src/data/solar/discom.ts`  
+**Data file:** `client/src/data/solar/discom.ts`  
 DISCOM resolved via keyword matching on user location string:
 - TPCODL: Bhubaneswar, Cuttack, Khordha, Nayagarh, Puri, Angul, Dhenkanal
 - TPNODL: Balasore, Bhadrak, Jajpur, Keonjhar, Mayurbhanj, Sundargarh, Jharsuguda
@@ -196,7 +196,7 @@ If DISCOM cannot be identified: warning shown, no false DISCOM-specific rule app
 
 ## Subsidy / Assistance Logic
 
-**Data file:** `src/data/solar/subsidies.ts`
+**Data file:** `client/src/data/solar/subsidies.ts`
 
 ### PM Surya Ghar (Residential Only, MNRE 2024)
 | System Size | Central Subsidy |
@@ -215,7 +215,7 @@ Actual benefit depends on entity's applicable tax rate — not calculated by the
 
 ## Financial Calculation
 
-**Data file:** `src/data/solar/tariffs.ts`  
+**Data file:** `client/src/data/solar/tariffs.ts`  
 **Tariff source:** OERC Retail Tariff Order FY 2024-25
 
 - **Effective tariff:** Computed from OERC slab structure at user's consumption level
@@ -257,7 +257,7 @@ All results are clearly labelled as **preliminary estimates**.
 1. Open the relevant data file (see Data Files section below)
 2. Update the value(s) with new figures from the authoritative source
 3. Update `effectiveFrom` and `lastVerified` fields
-4. Increment `CALCULATOR_ENGINE_VERSION` in `src/data/solar/system-assumptions.ts`
+4. Increment `CALCULATOR_ENGINE_VERSION` in `client/src/data/solar/system-assumptions.ts`
 5. Re-run tests: `npm test`
 6. Re-run build: `npm run build`
 
@@ -273,12 +273,12 @@ All results are clearly labelled as **preliminary estimates**.
 
 | File | Contents |
 |------|----------|
-| `src/data/solar/solar-resource.ts` | PVOUT by district, monthly fractions, location keyword map |
-| `src/data/solar/tariffs.ts` | OERC tariff slabs, bill→consumption estimator, effective tariff calculator |
-| `src/data/solar/subsidies.ts` | PM Surya Ghar slabs, subsidy calculator |
-| `src/data/solar/regulatory.ts` | OERC net metering rules, system size caps |
-| `src/data/solar/discom.ts` | District→DISCOM mapping, DISCOM info |
-| `src/data/solar/system-assumptions.ts` | Performance ratio, loss factors, area density, appliance watts, CO2 factor |
+| `client/src/data/solar/solar-resource.ts` | PVOUT by district, monthly fractions, location keyword map |
+| `client/src/data/solar/tariffs.ts` | OERC tariff slabs, bill→consumption estimator, effective tariff calculator |
+| `client/src/data/solar/subsidies.ts` | PM Surya Ghar slabs, subsidy calculator |
+| `client/src/data/solar/regulatory.ts` | OERC net metering rules, system size caps |
+| `client/src/data/solar/discom.ts` | District→DISCOM mapping, DISCOM info |
+| `client/src/data/solar/system-assumptions.ts` | Performance ratio, loss factors, area density, appliance watts, CO2 factor |
 
 ---
 
@@ -319,7 +319,7 @@ import { calculateSizing } from "@/lib/solar-engine/sizing";
 
 ## Calculator Engine Version
 
-Current version: defined in `src/data/solar/system-assumptions.ts` → `CALCULATOR_ENGINE_VERSION`  
+Current version: defined in `client/src/data/solar/system-assumptions.ts` → `CALCULATOR_ENGINE_VERSION`  
 Returned in every `SolarCalculationResult.engineVersion`.  
 Increment when formulas, data, or regulatory rules change (SemVer: major.minor.patch).
 
@@ -327,7 +327,7 @@ Increment when formulas, data, or regulatory rules change (SemVer: major.minor.p
 
 ## Testing Strategy
 
-Tests: `src/lib/solar-engine/__tests__/`  
+Tests: `client/src/lib/solar-engine/__tests__/`  
 Framework: Vitest 2.x  
 Run: `npm test`
 

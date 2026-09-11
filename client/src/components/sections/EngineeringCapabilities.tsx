@@ -47,7 +47,7 @@ export const EngineeringCapabilities: React.FC = () => {
     <section className="min-h-[90svh] lg:h-[90svh] py-6 sm:py-10 lg:py-8 flex flex-col justify-start bg-white text-[#173B53] font-sans relative overflow-hidden">
       
       {/* 1. OVERLAY TEXT & ACCORDION CONTAINER (Left Aligned, Covering 70% Width with Generous Top Padding) */}
-      <div className="w-full max-w-7xl lg:max-w-[1780px] lg:w-[98%] mx-auto px-4 sm:px-6 lg:px-0 pt-4 sm:pt-6 lg:pt-8 relative z-10">
+      <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 lg:pt-8 relative z-10">
         <div className="w-full lg:w-[70%] max-w-5xl space-y-3.5 sm:space-y-5 text-left">
           
           {/* Section Header */}

@@ -40,6 +40,8 @@ The goal is to move from a conventional informational solar website to a focused
 | `07-about-faq-contact.md` | About, FAQ and Contact / Lead form |
 | `08-features-and-tech.md` | Interactive features, tech stack & build priority |
 | `09-design-guidelines.md` | Visual and UX principles for a clean minimal site |
+| `10-lead-submission-architecture.md` | Lead Submission & Server Integration Architecture (Planned) |
+| `11-repository-architecture.md` | Full-stack monorepo layout, dev setup, ports, env vars (Implemented) |
 
 ---
 

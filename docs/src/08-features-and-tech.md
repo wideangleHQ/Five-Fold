@@ -112,23 +112,55 @@ Used for:
 
 ## Database
 
-Supabase
+Supabase (planned — not yet integrated)
 
-Used for:
+Intended for:
 
-- customer enquiries
+- customer enquiries and lead storage
 - calculator submissions
-- scheme-assessment submissions
 - contact forms
 - project and content data where required
 
+See `10-lead-submission-architecture.md` for the full data model and integration specification.
+
 ## Hosting
 
-Railway
+**Frontend (client/):** Vercel or Railway (Next.js application)  
+**Backend (server/):** Railway or similar Node.js platform (NestJS application)
+
+See `10-lead-submission-architecture.md` for the backend architecture specification.  
+See `11-repository-architecture.md` for the full monorepo structure and development setup.
 
 ## Architecture
 
-React.js → Application / API Layer → Supabase Database
+**Implemented (Phase 0):**
+
+```
+client/   ← Next.js (React website)
+            └─ ContactForm: setTimeout simulation (real API connection is Phase 4)
+            └─ SolarCalculator: fully client-side
+
+server/   ← NestJS (Lead API foundation)
+            └─ GET /api/health → { status: "ok" }
+            └─ CORS, global validation, env config
+```
+
+**Full planned architecture:**
+
+```
+client/ (Next.js)
+    │
+    │ HTTPS POST /api/leads
+    ▼
+server/ (NestJS on Railway)
+    │
+    ├─── Supabase      (lead persistence — Phase 1)
+    └─── WhatsApp API  (notification — Phase 3)
+```
+
+The website UI is unchanged. Form submission will eventually replace the current simulation with a real call to `POST /api/leads` without changing any visible design.
+
+See `10-lead-submission-architecture.md` and `11-repository-architecture.md` for the complete specification.
 
 ---
 
@@ -138,7 +170,7 @@ Estimated infrastructure cost to be borne by the client:
 
 ≈ ₹3,000/- per month
 
-Actual charges may vary with usage, traffic and service-plan changes.
+This estimate reflects frontend hosting (Vercel or Railway) and Supabase. The NestJS server can operate on Railway's free/starter tier at initial lead volumes. Actual charges may vary with usage, traffic and service-plan changes.
 
 ---
 
@@ -147,16 +179,21 @@ Actual charges may vary with usage, traffic and service-plan changes.
 Included:
 
 - Custom UI/UX implementation
-- React.js development
+- React.js / Next.js development
 - Responsive website
 - Page-wise development
 - Interactive user journeys
-- Smart Solar Calculator
+- Smart Solar Calculator (fully client-side, complete)
 - Government Scheme Finder
 - Lead-generation forms
 - Dynamic recommendation logic
-- Supabase integration
-- Railway deployment
+- Repository restructuring: client/server monorepo (complete — Phase 0)
+- NestJS server foundation with health endpoint (complete — Phase 0)
+- Supabase lead integration (planned — Phase 1, see `10-lead-submission-architecture.md`)
+- Lead API: POST /api/leads (planned — Phase 1)
+- WhatsApp Business notification (planned — Phase 3)
+- Frontend hosting deployment (Vercel or Railway)
+- Backend hosting deployment (Railway or similar Node.js platform)
 - Project showcase
 - Interactive FAQ
 - SolarCare presentation

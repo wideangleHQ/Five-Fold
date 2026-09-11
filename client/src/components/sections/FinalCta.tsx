@@ -10,7 +10,7 @@ import heroBg from "@/assets/Images/hero section background.png";
 export const FinalCta: React.FC = () => {
   return (
     <section className="bg-white py-6 sm:py-8 lg:py-4 lg:min-h-[85svh] flex flex-col justify-center font-sans relative z-10">
-      <div className="w-full max-w-[1840px] mx-auto px-2 sm:px-4">
+      <div className="w-full max-w-[1840px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="relative rounded-[2.5rem] sm:rounded-[3.5rem] bg-[#173B53] text-white overflow-hidden shadow-2xl border border-[#173B53] py-16 sm:py-20 lg:py-24">
 
           {/* Background image */}

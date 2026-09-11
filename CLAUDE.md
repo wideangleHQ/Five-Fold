@@ -1,3 +1,22 @@
+## Repository Structure
+
+This is a **client/server monorepo**:
+
+- `client/` — Next.js 14 frontend (React website). All frontend source is under `client/src/`.
+- `server/` — NestJS 10 backend (Lead API). Entry: `server/src/main.ts`. Port 3001.
+- `docs/` — mdBook project handbook.
+- Root `package.json` — convenience scripts only (`npm run dev:client`, `npm run dev:server`, etc.).
+
+**Development:**
+```bash
+npm run dev:client   # http://localhost:3000
+npm run dev:server   # http://localhost:3001/api/health
+```
+
+**Never** place `SUPABASE_SERVICE_ROLE_KEY`, `WHATSAPP_ACCESS_TOKEN`, or `WHATSAPP_VERIFY_TOKEN` in `client/` or any `NEXT_PUBLIC_` variable.
+
+---
+
 ## Frontend Design System
 
 For all frontend, UI, UX, styling, layout, animation, and responsive-design work:
