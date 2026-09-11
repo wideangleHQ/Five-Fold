@@ -1,19 +1,21 @@
 # 10 — Lead Submission & Server Integration Architecture
 
-**Status:** Planned Architecture — Not Yet Implemented  
+**Status:** Phase 1 Implemented — Phase 3 (WhatsApp) and Phase 4 (Frontend Integration) Planned  
 **Purpose:** Authoritative technical specification for the centralized lead submission system.
 
-This document defines how the Fivefold website will collect, submit, persist, and notify leads. It is written to be followed by a developer implementing the backend for the first time. The existing UI is not changed by this architecture — the submission mechanism changes behind it.
+This document defines how the Fivefold website collects, submits, persists, and notifies leads. The existing UI is not changed by this architecture — the submission mechanism changes behind it.
 
 ---
 
 ## Current Implementation State
 
-**Phase 0 (complete):** The repository has been restructured into a `client/` + `server/` monorepo. A NestJS server foundation exists at `server/` with environment configuration, CORS, global validation, and `GET /api/health`. See `11-repository-architecture.md` for the full Phase 0 scope.
+**Phase 0 (complete):** Repository restructured into `client/` + `server/` monorepo. NestJS foundation with environment configuration, CORS, global validation, and `GET /api/health`. See `11-repository-architecture.md`.
 
-**`client/src/components/forms/ContactForm.tsx`** still simulates submission with a `setTimeout` call — no real API call is made yet. Connecting the form to `POST /api/leads` is Phase 4.
+**Phase 1 (complete):** `POST /api/leads` is implemented in `server/src/leads/`. DTO validation, server-side normalization, and Supabase persistence are all active. The Supabase `leads` table schema is in `server/supabase/migrations/001_create_leads_table.sql`.
 
-**There is no Supabase integration and no WhatsApp notification yet.** This document specifies the planned architecture for Phases 1–3.
+**`client/src/components/forms/ContactForm.tsx`** still simulates submission with a `setTimeout` call — no real API call is made yet. Connecting the form is Phase 4.
+
+**WhatsApp notification is not yet implemented.** That is Phase 3.
 
 Items marked **Planned** below are not yet implemented.
 
@@ -136,21 +138,39 @@ The NestJS server is a standard Node.js process. It requires a hosting platform 
 
 The server lives at `server/` in the repository root. It is a self-contained NestJS application. It does not import anything from `client/`.
 
-**Implemented (Phase 0):**
+**Implemented (Phase 0 + Phase 1):**
 
 ```
 server/
 ├── src/
-│   ├── main.ts                       # Bootstrap: port, CORS, global pipes
+│   ├── main.ts                       # Bootstrap: port, CORS, global pipes, exception filter
 │   ├── app.module.ts                 # Root module
 │   │
 │   ├── health/
 │   │   ├── health.module.ts
 │   │   └── health.controller.ts      # GET /api/health → { status: "ok" }
 │   │
+│   ├── leads/                        # Phase 1
+│   │   ├── leads.module.ts
+│   │   ├── leads.controller.ts       # POST /api/leads
+│   │   ├── leads.service.ts          # normalize → Supabase insert
+│   │   ├── leads.controller.spec.ts
+│   │   ├── leads.service.spec.ts
+│   │   └── dto/
+│   │       └── create-lead.dto.ts    # class-validator DTO
+│   │
+│   ├── integrations/                 # Phase 1
+│   │   └── supabase/
+│   │       ├── supabase.module.ts
+│   │       └── supabase.service.ts   # Service-role Supabase client
+│   │
 │   └── common/
 │       └── filters/
 │           └── http-exception.filter.ts   # Safe error responses
+│
+├── supabase/
+│   └── migrations/
+│       └── 001_create_leads_table.sql     # Run in Supabase SQL editor
 │
 ├── test/
 │   ├── app.e2e-spec.ts               # E2E: health endpoint
@@ -168,18 +188,8 @@ server/
 
 ```
 server/src/
-├── leads/                            # Phase 1
-│   ├── leads.module.ts
-│   ├── leads.controller.ts           # POST /api/leads
-│   ├── leads.service.ts              # validate → Supabase → WhatsApp
-│   └── dto/
-│       └── create-lead.dto.ts        # class-validator DTO
-│
-└── integrations/                     # Phase 3
-    ├── supabase/
-    │   ├── supabase.module.ts
-    │   └── supabase.service.ts
-    └── whatsapp/
+└── integrations/
+    └── whatsapp/                     # Phase 3
         ├── whatsapp.module.ts
         └── whatsapp.service.ts
 ```
@@ -944,20 +954,45 @@ These are additions, not redesigns. The initial implementation does not need to 
 
 ## Checklist: Implementation Sequence
 
-When the server is ready to be built, follow this order:
+### Phase 1 — Supabase Lead API (complete)
 
-1. Create Supabase `leads` table with the documented schema
-2. Configure Supabase Row Level Security: deny all public access to `leads`; service-role bypasses RLS
-3. Create `server/` directory with the documented structure
-4. Implement `validation/lead.ts` with full schema validation
-5. Implement `services/supabase.ts` with lead insert
-6. Implement `services/whatsapp.ts` with notification (can mock in dev)
-7. Implement `routes/leads.ts` orchestrating the above
-8. Implement `utils/rate-limit.ts`
-9. Implement CORS headers in `index.ts`
-10. Test locally with `npm run dev:server` — `GET /api/health` should return `{ status: "ok" }`
-11. Set production secrets in Railway dashboard
-12. Deploy server to Railway (connect repo, push to main branch)
-13. Update `client/src/components/forms/ContactForm.tsx` to call the real endpoint (replace `setTimeout`)
-14. End-to-end test: submit form → verify Supabase row → verify WhatsApp message
-15. Configure production domain `api.fivefoldrenewable.com` in Railway custom domain settings
+- [x] Create Supabase `leads` table — run `server/supabase/migrations/001_create_leads_table.sql` in Supabase SQL editor
+- [x] Configure Supabase Row Level Security: deny all public access; service-role bypasses RLS
+- [x] `server/src/integrations/supabase/supabase.service.ts` — service-role client
+- [x] `server/src/leads/dto/create-lead.dto.ts` — DTO validation (name, phone required; all calculator fields optional)
+- [x] `server/src/leads/leads.service.ts` — normalize + Supabase insert
+- [x] `server/src/leads/leads.controller.ts` — `POST /api/leads`
+- [x] Unit tests pass (7 tests)
+- [ ] Fill in `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `server/.env` (manual — requires Supabase project)
+- [ ] Run migration against your Supabase project
+
+### Phase 2 — Security / Rate Limiting (planned)
+
+- [ ] Rate limiting (ThrottlerModule or custom guard)
+- [ ] Bot protection / CAPTCHA consideration
+- [ ] Input sanitization review
+
+### Phase 3 — WhatsApp Notification (planned)
+
+- [ ] `server/src/integrations/whatsapp/whatsapp.service.ts`
+- [ ] Wire into `LeadsService.create()` after Supabase insert
+- [ ] WhatsApp message template
+- [ ] Handle WhatsApp failure gracefully (lead is NOT lost)
+
+### Phase 4 — Frontend Form Integration (planned)
+
+- [ ] Update `client/src/components/forms/ContactForm.tsx` to replace `setTimeout` with `fetch` to `POST /api/leads`
+- [ ] Map form `interest` selector to `leadType` and `source`
+- [ ] End-to-end test: submit form → verify Supabase row
+
+### Phase 5 — Calculator Integration (planned)
+
+- [ ] Solar Calculator CTA submits result context alongside contact details
+- [ ] Attach `recommendedSystemKwp`, `estimatedAnnualSavingsInr`, `potentialSubsidyInr`, `monthlyConsumptionKwh` from `SolarCalculationResult`
+
+### Phase 6 — Production Deployment (planned)
+
+- [ ] Set production secrets in Railway dashboard
+- [ ] Deploy server to Railway (connect repo, push to main branch)
+- [ ] Configure production domain `api.fivefoldrenewable.com` in Railway custom domain settings
+- [ ] End-to-end production test
