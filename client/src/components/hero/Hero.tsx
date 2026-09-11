@@ -135,17 +135,25 @@ export const Hero: React.FC = () => {
     }
   }, [imagesLoaded]);
 
-  // Set initial frame position before paint — positioned safely below the CTA button with zero overlap
+  // Set initial frame position before paint — on mobile, 70% of card is visible; on desktop, positioned safely below CTA
   useLayoutEffect(() => {
     const updateFramePosition = () => {
       if (!frameRef.current) return;
-      const ctaEl = overlayRef.current?.querySelector(".hero-ctas");
-      let safeY = window.innerHeight * 0.58;
-      if (ctaEl) {
-        const ctaBottom = ctaEl.getBoundingClientRect().bottom;
-        // Ensure at least 24px-32px clear breathing space below the CTA button
-        safeY = Math.max(ctaBottom + 28, window.innerHeight * 0.52);
+      const isMobile = window.innerWidth < 640;
+      let safeY: number;
+
+      if (isMobile) {
+        // Mobile View Only: Card is 70% visible (top of card positioned at 30% from top of viewport)
+        safeY = window.innerHeight * 0.30;
+      } else {
+        const ctaEl = overlayRef.current?.querySelector(".hero-ctas");
+        safeY = window.innerHeight * 0.58;
+        if (ctaEl) {
+          const ctaBottom = ctaEl.getBoundingClientRect().bottom;
+          safeY = Math.max(ctaBottom + 28, window.innerHeight * 0.52);
+        }
       }
+
       gsap.set(frameRef.current, {
         xPercent: -50,
         y: safeY,
@@ -259,19 +267,28 @@ export const Hero: React.FC = () => {
     // fromTo with immediateRender:true (GSAP default) applies the "from" state at tween creation,
     // making initial positioning independent of whether useLayoutEffect's gsap.set has run yet.
     if (frameRef.current) {
-      const ctaEl = overlayRef.current?.querySelector(".hero-ctas");
-      let safeY = window.innerHeight * 0.58;
-      if (ctaEl) {
-        const ctaBottom = ctaEl.getBoundingClientRect().bottom;
-        safeY = Math.max(ctaBottom + 28, window.innerHeight * 0.52);
+      const isMobile = window.innerWidth < 640;
+      let safeY: number;
+
+      if (isMobile) {
+        // Mobile View Only: Card starts 70% visible (at 30% from viewport top)
+        safeY = window.innerHeight * 0.30;
+      } else {
+        const ctaEl = overlayRef.current?.querySelector(".hero-ctas");
+        safeY = window.innerHeight * 0.58;
+        if (ctaEl) {
+          const ctaBottom = ctaEl.getBoundingClientRect().bottom;
+          safeY = Math.max(ctaBottom + 28, window.innerHeight * 0.52);
+        }
       }
+
       tl.fromTo(
         frameRef.current,
         {
           y: safeY,
           xPercent: -50,
-          width: "70vw",
-          borderRadius: "1.5rem",
+          width: isMobile ? "92vw" : "70vw",
+          borderRadius: isMobile ? "1.25rem" : "1.5rem",
           border: "1px solid #DCE2E2",
           boxShadow: "0 20px 50px -15px rgba(23,59,83,0.14)",
         },
@@ -358,19 +375,19 @@ export const Hero: React.FC = () => {
         {/* 1. EDITORIAL HERO COPY CONTAINER (Controlled Max-Width & Generous Breathing Space) */}
         <div
           ref={overlayRef}
-          className="relative z-20 w-full pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-2 sm:pb-3 px-4 sm:px-6 lg:px-8 xl:px-12 text-center shrink-0 pointer-events-auto"
+          className="relative z-20 w-full pt-14 xs:pt-16 sm:pt-24 md:pt-28 lg:pt-32 pb-2 sm:pb-3 px-4 sm:px-6 lg:px-8 xl:px-12 text-center shrink-0 pointer-events-auto"
         >
-          <div className="max-w-3xl lg:max-w-4xl mx-auto space-y-2.5 sm:space-y-3.5">
+          <div className="max-w-3xl lg:max-w-4xl mx-auto space-y-1.5 sm:space-y-3.5">
             
             {/* Understated Eyebrow */}
             <div className="hero-eyebrow">
-              <span className="font-mono text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-[#526673] block">
+              <span className="font-mono text-[9px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-[#526673] block">
                 ENGINEERING A SUSTAINABLE ODISHA
               </span>
             </div>
 
             {/* Main Hero Headline with deliberate line breaks */}
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.08] text-[#173B53]">
+            <h1 className="font-heading text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.08] text-[#173B53]">
               <span className="block whitespace-normal sm:whitespace-nowrap">
                 Powering Odisha with
               </span>
@@ -380,16 +397,16 @@ export const Hero: React.FC = () => {
             </h1>
 
             {/* Supporting Copy */}
-            <p className="font-sans text-xs sm:text-sm md:text-[0.95rem] text-[#526673] font-normal max-w-md md:max-w-xl mx-auto leading-relaxed pt-0.5">
+            <p className="font-sans text-[11px] sm:text-sm md:text-[0.95rem] text-[#526673] font-normal max-w-md md:max-w-xl mx-auto leading-tight sm:leading-relaxed pt-0.5 hidden xs:block">
               Bankable rooftop and megawatt-scale solar engineering, DISCOM net metering, and 25-year performance assurance.
             </p>
 
             {/* Primary CTA */}
-            <div className="hero-ctas pt-2 sm:pt-2.5 flex items-center justify-center">
+            <div className="hero-ctas pt-1 sm:pt-2.5 flex items-center justify-center">
               <Button
                 href="/smart-solar-calculator"
                 variant="primary"
-                className="bg-[#173B53] hover:bg-[#0f2738] text-white px-7 sm:px-8 py-3 sm:py-3.5 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 inline-flex items-center justify-center gap-2 group border-0"
+                className="bg-[#173B53] hover:bg-[#0f2738] text-white px-5 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 inline-flex items-center justify-center gap-2 group border-0"
               >
                 <span>Find My Solar Solution</span>
                 <ArrowRight className="h-4 w-4 text-[#1684C7] group-hover:translate-x-0.5 transition-transform" />
@@ -405,7 +422,7 @@ export const Hero: React.FC = () => {
         >
           <div
             ref={frameRef}
-            className="absolute bottom-0 left-1/2 h-[100svh] w-[88vw] sm:w-[82vw] lg:w-[72vw] xl:w-[70vw] overflow-hidden bg-[#173B53] pointer-events-auto"
+            className="absolute bottom-0 left-1/2 h-[100svh] w-[92vw] sm:w-[82vw] lg:w-[72vw] xl:w-[70vw] overflow-hidden bg-[#173B53] pointer-events-auto"
             style={{
               borderRadius: "1.5rem",
               border: "1px solid #DCE2E2",

@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { SupabaseService } from '../integrations/supabase/supabase.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateLeadDto } from './dto/create-lead.dto';
 
 export interface LeadCreatedResult {
@@ -11,38 +11,45 @@ export interface LeadCreatedResult {
 export class LeadsService {
   private readonly logger = new Logger(LeadsService.name);
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateLeadDto): Promise<LeadCreatedResult> {
-    const row = {
-      name: dto.name,
-      phone: dto.phone,
-      email: dto.email ?? null,
-      city: dto.city ?? null,
-      state: dto.state ?? null,
-      lead_type: dto.leadType ?? null,
-      source: dto.source ?? null,
-      message: dto.message ?? null,
-      electricity_info: dto.electricityInfo ?? null,
-      monthly_consumption_kwh: dto.monthlyConsumptionKwh ?? null,
-      recommended_system_kwp: dto.recommendedSystemKwp ?? null,
-      estimated_annual_savings_inr: dto.estimatedAnnualSavingsInr ?? null,
-      potential_subsidy_inr: dto.potentialSubsidyInr ?? null,
-      status: 'new',
-    };
-
-    const { data, error } = await this.supabase.db
-      .from('leads')
-      .insert(row)
-      .select('id')
-      .single();
-
-    if (error) {
-      this.logger.error(`Supabase insert failed: ${error.message}`, error.details);
-      throw new InternalServerErrorException('Unable to submit your enquiry.');
+  async create(dto: CreateLeadDto, requestId?: string): Promise<LeadCreatedResult> {
+    if (dto._gotcha) {
+      // Honeypot tripped — pretend success without persisting or notifying.
+      this.logger.warn(`Honeypot triggered, submission discarded [${requestId ?? '-'}]`);
+      return { success: true, leadId: 'discarded' };
     }
 
-    this.logger.log(`Lead created: ${data.id} source=${row.source ?? 'unknown'}`);
-    return { success: true, leadId: data.id as string };
+    try {
+      const lead = await this.prisma.lead.create({
+        data: {
+          name: dto.name,
+          phone: dto.phone,
+          email: dto.email ?? null,
+          city: dto.city ?? null,
+          state: dto.state ?? null,
+          leadType: dto.leadType ?? null,
+          source: dto.source ?? null,
+          message: dto.message ?? null,
+          electricityInfo: dto.electricityInfo ?? null,
+          monthlyConsumptionKwh: dto.monthlyConsumptionKwh ?? null,
+          recommendedSystemKwp: dto.recommendedSystemKwp ?? null,
+          estimatedAnnualSavingsInr: dto.estimatedAnnualSavingsInr ?? null,
+          potentialSubsidyInr: dto.potentialSubsidyInr ?? null,
+          status: 'new',
+        },
+        select: { id: true },
+      });
+
+      this.logger.log(
+        `Lead created: ${lead.id} source=${dto.source ?? 'unknown'} [${requestId ?? '-'}]`,
+      );
+      return { success: true, leadId: lead.id };
+    } catch (error) {
+      this.logger.error(
+        `Lead insert failed [${requestId ?? '-'}]: ${(error as Error).message}`,
+      );
+      throw new InternalServerErrorException('Unable to submit your enquiry.');
+    }
   }
 }

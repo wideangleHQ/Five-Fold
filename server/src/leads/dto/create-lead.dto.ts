@@ -6,6 +6,7 @@ import {
   IsEnum,
   IsNumber,
   Min,
+  Max,
   MaxLength,
   Matches,
 } from 'class-validator';
@@ -40,6 +41,13 @@ const toNullIfEmpty = (): PropertyDecorator =>
     typeof value === 'string' && value.trim() === '' ? null : value,
   );
 
+// Strips formatting characters without forcing a country code — avoids
+// corrupting already-valid international numbers.
+const normalizePhone = (): PropertyDecorator =>
+  Transform(({ value }) =>
+    typeof value === 'string' ? value.trim().replace(/[\s\-().]/g, '') : value,
+  );
+
 export class CreateLeadDto {
   @IsString()
   @IsNotEmpty()
@@ -50,10 +58,10 @@ export class CreateLeadDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(20)
-  @Matches(/^[+\d][\d\s\-().]{6,19}$/, {
+  @Matches(/^\+?\d{7,15}$/, {
     message: 'phone must be a valid phone number',
   })
-  @trim()
+  @normalizePhone()
   phone: string;
 
   @IsOptional()
@@ -98,24 +106,36 @@ export class CreateLeadDto {
   @toNullIfEmpty()
   electricityInfo?: string | null;
 
-  // Solar Calculator context — all optional; normal contact leads won't have these
+  // Solar Calculator context — all optional; normal contact leads won't have these.
+  // Upper bounds are sanity caps against garbage/overflow values, not real limits.
   @IsOptional()
   @IsNumber()
   @Min(0)
+  @Max(1_000_000)
   monthlyConsumptionKwh?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
+  @Max(10_000)
   recommendedSystemKwp?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
+  @Max(1_000_000_000)
   estimatedAnnualSavingsInr?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
+  @Max(1_000_000_000)
   potentialSubsidyInr?: number;
+
+  // Honeypot: hidden form field real users never fill. Present in the DTO so
+  // forbidNonWhitelisted doesn't reject legitimate submissions that include it.
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  _gotcha?: string;
 }

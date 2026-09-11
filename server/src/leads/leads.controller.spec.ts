@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { LeadsController } from './leads.controller';
 import { LeadsService } from './leads.service';
 import { CreateLeadDto, LeadSource, LeadType } from './dto/create-lead.dto';
@@ -12,6 +13,7 @@ describe('LeadsController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ThrottlerModule.forRoot({ throttlers: [{ ttl: 60000, limit: 5 }] })],
       controllers: [LeadsController],
       providers: [{ provide: LeadsService, useValue: mockLeadsService }],
     }).compile();
@@ -31,9 +33,10 @@ describe('LeadsController', () => {
     };
     mockLeadsService.create.mockResolvedValue({ success: true, leadId: 'abc-123' });
 
-    const result = await controller.create(dto);
+    const req = { id: 'req-1' } as any;
+    const result = await controller.create(dto, req);
 
-    expect(mockLeadsService.create).toHaveBeenCalledWith(dto);
+    expect(mockLeadsService.create).toHaveBeenCalledWith(dto, 'req-1');
     expect(result).toEqual({ success: true, leadId: 'abc-123' });
   });
 });

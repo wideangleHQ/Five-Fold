@@ -1,6 +1,6 @@
 # 10 — Lead Submission & Server Integration Architecture
 
-**Status:** Phase 1 Implemented — Phase 3 (WhatsApp) and Phase 4 (Frontend Integration) Planned  
+**Status:** Phase 2 Implemented (Security / Abuse Protection / Reliability) — Phase 3 (WhatsApp) and Phase 4 (Frontend Integration) Planned  
 **Purpose:** Authoritative technical specification for the centralized lead submission system.
 
 This document defines how the Fivefold website collects, submits, persists, and notifies leads. The existing UI is not changed by this architecture — the submission mechanism changes behind it.
@@ -11,13 +11,55 @@ This document defines how the Fivefold website collects, submits, persists, and 
 
 **Phase 0 (complete):** Repository restructured into `client/` + `server/` monorepo. NestJS foundation with environment configuration, CORS, global validation, and `GET /api/health`. See `11-repository-architecture.md`.
 
-**Phase 1 (complete):** `POST /api/leads` is implemented in `server/src/leads/`. DTO validation, server-side normalization, and Supabase persistence are all active. The Supabase `leads` table schema is in `server/supabase/migrations/001_create_leads_table.sql`.
+**Phase 1 (complete):** `POST /api/leads` is implemented in `server/src/leads/`. DTO validation, server-side normalization, and persistence are all active. Persistence goes through Prisma (`server/src/prisma/`) against the Supabase Postgres database. The table schema is in `server/supabase/migrations/001_create_leads_table.sql`; `server/prisma/schema.prisma` mirrors it.
+
+**Phase 2 (complete):** `POST /api/leads` is hardened for public exposure — stricter DTO bounds, request body size limiting, in-memory rate limiting, a honeypot field, multi-origin CORS, security headers (`helmet`), safe/never-leaking error responses, explicit (non-arbitrary) database record construction, and request-correlated logging. See **Security & Reliability (Phase 2)** below for the full list of what changed and what remains manual (e.g. filling in real database credentials).
 
 **`client/src/components/forms/ContactForm.tsx`** still simulates submission with a `setTimeout` call — no real API call is made yet. Connecting the form is Phase 4.
 
 **WhatsApp notification is not yet implemented.** That is Phase 3.
 
-Items marked **Planned** below are not yet implemented.
+Items marked **Planned** below are not yet implemented. Items under **Phase 2** below are implemented now; everything else in this document describing rate limiting, honeypot, CORS, etc. as "planned" is superseded by that section — those features exist today.
+
+---
+
+## Security & Reliability (Phase 2)
+
+### IMPLEMENTED
+
+| Area | What was done |
+|---|---|
+| DTO validation | `CreateLeadDto` bounds every field (`MaxLength`, `Min`/`Max` on all four calculator numerics with sanity caps, `IsEnum` on `leadType`/`source`). `class-validator`'s `IsNumber()` already rejects `NaN`/`Infinity` by default — verified by e2e test. |
+| Unexpected properties | Global `ValidationPipe` already used `whitelist: true` + `forbidNonWhitelisted: true` (Phase 1) — verified still correct and still rejects extra fields with 400. |
+| Request body size | `express.json({ limit: '16kb' })` (configurable via `BODY_SIZE_LIMIT`) replaces Nest's default 100kb parser. Oversized bodies return `413` with a safe JSON body, via `body-limit-error.middleware.ts`. |
+| Rate limiting | `@nestjs/throttler`, in-memory, applied only to `LeadsController` via `ThrottlerGuard` (health and any future routes are unaffected). Default: 5 requests / hour per client, configurable via `LEADS_RATE_LIMIT_MAX` / `LEADS_RATE_LIMIT_TTL_MS`. Exceeding it returns `429`. |
+| Spam / bot protection | Honeypot field `_gotcha` added to `CreateLeadDto` (optional, whitelisted so it doesn't trip `forbidNonWhitelisted`). If present and non-empty, `LeadsService.create()` logs it and returns a normal-looking `{ success: true }` without touching the database. **Frontend support required in a later phase:** add a visually-hidden `_gotcha` input to `ContactForm.tsx` (and any other lead form) that real users never fill. Not done in Phase 2 — no UI changes were made. |
+| CORS | `CLIENT_URL` now accepts a comma-separated list of allowed origins (apex + `www` + local dev), still rejects `*`. |
+| HTTP security headers | `helmet()` applied globally in `main.ts`. |
+| Error handling | `HttpExceptionFilter` now uses `@Catch()` (was `@Catch(HttpException)`) so *any* uncaught error — not just `HttpException` — is normalized to the safe `{ success: false, statusCode, message }` shape. No stack traces, database error text, or credentials are ever returned. |
+| Explicit database records | `LeadsService.create()` builds an explicit field-by-field `data` object for `prisma.lead.create()` (no arbitrary request body is ever passed through to Prisma). |
+| Secret separation | `DATABASE_URL`/`DIRECT_URL` and WhatsApp variables are server-only, never `NEXT_PUBLIC_`. Verified no leak paths were introduced. |
+| Logging | Lead creation, database failures, honeypot hits, rate-limit hits (429), and validation failures (400, debug level) are logged with a request-correlation ID. Never logs tokens, keys, or full payloads. |
+| Correlation IDs | `request-id.middleware.ts` assigns a `crypto.randomUUID()` per request, exposed as the `X-Request-Id` response header and threaded through to `LeadsService` logs. Lightweight — no distributed tracing added. |
+| Phone normalization | Formatting characters (`spaces`, `-`, `()`, `.`) are stripped server-side before validation/storage; an already-valid international number is not corrupted by forcing a `+91` prefix. |
+| `leadType` / `source` validation | Unchanged from Phase 1: both are `class-validator` enums — arbitrary browser-supplied values are rejected with 400. |
+| Reliability: database misconfiguration | `PrismaService.onModuleInit()` no longer throws (and crashes the whole app, including `/api/health`) when `DATABASE_URL` is unset or invalid — this bug exists in both the original Supabase-SDK version and the Prisma migration, since both eagerly connected at startup. It now logs a warning and defers the failure to the first actual query, which is already wrapped in a safe `500` response by `LeadsService`. |
+
+### NOT YET IMPLEMENTED
+
+- WhatsApp notification (Phase 3)
+- Frontend form integration — `ContactForm.tsx` still simulates submission (Phase 4)
+- The honeypot's hidden form field on the frontend (server-side handling exists; no form currently sends `_gotcha`)
+- Solar Calculator → lead payload wiring (Phase 5)
+- Production deployment / Railway domain configuration (Phase 6)
+- CRM
+- AI lead classification
+
+### Manual setup required
+
+- Fill in real `DATABASE_URL` / `DIRECT_URL` in `server/.env` (or the hosting platform's env vars) — lead persistence fails safely with a `500` until this is done, but the server now starts and `/api/health` works regardless.
+- `LEADS_RATE_LIMIT_MAX` / `LEADS_RATE_LIMIT_TTL_MS` / `BODY_SIZE_LIMIT` are read from the real process environment at startup (see `server/.env.example`) — export them in the shell or hosting dashboard, not only in a local `.env` file consumed by `@nestjs/config`, since module-level `ThrottlerModule.forRoot()` config is evaluated before `.env` is loaded.
+- If/when multiple production origins are needed, set `CLIENT_URL` to a comma-separated list.
 
 ---
 
@@ -30,17 +72,22 @@ client/ (Next.js — React website)
           v
 server/ (NestJS — Lead API on Railway)
           |
+          v
+     Prisma ORM
+          |
           +------------------------+
           |                        |
           v                        v
      Supabase                WhatsApp Business
-     Database                Cloud API
+     PostgreSQL               Cloud API
      (source of truth)       (notification only)
           |                        |
           v                        v
    Lead History            Fivefold Team
    (persistent)            (operational alert)
 ```
+
+Prisma is the application's database access layer; Supabase remains the PostgreSQL database/infrastructure — leads are no longer queried through the Supabase JS SDK.
 
 This architecture is intentionally minimal. There are three layers and one centralized endpoint. Each layer has a single clear responsibility.
 
@@ -76,7 +123,7 @@ The server is responsible for:
 - Validating all input server-side (independent of frontend validation)
 - Sanitizing and normalizing values
 - Rate limiting requests per source IP
-- Persisting the validated lead to Supabase as the **source of truth**
+- Persisting the validated lead via Prisma to Supabase PostgreSQL as the **source of truth**
 - Triggering a WhatsApp Business notification after successful persistence
 - Returning a safe, minimal response to the frontend
 - Keeping all private credentials strictly server-side
@@ -153,16 +200,15 @@ server/
 │   ├── leads/                        # Phase 1
 │   │   ├── leads.module.ts
 │   │   ├── leads.controller.ts       # POST /api/leads
-│   │   ├── leads.service.ts          # normalize → Supabase insert
+│   │   ├── leads.service.ts          # normalize → Prisma create
 │   │   ├── leads.controller.spec.ts
 │   │   ├── leads.service.spec.ts
 │   │   └── dto/
 │   │       └── create-lead.dto.ts    # class-validator DTO
 │   │
-│   ├── integrations/                 # Phase 1
-│   │   └── supabase/
-│   │       ├── supabase.module.ts
-│   │       └── supabase.service.ts   # Service-role Supabase client
+│   ├── prisma/                       # Prisma migration
+│   │   ├── prisma.module.ts          # @Global — one shared PrismaClient
+│   │   └── prisma.service.ts         # extends PrismaClient, lifecycle hooks
 │   │
 │   └── common/
 │       └── filters/
@@ -171,6 +217,9 @@ server/
 ├── supabase/
 │   └── migrations/
 │       └── 001_create_leads_table.sql     # Run in Supabase SQL editor
+│
+├── prisma/
+│   └── schema.prisma                      # Mirrors the Supabase leads table
 │
 ├── test/
 │   ├── app.e2e-spec.ts               # E2E: health endpoint
@@ -201,10 +250,10 @@ Each module has one clear responsibility. NestJS's module system enforces this b
 | `main.ts` | Bootstrap: port, global prefix, CORS, global ValidationPipe. |
 | `app.module.ts` | Root module — imports all feature modules. |
 | `health/health.controller.ts` | `GET /api/health`. Confirms server is running. |
-| `leads/leads.controller.ts` | `POST /api/leads`. Validates DTO, delegates to service. (Planned — Phase 1) |
-| `leads/leads.service.ts` | Orchestrates: validate → Supabase insert → WhatsApp notify → respond. (Planned) |
-| `leads/dto/create-lead.dto.ts` | class-validator DTO — server-side schema for incoming lead payload. (Planned) |
-| `integrations/supabase/supabase.service.ts` | Supabase client with service-role key. Lead insert. Error wrapping. (Planned — Phase 3) |
+| `leads/leads.controller.ts` | `POST /api/leads`. Validates DTO, delegates to service. |
+| `leads/leads.service.ts` | Orchestrates: validate → Prisma create → WhatsApp notify → respond. (WhatsApp notify planned) |
+| `leads/dto/create-lead.dto.ts` | class-validator DTO — server-side schema for incoming lead payload. |
+| `prisma/prisma.service.ts` | Shared `PrismaClient` instance with NestJS lifecycle hooks (`$connect`/`$disconnect`). |
 | `integrations/whatsapp/whatsapp.service.ts` | WhatsApp Cloud API call. Never throws on failure — WhatsApp failure does not fail the lead. (Planned — Phase 3) |
 | `common/filters/http-exception.filter.ts` | Safe error shape to clients. No stack traces or secrets in responses. |
 | `nest-cli.json` | NestJS CLI build configuration. |
@@ -586,40 +635,43 @@ Reject requests with:
 
 ---
 
-## Supabase Integration
+## Database Access — Prisma over Supabase PostgreSQL
+
+Application persistence goes through Prisma, not the Supabase JS SDK. Supabase remains the PostgreSQL database/infrastructure; Prisma is the ORM that talks to it.
+
+```
+LeadsController → LeadsService → PrismaService → PostgreSQL (Supabase)
+```
+
+`server/prisma/schema.prisma` describes the `leads` table (mirroring `server/supabase/migrations/001_create_leads_table.sql`, mapping `snake_case` columns to camelCase model fields with `@map`). `server/src/prisma/prisma.service.ts` wraps `PrismaClient` with NestJS lifecycle hooks (`$connect` on module init, `$disconnect` on shutdown) and is provided globally via `PrismaModule`.
 
 ### Credential separation
 
 | Credential | Who holds it |
 |---|---|
-| `SUPABASE_URL` | Server only (NestJS server (Railway) secret) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server only (NestJS server (Railway) secret) |
+| `DATABASE_URL` (pooled connection) | Server only (NestJS server (Railway) secret) |
+| `DIRECT_URL` (direct connection, used by `prisma migrate`) | Server only (NestJS server (Railway) secret) |
 | Supabase anon key (if used for public data) | May be in frontend `.env.local` / `NEXT_PUBLIC_` |
 
-The service-role key bypasses Supabase Row Level Security. It must **never** be placed in a `NEXT_PUBLIC_` environment variable or anywhere accessible to the browser.
+The Postgres connection string carries the same authority as the old service-role key and must **never** be placed in a `NEXT_PUBLIC_` environment variable or anywhere accessible to the browser.
 
 If the frontend currently uses Supabase directly for public read operations (project data, content, etc.), that usage is separate and may legitimately use the anon key with appropriate RLS policies. This document covers only lead submission and does not affect or remove any future public Supabase functionality.
 
 ### Insert operation
 
-`services/supabase.ts` should:
+`leads.service.ts`:
 
-1. Initialize the Supabase client with `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`
-2. Accept a normalized lead object
-3. Insert it into the `leads` table
-4. Return the inserted row (to get the generated `id`)
-5. Wrap Supabase errors and throw a typed internal error (never the raw Supabase error)
+1. Builds an explicit, whitelisted object from the validated DTO — never passes the raw request body to Prisma
+2. Calls `this.prisma.lead.create({ data, select: { id: true } })`
+3. Returns the generated `id`
+4. Wraps any Prisma/database error and throws a safe `InternalServerErrorException` (never the raw Prisma error)
 
 ```typescript
-// Conceptual shape — implementation detail
+// Conceptual shape — actual implementation in leads.service.ts
 async function insertLead(lead: NormalizedLead): Promise<{ id: string }> {
-  const { data, error } = await supabase
-    .from('leads')
-    .insert(lead)
-    .select('id')
-    .single();
-
-  if (error) throw new LeadInsertError(error.message);
+  try {
+    return await prisma.lead.create({ data: lead, select: { id: true } });
+  } catch (error) { throw new LeadInsertError((error as Error).message);
   return { id: data.id };
 }
 ```
@@ -761,8 +813,8 @@ All secrets are managed as Railway environment variables set in the Railway dash
 | `NODE_ENV` | `development` or `production` |
 | `PORT` | Server listen port (default: 3001) |
 | `CLIENT_URL` | Allowed CORS origin |
-| `SUPABASE_URL` | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service-role key (bypasses RLS) — never in client |
+| `DATABASE_URL` | Pooled Supabase Postgres connection string (Prisma runtime queries) — never in client |
+| `DIRECT_URL` | Direct Supabase Postgres connection string (`prisma migrate`) — never in client |
 | `WHATSAPP_ACCESS_TOKEN` | WhatsApp Business Cloud API token — never in client |
 | `WHATSAPP_PHONE_NUMBER_ID` | WhatsApp Cloud API phone number ID — never in client |
 | `WHATSAPP_BUSINESS_ACCOUNT_ID` | WhatsApp Business Account ID — never in client |
@@ -957,20 +1009,28 @@ These are additions, not redesigns. The initial implementation does not need to 
 ### Phase 1 — Supabase Lead API (complete)
 
 - [x] Create Supabase `leads` table — run `server/supabase/migrations/001_create_leads_table.sql` in Supabase SQL editor
-- [x] Configure Supabase Row Level Security: deny all public access; service-role bypasses RLS
-- [x] `server/src/integrations/supabase/supabase.service.ts` — service-role client
+- [x] Configure Supabase Row Level Security: deny all public access; only the Postgres connection Prisma uses (or a service-role key) bypasses RLS
+- [x] `server/prisma/schema.prisma` — mirrors the `leads` table; `server/src/prisma/prisma.service.ts` — shared `PrismaClient`
 - [x] `server/src/leads/dto/create-lead.dto.ts` — DTO validation (name, phone required; all calculator fields optional)
-- [x] `server/src/leads/leads.service.ts` — normalize + Supabase insert
+- [x] `server/src/leads/leads.service.ts` — normalize + Prisma create
 - [x] `server/src/leads/leads.controller.ts` — `POST /api/leads`
 - [x] Unit tests pass (7 tests)
-- [ ] Fill in `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `server/.env` (manual — requires Supabase project)
+- [ ] Fill in `DATABASE_URL` and `DIRECT_URL` in `server/.env` (manual — requires Supabase project connection strings)
+- [ ] Baseline the existing table into Prisma migration history (`prisma migrate resolve --applied <migration>`) so future `prisma migrate deploy` runs don't try to recreate it
 - [ ] Run migration against your Supabase project
 
-### Phase 2 — Security / Rate Limiting (planned)
+### Phase 2 — Security / Rate Limiting (complete)
 
-- [ ] Rate limiting (ThrottlerModule or custom guard)
-- [ ] Bot protection / CAPTCHA consideration
-- [ ] Input sanitization review
+- [x] Rate limiting (`@nestjs/throttler`, in-memory, `LeadsController` only)
+- [x] Bot protection — honeypot field (`_gotcha`); visible CAPTCHA deliberately not added
+- [x] Input sanitization / DTO bounds review
+- [x] Request body size limit (413)
+- [x] Multi-origin CORS
+- [x] `helmet()` security headers
+- [x] Safe error handling for any uncaught exception, not just `HttpException`
+- [x] Request-correlation IDs in logs
+- [x] Fixed: `/api/health` no longer depends on a valid database config to boot (`PrismaService.onModuleInit()` no longer throws on connect failure)
+- [ ] Add the hidden `_gotcha` field to `ContactForm.tsx` (frontend — out of scope this phase)
 
 ### Phase 3 — WhatsApp Notification (planned)
 

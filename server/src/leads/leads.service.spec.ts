@@ -1,39 +1,32 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InternalServerErrorException } from '@nestjs/common';
 import { LeadsService } from './leads.service';
-import { SupabaseService } from '../integrations/supabase/supabase.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { LeadSource, LeadType } from './dto/create-lead.dto';
 
-const makeSupabaseMock = (result: { data: unknown; error: unknown }) => ({
-  db: {
-    from: jest.fn().mockReturnValue({
-      insert: jest.fn().mockReturnValue({
-        select: jest.fn().mockReturnValue({
-          single: jest.fn().mockResolvedValue(result),
-        }),
-      }),
-    }),
+const makePrismaMock = (result: { data?: { id: string }; error?: Error }) => ({
+  lead: {
+    create: result.error
+      ? jest.fn().mockRejectedValue(result.error)
+      : jest.fn().mockResolvedValue(result.data),
   },
 });
 
 describe('LeadsService', () => {
   let service: LeadsService;
-  let supabaseMock: ReturnType<typeof makeSupabaseMock>;
+  let prismaMock: ReturnType<typeof makePrismaMock>;
 
-  const buildModule = async (mock: ReturnType<typeof makeSupabaseMock>) => {
+  const buildModule = async (mock: ReturnType<typeof makePrismaMock>) => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        LeadsService,
-        { provide: SupabaseService, useValue: mock },
-      ],
+      providers: [LeadsService, { provide: PrismaService, useValue: mock }],
     }).compile();
     return module.get<LeadsService>(LeadsService);
   };
 
   describe('create — success', () => {
     beforeEach(async () => {
-      supabaseMock = makeSupabaseMock({ data: { id: 'lead-uuid-1' }, error: null });
-      service = await buildModule(supabaseMock);
+      prismaMock = makePrismaMock({ data: { id: 'lead-uuid-1' } });
+      service = await buildModule(prismaMock);
     });
 
     it('returns success and leadId on valid payload', async () => {
@@ -59,7 +52,7 @@ describe('LeadsService', () => {
       expect(result.success).toBe(true);
     });
 
-    it('maps camelCase DTO fields to snake_case DB columns', async () => {
+    it('maps camelCase DTO fields to Prisma model fields', async () => {
       await service.create({
         name: 'Test',
         phone: '+910000000000',
@@ -69,26 +62,23 @@ describe('LeadsService', () => {
         potentialSubsidyInr: 78000,
       });
 
-      const insertArg = supabaseMock.db.from('leads').insert.mock.calls[0][0];
-      expect(insertArg.monthly_consumption_kwh).toBe(300);
-      expect(insertArg.recommended_system_kwp).toBe(3.5);
-      expect(insertArg.estimated_annual_savings_inr).toBe(45000);
-      expect(insertArg.potential_subsidy_inr).toBe(78000);
+      const createArg = prismaMock.lead.create.mock.calls[0][0].data;
+      expect(createArg.monthlyConsumptionKwh).toBe(300);
+      expect(createArg.recommendedSystemKwp).toBe(3.5);
+      expect(createArg.estimatedAnnualSavingsInr).toBe(45000);
+      expect(createArg.potentialSubsidyInr).toBe(78000);
     });
 
     it('sets status to "new" by default', async () => {
       await service.create({ name: 'Test', phone: '+910000000000' });
-      const insertArg = supabaseMock.db.from('leads').insert.mock.calls[0][0];
-      expect(insertArg.status).toBe('new');
+      const createArg = prismaMock.lead.create.mock.calls[0][0].data;
+      expect(createArg.status).toBe('new');
     });
   });
 
-  describe('create — Supabase error', () => {
-    it('throws InternalServerErrorException on DB failure', async () => {
-      const errMock = makeSupabaseMock({
-        data: null,
-        error: { message: 'connection refused', details: '' },
-      });
+  describe('create — database error', () => {
+    it('throws InternalServerErrorException on insert failure', async () => {
+      const errMock = makePrismaMock({ error: new Error('connection refused') });
       const svc = await buildModule(errMock);
 
       await expect(

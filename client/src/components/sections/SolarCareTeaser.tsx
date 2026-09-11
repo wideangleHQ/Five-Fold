@@ -20,8 +20,8 @@ export const SolarCareTeaser: React.FC = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 lg:py-0 lg:min-h-[100svh] flex flex-col justify-center bg-white text-[#173B53] font-sans">
-      <Container>
+    <section className="py-12 sm:py-16 lg:py-6 lg:min-h-[100svh] flex flex-col justify-center bg-white text-[#173B53] font-sans">
+      <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8">
 
         {/* Section Header */}
         <div data-reveal="group" className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6 sm:mb-8">
@@ -181,7 +181,7 @@ export const SolarCareTeaser: React.FC = () => {
           </div>
         </div>
 
-      </Container>
+      </div>
     </section>
   );
 };
