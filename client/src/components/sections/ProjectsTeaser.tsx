@@ -55,12 +55,18 @@ export const ProjectsTeaser: React.FC = () => {
       <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8">
 
         {/* Header */}
-        <div data-reveal="text" className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+        <div data-reveal="group" className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div className="space-y-1.5">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block">
+            <span
+              data-reveal="eyebrow"
+              className="text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block"
+            >
               • PORTFOLIO
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.1]">
+            <h2
+              data-reveal="heading"
+              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.1]"
+            >
               Real Projects. Measurable Impact.
             </h2>
           </div>

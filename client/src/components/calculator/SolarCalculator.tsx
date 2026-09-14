@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowRight, ChevronRight, Info } from "lucide-react";
+import { ArrowRight, ChevronRight, Info, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { calculateSolarRequirement } from "@/lib/solar-engine";
@@ -175,6 +175,15 @@ export function SolarCalculator() {
   const [result, setResult] = useState<SolarCalculationResult | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
 
+  // Inline enquiry form (step 4)
+  const [cqName, setCqName] = useState("");
+  const [cqPhone, setCqPhone] = useState("");
+  const [cqEmail, setCqEmail] = useState("");
+  const [cqGotcha, setCqGotcha] = useState("");
+  const [cqSubmitting, setCqSubmitting] = useState(false);
+  const [cqSubmitted, setCqSubmitted] = useState(false);
+  const [cqError, setCqError] = useState<string | null>(null);
+
   function updateAppliance(key: keyof ApplianceState, val: number) {
     setAppliances((prev) => ({ ...prev, [key]: val }));
   }
@@ -216,6 +225,59 @@ export function SolarCalculator() {
     setShading("unknown");
     setDaytimeUsage("unknown");
     setTargetOffset(100);
+    setCqName("");
+    setCqPhone("");
+    setCqEmail("");
+    setCqGotcha("");
+    setCqSubmitting(false);
+    setCqSubmitted(false);
+    setCqError(null);
+  }
+
+  const CALC_LEAD_TYPE_MAP: Record<string, string> = {
+    residential: "residential",
+    commercial: "commercial",
+    industrial: "industrial",
+    institutional: "consultation",
+  };
+
+  async function handleCqSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (cqSubmitting) return;
+    setCqSubmitting(true);
+    setCqError(null);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+    try {
+      const res = await fetch(`${apiUrl}/api/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: cqName,
+          phone: cqPhone,
+          email: cqEmail || undefined,
+          city: location || undefined,
+          leadType: CALC_LEAD_TYPE_MAP[propertyType] ?? "other",
+          source: "solar-calculator",
+          _gotcha: cqGotcha || undefined,
+          monthlyConsumptionKwh: result?.consumption.monthlyConsumptionKWh || undefined,
+          recommendedSystemKwp: result?.recommendedSystemKWp || undefined,
+          estimatedAnnualSavingsInr: result?.estimatedAnnualSavingsINR || undefined,
+          potentialSubsidyInr: result?.potentialSubsidyINR || undefined,
+        }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        if (res.status === 429) throw new Error("Too many requests. Please wait a moment and try again.");
+        throw new Error((body as { message?: string }).message ?? `Error ${res.status}`);
+      }
+      setCqSubmitted(true);
+    } catch (err) {
+      setCqError(
+        err instanceof Error ? err.message : "Unable to submit. Please try again or call us directly.",
+      );
+    } finally {
+      setCqSubmitting(false);
+    }
   }
 
   function canProceedStep1() { return !!propertyType; }
@@ -682,24 +744,106 @@ export function SolarCalculator() {
           <p className="text-xs text-slate-400 mt-1">Engine version: {r.engineVersion}</p>
         </div>
 
-        {/* CTA */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button
-            href="/contact"
-            variant="primary"
-            className="flex-1 bg-[#20435F] hover:bg-[#0C3046] text-white px-6 py-3.5 text-sm font-semibold rounded-xl inline-flex items-center justify-center gap-2 transition-all"
-          >
-            <span>Talk to Fivefold Engineers</span>
-            <ArrowRight className="h-4 w-4 text-[#00A9D6]" />
-          </Button>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="flex-1 border border-slate-200 text-slate-600 hover:border-slate-300 px-6 py-3.5 text-sm font-semibold rounded-xl transition-all"
-          >
-            Start Over
-          </button>
-        </div>
+        {/* Inline Enquiry */}
+        {cqSubmitted ? (
+          <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200">
+            <div className="flex items-center gap-2 font-bold text-emerald-900 mb-1">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+              <span>Enquiry Submitted</span>
+            </div>
+            <p className="text-sm text-emerald-800">
+              Thank you! A Fivefold engineer will review your solar estimate and reach out shortly.
+            </p>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="mt-4 text-xs text-slate-500 hover:text-[#111615] transition-colors underline-offset-2 hover:underline"
+            >
+              Start a new calculation
+            </button>
+          </div>
+        ) : (
+          <div className="border border-slate-200 rounded-2xl p-5 bg-[#F6F3EC]">
+            <p className="text-sm font-semibold text-[#111615] mb-4">
+              Get a detailed assessment from Fivefold engineers
+            </p>
+            <form onSubmit={handleCqSubmit} className="space-y-3">
+              <input
+                type="text"
+                name="_gotcha"
+                tabIndex={-1}
+                className="hidden"
+                aria-hidden="true"
+                value={cqGotcha}
+                onChange={(e) => setCqGotcha(e.target.value)}
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={cqName}
+                    onChange={(e) => setCqName(e.target.value)}
+                    placeholder="e.g. Rajesh Mohanty"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-[#111615] focus:outline-none focus:ring-2 focus:ring-[#20435F]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Phone Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={cqPhone}
+                    onChange={(e) => setCqPhone(e.target.value)}
+                    placeholder="+91 98765 43210"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-[#111615] focus:outline-none focus:ring-2 focus:ring-[#20435F]"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={cqEmail}
+                  onChange={(e) => setCqEmail(e.target.value)}
+                  placeholder="name@company.com"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-[#111615] focus:outline-none focus:ring-2 focus:ring-[#20435F]"
+                />
+              </div>
+              {cqError && (
+                <div className="p-3 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2 text-xs text-red-800">
+                  <AlertCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
+                  <span>{cqError}</span>
+                </div>
+              )}
+              <div className="flex gap-3">
+                <Button
+                  type="submit"
+                  variant="primary"
+                  disabled={cqSubmitting}
+                  className="flex-1 bg-[#20435F] hover:bg-[#0C3046] text-white px-5 py-3 text-sm font-semibold rounded-xl inline-flex items-center justify-center gap-2 disabled:opacity-50 transition-all"
+                >
+                  <span>{cqSubmitting ? "Submitting..." : "Request Engineering Assessment"}</span>
+                  {!cqSubmitting && <ArrowRight className="h-4 w-4 text-[#00A9D6]" />}
+                </Button>
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="border border-slate-200 text-slate-600 hover:border-slate-300 px-4 py-3 text-sm font-semibold rounded-xl transition-all whitespace-nowrap"
+                >
+                  Start Over
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     );
   }

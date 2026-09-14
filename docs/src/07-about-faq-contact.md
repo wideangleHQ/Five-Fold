@@ -62,7 +62,9 @@ I am interested in:
 - Requirement
 - Optional electricity information
 
-All enquiries are stored in the website database (Supabase).
+All enquiries are stored in Supabase (the persistent database). Each valid submission also triggers a notification email to `info@fivefold.co.in` via Resend. Email delivery is the business notification layer — a lead is never lost if the email fails, because Supabase is the source of truth.
+
+The Resend API key is a server-only secret and must never appear in the React client bundle or any `NEXT_PUBLIC_*` variable. All email delivery originates from the NestJS server.
 
 ### Confirmed contact details
 ```

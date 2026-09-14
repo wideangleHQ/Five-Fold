@@ -2,45 +2,45 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Check, ArrowRight } from "lucide-react";
-import { Container } from "@/components/ui/Container";
-import { SOLARCARE_PLANS } from "@/data/solarcare-plans";
+import { Check, ArrowRight, ShieldCheck } from "lucide-react";
+import { SOLARCARE_COMPARISON_PLANS } from "@/data/solarcare-plans";
+import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 export const SolarCareTeaser: React.FC = () => {
-  const [selectedPlanId, setSelectedPlanId] = useState<string>("plus");
-  const [activeFilter, setActiveFilter] = useState<string>("all");
+  // Store selected tier per plan
+  const [selectedTiers, setSelectedTiers] = useState<Record<string, string>>({
+    essential: "essential-1yr",
+    plus: "plus-3yr",
+    pro: "pro-5yr",
+  });
 
-  const handleFilterChange = (filter: string) => {
-    setActiveFilter(filter);
-    if (filter === "home") setSelectedPlanId("plus");
-    else if (filter === "commercial") setSelectedPlanId("premium");
-    else if (filter === "industrial") setSelectedPlanId("elite");
-    else if (filter === "basic") setSelectedPlanId("essential");
+  const handleTierSelect = (planId: string, tierId: string) => {
+    setSelectedTiers((prev) => ({ ...prev, [planId]: tierId }));
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-6 lg:min-h-[100svh] flex flex-col justify-center bg-white text-[#173B53] font-sans">
-      <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8">
-
+    <section className="py-14 sm:py-18 lg:py-20 bg-[#F6F3EC] text-[#173B53] font-sans relative">
+      <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+        
         {/* Section Header */}
-        <div data-reveal="group" className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6 sm:mb-8">
-          <div className="space-y-2 max-w-2xl">
+        <div data-reveal="group" className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 sm:mb-12 lg:mb-14">
+          <div className="space-y-2.5 max-w-2xl">
             <span
-              data-reveal="text"
-              className="text-xs font-mono font-semibold uppercase tracking-wider text-[#1684C7] block"
+              data-reveal="eyebrow"
+              className="text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block"
             >
               • SOLARCARE AMC PLANS
             </span>
             <h2
               data-reveal="heading"
-              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-tight"
+              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.08]"
             >
-              Horizontal Plan Comparison
+              SolarCare Asset Management Plans
             </h2>
             <p
               data-reveal="paragraph"
-              className="font-sans text-[#526673] text-sm sm:text-base leading-relaxed"
+              className="font-sans text-[#526673] text-sm sm:text-base lg:text-lg leading-relaxed pt-0.5"
             >
               Annual maintenance contracts engineered to protect asset performance, ensure safety compliance, and maximize generation yield over 25+ years.
             </p>
@@ -51,138 +51,220 @@ export const SolarCareTeaser: React.FC = () => {
               href="/solarcare"
               className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#173B53] hover:text-[#1684C7] transition-colors group"
             >
-              <span>Explore comprehensive O&M specs</span>
+              <span>Explore complete technical specs</span>
               <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
         </div>
 
-        {/* Scope Selector Pills */}
-        <div data-reveal="cards-container" className="flex flex-wrap items-center gap-2 mb-6">
-          <span className="font-mono text-xs font-semibold text-[#526673] mr-2">Highlight Scope:</span>
-          {[
-            { id: "all", label: "All Plans" },
-            { id: "basic", label: "Entry (1 Year)" },
-            { id: "home", label: "Residential (3 Years)" },
-            { id: "commercial", label: "Commercial (5 Years)" },
-            { id: "industrial", label: "Industrial (10 Years)" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => handleFilterChange(tab.id)}
-              className={cn(
-                "px-3 py-1.5 rounded-full text-xs font-sans font-semibold transition-all focus:outline-none",
-                activeFilter === tab.id
-                  ? "bg-[#173B53] text-white shadow-sm"
-                  : "bg-[#F6F3EC] text-[#526673] border border-[#DCE2E2] hover:border-[#173B53]/40"
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        {/* 3-Column Plan Comparison Grid */}
+        <div
+          data-reveal="cards-container"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-7 xl:gap-8 items-stretch"
+        >
+          {SOLARCARE_COMPARISON_PLANS.map((plan) => {
+            const isFeatured = plan.id === "plus";
+            const currentTierId = selectedTiers[plan.id] || plan.tiers[0]?.id;
 
-        {/* Horizontal Connected Plans Comparison Track */}
-        <div data-reveal="cards-container" className="relative">
-          {/* Mobile scroll indicator note */}
-          <p className="text-[11px] font-mono text-[#526673] mb-3 block lg:hidden">
-            ← Swipe horizontally to compare plans →
-          </p>
-
-          <div className="flex lg:grid lg:grid-cols-4 gap-4 lg:gap-0 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4 lg:pb-0 rounded-2xl lg:border lg:border-[#DCE2E2] lg:bg-[#F6F3EC] lg:divide-x lg:divide-[#DCE2E2]">
-            {SOLARCARE_PLANS.map((plan) => {
-              const isSelected = plan.id === selectedPlanId;
-              return (
-                <div
-                  key={plan.id}
-                  data-reveal="card"
-                  onClick={() => setSelectedPlanId(plan.id)}
-                  className={cn(
-                    "w-[85vw] max-w-[320px] sm:w-[300px] lg:w-full shrink-0 snap-center transition-all duration-300 flex flex-col justify-between p-5 sm:p-6 lg:p-5 xl:p-6 relative cursor-pointer group",
-                    "rounded-2xl lg:rounded-none border border-[#DCE2E2] lg:border-0",
-                    isSelected
-                      ? "bg-white shadow-lg lg:shadow-none lg:bg-white z-10 ring-2 ring-[#173B53] lg:ring-0"
-                      : "bg-[#F6F3EC] hover:bg-white/80"
-                  )}
-                >
-                  {/* Subtle Top Accent for Active Plan on Desktop */}
-                  {isSelected && (
-                    <div className="hidden lg:block absolute top-0 left-0 right-0 h-1 bg-[#173B53]" />
-                  )}
-
-                  <div className="space-y-4">
-                    {/* Header: Name, Duration, Recommendation */}
-                    <div className="space-y-1 border-b border-[#DCE2E2] pb-3.5">
-                      <div className="flex items-center justify-between gap-2">
-                        <h3 className="font-heading text-lg xl:text-xl font-extrabold text-[#173B53] tracking-tight">
-                          {plan.name}
-                        </h3>
-                        {plan.badge && (
-                          <span
-                            className={cn(
-                              "text-[10px] font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded",
-                              isSelected
-                                ? "bg-[#173B53] text-white"
-                                : "bg-[#DCE2E2] text-[#173B53]"
-                            )}
-                          >
-                            {plan.badge}
-                          </span>
+            return (
+              <div
+                key={plan.id}
+                data-reveal="card"
+                className={cn(
+                  "h-full flex flex-col justify-between rounded-3xl p-6 sm:p-7 lg:p-8 transition-all duration-300 relative",
+                  isFeatured
+                    ? "bg-[#173B53] text-white border border-[#173B53] shadow-[0_16px_40px_-12px_rgba(23,59,83,0.28)] ring-1 ring-[#173B53]"
+                    : "bg-white text-[#173B53] border border-[#DCE2E2] shadow-[0_4px_20px_-4px_rgba(23,59,83,0.06)] hover:border-[#173B53]/30"
+                )}
+              >
+                {/* Top Content: Title, Description, Audience, Divider, Feature List */}
+                <div className="space-y-5">
+                  {/* Card Header */}
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3
+                        className={cn(
+                          "font-heading text-2xl sm:text-3xl font-extrabold tracking-tight",
+                          isFeatured ? "text-white" : "text-[#173B53]"
                         )}
-                      </div>
-                      <p className="font-mono text-xs font-bold text-[#1684C7]">
-                        {plan.duration}
-                      </p>
-                      <p className="font-sans text-[11px] text-[#526673] font-medium">
-                        {plan.recommendedFor}
-                      </p>
+                      >
+                        {plan.name}
+                      </h3>
+                      {plan.badge && (
+                        <span
+                          className={cn(
+                            "text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shrink-0 shadow-xs",
+                            isFeatured
+                              ? "bg-[#1684C7] text-white"
+                              : "bg-[#F6F3EC] text-[#173B53] border border-[#DCE2E2]"
+                          )}
+                        >
+                          {plan.badge}
+                        </span>
+                      )}
                     </div>
 
-                    {/* Short Core Description */}
-                    <p className="font-sans text-xs text-[#526673] leading-relaxed min-h-[36px]">
+                    <p
+                      className={cn(
+                        "font-sans text-xs sm:text-sm leading-relaxed min-h-[44px]",
+                        isFeatured ? "text-slate-200" : "text-[#526673]"
+                      )}
+                    >
                       {plan.description}
                     </p>
 
-                    {/* Key Included Services */}
-                    <div className="space-y-2 pt-0.5">
-                      <p className="font-mono text-[10px] uppercase font-bold text-[#526673]/60 tracking-wider">
-                        Included Services
-                      </p>
-                      <ul className="space-y-1.5">
-                        {plan.features.slice(0, 4).map((feat, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-xs text-[#173B53] leading-snug">
-                            <Check className="h-3.5 w-3.5 text-[#1684C7] shrink-0 mt-0.5" />
-                            <span>{feat}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="pt-0.5">
+                      <span
+                        className={cn(
+                          "inline-block font-mono text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md",
+                          isFeatured
+                            ? "bg-white/10 text-sky-200"
+                            : "bg-[#F6F3EC] text-[#173B53]"
+                        )}
+                      >
+                        {plan.recommendedFor}
+                      </span>
                     </div>
                   </div>
 
-                  {/* CTA / Action */}
-                  <div className="pt-4 mt-4 border-t border-[#DCE2E2]">
-                    <Link
-                      href={`/contact?plan=${plan.id}`}
+                  {/* Clean Divider */}
+                  <div
+                    className={cn(
+                      "border-t",
+                      isFeatured ? "border-white/15" : "border-[#DCE2E2]"
+                    )}
+                  />
+
+                  {/* Feature Section Header */}
+                  <div className="space-y-3.5">
+                    <p
                       className={cn(
-                        "w-full inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-sans font-semibold transition-all group/btn",
-                        isSelected
-                          ? "bg-[#173B53] hover:bg-[#0f2738] text-white shadow-sm"
-                          : "border border-[#DCE2E2] hover:border-[#173B53] text-[#173B53] hover:text-[#173B53] bg-white"
+                        "font-mono text-xs font-bold uppercase tracking-wider",
+                        isFeatured ? "text-white" : "text-[#173B53]"
+                      )}
+                    >
+                      {plan.featureHeader}
+                    </p>
+
+                    {/* Features List */}
+                    <ul className="space-y-2.5">
+                      {plan.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm leading-snug">
+                          <span
+                            className={cn(
+                              "h-4 w-4 rounded-full flex items-center justify-center shrink-0 mt-0.5",
+                              isFeatured
+                                ? "bg-[#1684C7]/30 text-white"
+                                : "bg-[#173B53]/10 text-[#173B53]"
+                            )}
+                          >
+                            <Check className="h-2.5 w-2.5 stroke-[3]" />
+                          </span>
+                          <span className={isFeatured ? "text-slate-100" : "text-[#173B53]/90"}>
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Flexible Spacer to lock bottom CTAs to identical height */}
+                <div className="flex-1 min-h-[24px]" />
+
+                {/* Bottom Section: Duration / Scope Tier Options & CTA */}
+                <div
+                  className={cn(
+                    "pt-5 space-y-4 border-t mt-5",
+                    isFeatured ? "border-white/15" : "border-[#DCE2E2]"
+                  )}
+                >
+                  {/* Selectable Duration Tiers */}
+                  <div className="space-y-2">
+                    {plan.tiers.map((tier) => {
+                      const isTierActive = tier.id === currentTierId;
+                      return (
+                        <button
+                          key={tier.id}
+                          type="button"
+                          onClick={() => handleTierSelect(plan.id, tier.id)}
+                          className={cn(
+                            "w-full flex items-center justify-between p-3 rounded-xl text-left transition-all border cursor-pointer focus:outline-none",
+                            isFeatured
+                              ? isTierActive
+                                ? "bg-white/15 border-[#1684C7] text-white shadow-xs"
+                                : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
+                              : isTierActive
+                              ? "bg-[#F6F3EC] border-[#173B53] text-[#173B53] shadow-xs"
+                              : "bg-white border-[#DCE2E2] text-[#526673] hover:border-[#173B53]/40"
+                          )}
+                        >
+                          <div className="space-y-0.5 min-w-0 pr-2">
+                            <div
+                              className={cn(
+                                "font-heading text-xs font-bold tracking-tight truncate",
+                                isFeatured ? "text-white" : "text-[#173B53]"
+                              )}
+                            >
+                              {tier.name}
+                            </div>
+                            <div
+                              className={cn(
+                                "font-sans text-[11px] leading-tight truncate",
+                                isFeatured ? "text-slate-300" : "text-[#526673]"
+                              )}
+                            >
+                              {tier.subtitle}
+                            </div>
+                          </div>
+
+                          {/* Radio Indicator */}
+                          <div
+                            className={cn(
+                              "h-4 w-4 rounded-full border flex items-center justify-center shrink-0 transition-colors",
+                              isFeatured
+                                ? isTierActive
+                                  ? "border-[#1684C7] bg-[#1684C7]"
+                                  : "border-white/30 bg-transparent"
+                                : isTierActive
+                                ? "border-[#173B53] bg-[#173B53]"
+                                : "border-[#DCE2E2] bg-transparent"
+                            )}
+                          >
+                            {isTierActive && (
+                              <div className="h-1.5 w-1.5 rounded-full bg-white" />
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Card Bottom CTA */}
+                  <div>
+                    <Button
+                      href={`/contact?plan=${plan.id}&tier=${currentTierId}`}
+                      variant={isFeatured ? "amber" : "outline"}
+                      size="md"
+                      className={cn(
+                        "w-full justify-center h-11 text-xs sm:text-sm font-semibold rounded-xl transition-all shadow-xs",
+                        isFeatured
+                          ? "bg-[#1684C7] hover:bg-[#126fa8] text-white border-0"
+                          : "bg-white hover:bg-[#173B53] text-[#173B53] hover:text-white border-[#173B53]"
                       )}
                     >
                       <span>Enquire for {plan.name}</span>
-                      <ArrowRight className="h-3.5 w-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                    </Link>
+                      <ArrowRight className="h-4 w-4 ml-1.5" />
+                    </Button>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+
+              </div>
+            );
+          })}
         </div>
 
       </div>
     </section>
   );
 };
-

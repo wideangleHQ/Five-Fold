@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 
 const PROCESS_STEPS = [
@@ -20,27 +19,33 @@ export const HowWeWorkTimeline: React.FC = () => {
     <section className="py-20 sm:py-24 bg-brand-off-white text-brand-charcoal overflow-hidden">
       <Container>
         {/* Section Header */}
-        <div className="max-w-3xl mb-16 text-center mx-auto">
-          <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#20435F]">
+        <div data-reveal="group" className="max-w-3xl mb-16 text-center mx-auto space-y-2">
+          <span
+            data-reveal="eyebrow"
+            className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#20435F] block"
+          >
             Engineering Execution Process
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-charcoal mt-2 tracking-tight">
+          <h2
+            data-reveal="heading"
+            className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-charcoal tracking-tight"
+          >
             Our 8-Step Turnkey Solar Delivery
           </h2>
-          <p className="text-slate-600 text-base sm:text-lg mt-3">
+          <p
+            data-reveal="paragraph"
+            className="text-slate-600 text-base sm:text-lg pt-1"
+          >
             A standardized, engineering-led execution timeline designed for zero downtime and maximum long-term yield.
           </p>
         </div>
 
         {/* Timeline Desktop Grid / Mobile Vertical */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+        <div data-reveal="cards-container" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
           {PROCESS_STEPS.map((step, idx) => (
-            <motion.div
+            <div
               key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.08 }}
+              data-reveal="card"
               className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-[#20435F] hover:shadow-md transition-all duration-300 relative group flex flex-col justify-between"
             >
               <div>
@@ -60,7 +65,7 @@ export const HowWeWorkTimeline: React.FC = () => {
               <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                 Phase 0{Math.floor(idx / 2) + 1} Execution
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </Container>

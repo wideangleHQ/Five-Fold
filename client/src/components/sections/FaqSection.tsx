@@ -12,17 +12,26 @@ export const FaqSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
 
           {/* Left: heading + contact */}
-          <div data-reveal="text" className="lg:col-span-4 space-y-4">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block">
+          <div data-reveal="group" className="lg:col-span-4 space-y-4">
+            <span
+              data-reveal="eyebrow"
+              className="text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block"
+            >
               • FAQ
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.1]">
+            <h2
+              data-reveal="heading"
+              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.1]"
+            >
               Frequently Asked Questions
             </h2>
-            <p className="font-sans text-[#526673] text-sm sm:text-base leading-relaxed">
+            <p
+              data-reveal="paragraph"
+              className="font-sans text-[#526673] text-sm sm:text-base leading-relaxed"
+            >
               Clear answers about solar, approvals and maintenance.
             </p>
-            <div className="space-y-2 pt-2">
+            <div data-reveal="cta" className="space-y-2 pt-2">
               <p className="font-sans text-xs font-semibold text-[#173B53]">Still have a question?</p>
               <a
                 href="/contact"

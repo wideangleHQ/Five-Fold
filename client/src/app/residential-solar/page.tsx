@@ -25,18 +25,27 @@ export default function ResidentialSolarPage() {
     <div className="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-white min-h-screen">
       <Container>
         {/* Hero */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-green/10 text-brand-green text-xs font-semibold uppercase tracking-wider">
+        <div data-reveal="group" className="max-w-3xl mx-auto text-center space-y-4 mb-14">
+          <div
+            data-reveal="eyebrow"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-green/10 text-brand-green text-xs font-semibold uppercase tracking-wider"
+          >
             <Home className="h-4 w-4" />
             <span>Home Solar Power</span>
           </div>
-          <h1 className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900">
+          <h1
+            data-reveal="heading"
+            className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900"
+          >
             Residential Solar Solutions
           </h1>
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+          <p
+            data-reveal="paragraph"
+            className="text-slate-600 text-base sm:text-lg leading-relaxed"
+          >
             Eliminate up to 90% of your monthly household electricity bills with bankable rooftop solar engineering, DISCOM net metering, and PM Surya Ghar subsidy guidance.
           </p>
-          <div className="pt-2 flex justify-center">
+          <div data-reveal="cta" className="pt-2 flex justify-center">
             <Button href="/solar-calculator" variant="primary" size="lg">
               <Calculator className="mr-2 h-5 w-5 text-brand-amber" />
               <span>Calculate My Home Solar Requirement</span>
@@ -45,9 +54,13 @@ export default function ResidentialSolarPage() {
         </div>
 
         {/* Core Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {RESIDENTIAL_STEPS.map((step, idx) => (
-            <div key={step.title} className="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-2">
+            <div
+              key={step.title}
+              data-reveal="card"
+              className="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-2"
+            >
               <div className="text-xs font-mono font-bold text-brand-green uppercase">
                 Phase 0{idx + 1}
               </div>

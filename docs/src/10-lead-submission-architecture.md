@@ -1,6 +1,6 @@
 # 10 — Lead Submission & Server Integration Architecture
 
-**Status:** Phase 2 Implemented (Security / Abuse Protection / Reliability) — Phase 3 (WhatsApp) and Phase 4 (Frontend Integration) Planned  
+**Status:** Phase 2 Implemented (Security / Abuse Protection / Reliability) — Phase 3 (Resend Email Notification) and Phase 4 (Frontend Integration) Planned  
 **Purpose:** Authoritative technical specification for the centralized lead submission system.
 
 This document defines how the Fivefold website collects, submits, persists, and notifies leads. The existing UI is not changed by this architecture — the submission mechanism changes behind it.
@@ -17,7 +17,7 @@ This document defines how the Fivefold website collects, submits, persists, and 
 
 **`client/src/components/forms/ContactForm.tsx`** still simulates submission with a `setTimeout` call — no real API call is made yet. Connecting the form is Phase 4.
 
-**WhatsApp notification is not yet implemented.** That is Phase 3.
+**Resend email notification is not yet implemented.** That is Phase 3. Every valid lead submission will trigger a notification email to `info@fivefold.co.in` via Resend.
 
 Items marked **Planned** below are not yet implemented. Items under **Phase 2** below are implemented now; everything else in this document describing rate limiting, honeypot, CORS, etc. as "planned" is superseded by that section — those features exist today.
 
@@ -47,7 +47,7 @@ Items marked **Planned** below are not yet implemented. Items under **Phase 2** 
 
 ### NOT YET IMPLEMENTED
 
-- WhatsApp notification (Phase 3)
+- Resend email notification to `info@fivefold.co.in` (Phase 3)
 - Frontend form integration — `ContactForm.tsx` still simulates submission (Phase 4)
 - The honeypot's hidden form field on the frontend (server-side handling exists; no form currently sends `_gotcha`)
 - Solar Calculator → lead payload wiring (Phase 5)
@@ -75,19 +75,21 @@ server/ (NestJS — Lead API on Railway)
           v
      Prisma ORM
           |
-          +------------------------+
-          |                        |
-          v                        v
-     Supabase                WhatsApp Business
-     PostgreSQL               Cloud API
-     (source of truth)       (notification only)
-          |                        |
-          v                        v
-   Lead History            Fivefold Team
-   (persistent)            (operational alert)
+          +---------------------------+
+          |                           |
+          v                           v
+     Supabase                   Resend API
+     PostgreSQL                 (transactional email)
+     (source of truth)          (notification only)
+          |                           |
+          v                           v
+   Lead History             info@fivefold.co.in
+   (persistent)             (business notification)
 ```
 
 Prisma is the application's database access layer; Supabase remains the PostgreSQL database/infrastructure — leads are no longer queried through the Supabase JS SDK.
+
+**Notification flow:** After a lead is persisted to Supabase, the server sends a single notification email to `info@fivefold.co.in` via Resend. Email is the business notification layer only — Supabase is the source of truth. A lead is never lost if email delivery fails.
 
 This architecture is intentionally minimal. There are three layers and one centralized endpoint. Each layer has a single clear responsibility.
 
@@ -124,14 +126,14 @@ The server is responsible for:
 - Sanitizing and normalizing values
 - Rate limiting requests per source IP
 - Persisting the validated lead via Prisma to Supabase PostgreSQL as the **source of truth**
-- Triggering a WhatsApp Business notification after successful persistence
+- Sending a notification email to `info@fivefold.co.in` via Resend after successful persistence
 - Returning a safe, minimal response to the frontend
 - Keeping all private credentials strictly server-side
 
 The server must **never**:
 
 - Expose database error messages to the public response
-- Expose WhatsApp API errors to the public response
+- Expose Resend API errors to the public response
 - Return internal stack traces, access tokens, or infrastructure details
 
 ### Supabase Database
@@ -147,17 +149,17 @@ Supabase is responsible for:
 
 Supabase is not a cache. A lead that exists in Supabase is the canonical record regardless of whether any notification succeeded.
 
-### WhatsApp Business Cloud API
+### Resend Email Service
 
-WhatsApp is an **immediate operational notification channel** only.
+Resend is a **business notification channel** only.
 
-WhatsApp is responsible for:
+Resend is responsible for:
 
-- Alerting the Fivefold team in real time when a new lead is submitted
+- Delivering a structured notification email to `info@fivefold.co.in` when a new lead is submitted
 
-WhatsApp is **not** the database. If WhatsApp notification fails, the lead is not lost — it exists in Supabase. The team must check Supabase for leads if notifications are disrupted.
+Resend is **not** the database. If email delivery fails, the lead is not lost — it exists in Supabase. The team must check Supabase for leads if notifications are disrupted.
 
-Official WhatsApp Business Cloud API is the only acceptable integration. Unofficial WhatsApp Web automation or third-party scrapers must not be used.
+The `RESEND_API_KEY` is a server-only secret. It must never appear in a `NEXT_PUBLIC_` environment variable, in the React client bundle, or in any browser-accessible configuration. All email delivery originates from the NestJS server — the client never communicates with Resend directly.
 
 ---
 
@@ -237,10 +239,9 @@ server/
 
 ```
 server/src/
-└── integrations/
-    └── whatsapp/                     # Phase 3
-        ├── whatsapp.module.ts
-        └── whatsapp.service.ts
+└── email/                            # Phase 3
+    ├── email.module.ts               # EmailModule — imported by AppModule
+    └── email.service.ts              # EmailService — sends via Resend SDK
 ```
 
 Each module has one clear responsibility. NestJS's module system enforces this boundary.
@@ -251,10 +252,10 @@ Each module has one clear responsibility. NestJS's module system enforces this b
 | `app.module.ts` | Root module — imports all feature modules. |
 | `health/health.controller.ts` | `GET /api/health`. Confirms server is running. |
 | `leads/leads.controller.ts` | `POST /api/leads`. Validates DTO, delegates to service. |
-| `leads/leads.service.ts` | Orchestrates: validate → Prisma create → WhatsApp notify → respond. (WhatsApp notify planned) |
+| `leads/leads.service.ts` | Orchestrates: validate → Prisma create → email notify → respond. (Email notify planned Phase 3) |
 | `leads/dto/create-lead.dto.ts` | class-validator DTO — server-side schema for incoming lead payload. |
 | `prisma/prisma.service.ts` | Shared `PrismaClient` instance with NestJS lifecycle hooks (`$connect`/`$disconnect`). |
-| `integrations/whatsapp/whatsapp.service.ts` | WhatsApp Cloud API call. Never throws on failure — WhatsApp failure does not fail the lead. (Planned — Phase 3) |
+| `email/email.service.ts` | Sends notification via Resend SDK. Never throws on failure — email failure does not fail the lead. (Planned — Phase 3) |
 | `common/filters/http-exception.filter.ts` | Safe error shape to clients. No stack traces or secrets in responses. |
 | `nest-cli.json` | NestJS CLI build configuration. |
 | `.env.example` | Committed — variable names with empty values. |
@@ -274,7 +275,7 @@ All lead submissions from all pages flow through a single endpoint. There are no
 
 - Consistent validation and sanitization across all form sources
 - Consistent Supabase insertion logic
-- Consistent WhatsApp notification format
+- Consistent email notification format
 - Easier analytics: all leads queryable in one place
 - Easier future CRM integration: one data model, not eight
 - Simpler maintenance: one handler to update when business requirements change
@@ -533,7 +534,7 @@ Content-Type: application/json
 **What the response must never expose:**
 
 - Supabase error details
-- WhatsApp API error messages
+- Resend API error messages
 - Access tokens, API keys, or secrets
 - Database schema details
 - Internal stack traces
@@ -678,57 +679,70 @@ async function insertLead(lead: NormalizedLead): Promise<{ id: string }> {
 
 ---
 
-## WhatsApp Service
+## Email Service (Resend)
 
-`services/whatsapp.ts` is responsible for sending an internal notification to the Fivefold team.
+`server/src/email/email.service.ts` is responsible for sending a structured notification email to the Fivefold team.
 
-### Notification message format
+### Recipient and sender
+
+| Variable | Value |
+|---|---|
+| `LEAD_NOTIFICATION_EMAIL` | `info@fivefold.co.in` — the business recipient |
+| `LEAD_FROM_EMAIL` | The verified sender domain address (e.g. `leads@fivefoldrenewable.com`) |
+| `Reply-To` | The submitting customer's email address (when provided) |
+
+### Notification email content
+
+The email subject line is dynamic (e.g. `New Residential Enquiry — Rajesh Mohanty`).
+
+The HTML body is a structured, readable summary:
 
 ```
-🔔 NEW FIVEFOLD ENQUIRY
+New Lead — {leadType} from {source}
 
-Name: {name}
-Phone: {phone}
+Name:     {name}
+Phone:    {phone}
+Email:    {email or —}
 Location: {city}, {state}
+Source:   {source}
 
-Interest: {leadType}
-Source: {source}
+[Calculator results block — only when source = solar-calculator:]
+Monthly Consumption:  {monthlyConsumptionKwh} kWh
+Recommended System:   {recommendedSystemKwp} kWp
+Est. Annual Savings:  ₹{estimatedAnnualSavingsInr}
+Subsidy Estimate:     ₹{potentialSubsidyInr}
 
-{conditional calculator block:}
-Monthly Consumption: {monthlyConsumptionKwh} kWh
-Recommended System: {recommendedSystemKwp} kWp
-Est. Annual Savings: ₹{estimatedAnnualSavings}
-Subsidy: ₹{potentialSubsidyInr}
-
-{message if present:}
+[Message — only when present:]
 Note: {message}
 
-Submitted: {created_at ISO timestamp}
+Submitted: {createdAt ISO timestamp}
+Lead ID:   {leadId}
 ```
 
-Omit sections with null values rather than showing "null" or "undefined" to the team.
+Omit sections with null values rather than showing "null" or "—" to the team. All user-supplied content rendered in the HTML body must be HTML-escaped to prevent XSS from malicious form input reaching the email client.
 
 ### Implementation requirements
 
-- Use only the official WhatsApp Business Cloud API (`graph.facebook.com/v*/messages`)
-- Credentials used: `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`
-- The function must **never throw** in a way that fails the overall lead submission if WhatsApp fails
-- Log the WhatsApp error internally (safe log, no credentials in log)
-- Return a typed result indicating whether notification succeeded or failed
+- Use the `resend` npm package in `server/` only — never in `client/`
+- `RESEND_API_KEY` is a server-only secret: never in `NEXT_PUBLIC_*`, never in the React bundle, never in browser-accessible configuration
+- `EmailService` must **never throw** in a way that fails the lead submission if email delivery fails
+- Log email failures internally (safe log, no API key in log)
+- Track email delivery status on the lead record (`emailStatus: pending | sent | failed`)
+- Return a typed result indicating whether delivery succeeded or failed
 
 ```typescript
-// Conceptual shape
-async function sendLeadNotification(lead: NormalizedLead): Promise<{ sent: boolean; error?: string }> {
+// Conceptual shape — actual implementation in email/email.service.ts
+async function sendLeadNotification(lead: Lead): Promise<{ sent: boolean; error?: string }> {
   try {
-    // ... call WhatsApp API
+    await resend.emails.send({ from, to, subject, html, replyTo });
     return { sent: true };
   } catch (err) {
-    return { sent: false, error: 'WhatsApp notification failed' };
+    return { sent: false, error: 'Email notification failed' };
   }
 }
 ```
 
-The `routes/leads.ts` handler calls `sendLeadNotification` after Supabase insert succeeds, but a failed notification does not cause the lead submission response to return `success: false`.
+`LeadsService.create()` calls `EmailService.sendLeadNotification()` after the Prisma insert succeeds. A failed email delivery does not cause the lead submission response to return `success: false` — the lead is already safely stored in Supabase.
 
 ---
 
@@ -745,12 +759,12 @@ Validate (pass)
       ↓
 Insert to Supabase (success)
       ↓
-Send WhatsApp notification (success)
+Send email notification via Resend (success)
       ↓
 Return { success: true, leadId: "..." }
 ```
 
-### Supabase succeeds, WhatsApp fails
+### Supabase succeeds, email fails
 
 ```
 Receive request
@@ -759,14 +773,16 @@ Validate (pass)
       ↓
 Insert to Supabase (success) ← lead safely stored
       ↓
-Send WhatsApp notification (fails)
+Send email notification via Resend (fails)
       ↓
-Log notification failure internally (no credentials in log)
+Log email failure internally (no API key in log)
+      ↓
+Update lead emailStatus = "failed" in database
       ↓
 Return { success: true, leadId: "..." }
 ```
 
-The lead exists in Supabase. The team can check Supabase for leads if WhatsApp is disrupted. This is the correct behaviour — WhatsApp is a convenience channel, not the source of truth.
+The lead exists in Supabase. The team can check Supabase for leads if email is disrupted. This is the correct behaviour — email is a convenience notification channel, not the source of truth.
 
 ### Supabase fails
 
@@ -777,12 +793,12 @@ Validate (pass)
       ↓
 Insert to Supabase (fails)
       ↓
-Do NOT attempt WhatsApp notification
+Do NOT attempt email notification
       ↓
 Return HTTP 500: { success: false, message: "Unable to submit your enquiry." }
 ```
 
-Do not report a successful submission if the lead was not persisted. Do not send a WhatsApp notification for a lead that was not stored.
+Do not report a successful submission if the lead was not persisted. Do not send an email notification for a lead that was not stored.
 
 ### Validation fails
 
@@ -794,11 +810,11 @@ Validate (fail)
 Return HTTP 400: { success: false, message: "...", fields: [...] }
 ```
 
-No Supabase call. No WhatsApp call.
+No Supabase call. No email call.
 
 ### Future reliability
 
-If WhatsApp notification failure rate becomes a problem at scale, a retry queue (e.g. BullMQ with Redis, or a Supabase-backed retry table) may be introduced. This is **outside the initial implementation**. The initial architecture logs failures for manual follow-up rather than adding queue infrastructure prematurely.
+If email notification failure rate becomes a problem at scale, a retry queue (e.g. BullMQ with Redis, or a Supabase-backed retry table) may be introduced. This is **outside the initial implementation**. The initial architecture tracks `emailStatus` on the lead record for manual follow-up rather than adding queue infrastructure prematurely.
 
 ---
 
@@ -815,10 +831,9 @@ All secrets are managed as Railway environment variables set in the Railway dash
 | `CLIENT_URL` | Allowed CORS origin |
 | `DATABASE_URL` | Pooled Supabase Postgres connection string (Prisma runtime queries) — never in client |
 | `DIRECT_URL` | Direct Supabase Postgres connection string (`prisma migrate`) — never in client |
-| `WHATSAPP_ACCESS_TOKEN` | WhatsApp Business Cloud API token — never in client |
-| `WHATSAPP_PHONE_NUMBER_ID` | WhatsApp Cloud API phone number ID — never in client |
-| `WHATSAPP_BUSINESS_ACCOUNT_ID` | WhatsApp Business Account ID — never in client |
-| `WHATSAPP_VERIFY_TOKEN` | WhatsApp webhook verify token — never in client |
+| `RESEND_API_KEY` | Resend API key for transactional email — never in client, never in `NEXT_PUBLIC_*` |
+| `LEAD_NOTIFICATION_EMAIL` | Recipient address for lead notifications (e.g. `info@fivefold.co.in`) — server only |
+| `LEAD_FROM_EMAIL` | Verified sender address (e.g. `leads@fivefoldrenewable.com`) — server only |
 
 Local: copy `server/.env.example` → `server/.env` and fill in real values.  
 Production: set each variable in the Railway project dashboard. Never commit `.env`.
@@ -827,9 +842,11 @@ Production: set each variable in the Railway project dashboard. Never commit `.e
 
 | Variable | Purpose |
 |---|---|
-| `NEXT_PUBLIC_API_URL` | URL of the NestJS server (e.g. `https://api.fivefoldrenewable.com`) |
+| `NEXT_PUBLIC_API_URL` | URL of the NestJS server (e.g. `https://api.fivefoldrenewable.com`) — not a secret, embedded in bundle |
 | `NEXT_PUBLIC_SUPABASE_URL` | Only if future public read operations are added |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Only if future public read operations are added |
+
+`RESEND_API_KEY`, `LEAD_NOTIFICATION_EMAIL`, and `LEAD_FROM_EMAIL` are server-only and must **never** appear as `NEXT_PUBLIC_*` variables or in the React client bundle under any circumstance.
 
 `NEXT_PUBLIC_API_URL` is not a secret — it is embedded in the browser bundle. The service-role key is never placed here under any circumstance.
 
@@ -838,7 +855,7 @@ Local: copy `client/.env.local.example` → `client/.env.local` and set `NEXT_PU
 ### Secret rotation
 
 When rotating:
-1. Generate new credentials from the relevant provider (Supabase, WhatsApp)
+1. Generate new credentials from the relevant provider (Supabase, Resend)
 2. Update the value in Railway dashboard (or local `.env`)
 3. Redeploy the server
 4. Verify the new credentials work in production
@@ -857,10 +874,10 @@ https://www.fivefoldrenewable.com  (Next.js — Vercel or Railway)
           v
 https://api.fivefoldrenewable.com  (NestJS server (Railway))
           |
-          +-------------------------+
-          v                         v
-  Supabase project             WhatsApp Business
-  (Supabase Cloud)             Cloud API
+          +---------------------------+
+          v                           v
+  Supabase project               Resend API
+  (Supabase Cloud)               → info@fivefold.co.in
 ```
 
 The domain `api.fivefoldrenewable.com` is the **proposed target production domain**. At time of writing it is not configured. Initial deployment will use Railway's generated default URL (e.g. `https://fivefold-server-production.up.railway.app`).
@@ -874,10 +891,11 @@ http://localhost:3000           (Next.js dev server: npm run dev)
           v
 http://localhost:3001           (NestJS server local: npm run dev:server)
           |
-          +-------------------------+
-          v                         v
-  Supabase project             WhatsApp (can be skipped
-  (dev project or prod)        in development)
+          +---------------------------+
+          v                           v
+  Supabase project               Resend API
+  (dev project or prod)          (can be skipped in dev by
+                                  omitting RESEND_API_KEY)
 ```
 
 Use a separate Supabase project or a separate `leads` table with a `environment: 'dev'` flag during development to avoid polluting production lead data.
@@ -953,12 +971,12 @@ Observability in the initial implementation should be lightweight and free.
 - Request received: timestamp, source IP (hashed or truncated), `source` field value
 - Validation result: pass/fail, which fields failed
 - Supabase result: success/fail, lead ID on success
-- WhatsApp result: success/fail, no credential or message content
+- Email result: success/fail, no API key or message content in log
 - Rate limit events: IP (hashed), timestamp
 
 ### What to never log
 
-- WhatsApp access tokens
+- Resend API key
 - Supabase service-role key
 - Full request payload containing personal data
 - User phone numbers or email addresses in plain text logs
@@ -979,9 +997,8 @@ The following are explicitly outside the initial implementation. Do not add them
 | Feature | Why excluded from v1 |
 |---|---|
 | CRM system | Supabase serves as the lead store; Fivefold team can query it directly initially |
-| Email notification | WhatsApp is sufficient for initial operations |
 | AI lead classification | Not on the critical submission path |
-| Retry queue | Manual Supabase query covers failed WhatsApp notifications |
+| Retry queue | `emailStatus` field on lead record enables manual follow-up; queue is premature |
 | Lead admin dashboard | Supabase dashboard is sufficient initially |
 | Follow-up automation | Out of scope |
 | Docker / Kubernetes | Unnecessary at initial scale |
@@ -994,11 +1011,11 @@ The following are explicitly outside the initial implementation. Do not add them
 The architecture can naturally extend to:
 
 - A lead admin dashboard querying the `leads` table
-- Email notifications alongside WhatsApp
+- WhatsApp notification alongside email
 - AI classification of incoming leads by type/quality
 - CRM sync (Zoho, HubSpot, or custom) triggered by Supabase webhooks
 - Analytics queries over the `leads` table
-- Retry queue for failed WhatsApp notifications
+- Retry queue for failed email deliveries
 
 These are additions, not redesigns. The initial implementation does not need to anticipate them structurally.
 
@@ -1032,12 +1049,16 @@ These are additions, not redesigns. The initial implementation does not need to 
 - [x] Fixed: `/api/health` no longer depends on a valid database config to boot (`PrismaService.onModuleInit()` no longer throws on connect failure)
 - [ ] Add the hidden `_gotcha` field to `ContactForm.tsx` (frontend — out of scope this phase)
 
-### Phase 3 — WhatsApp Notification (planned)
+### Phase 3 — Resend Email Notification (planned)
 
-- [ ] `server/src/integrations/whatsapp/whatsapp.service.ts`
-- [ ] Wire into `LeadsService.create()` after Supabase insert
-- [ ] WhatsApp message template
-- [ ] Handle WhatsApp failure gracefully (lead is NOT lost)
+- [ ] Install `resend` package in `server/`
+- [ ] Add `emailStatus`, `emailSentAt`, `emailAttempts`, `emailError` columns to `server/prisma/schema.prisma` + migration
+- [ ] `server/src/email/email.module.ts` and `email.service.ts`
+- [ ] Wire `EmailService` into `LeadsService.create()` after Supabase insert
+- [ ] HTML email template: dynamic subject, structured body, Reply-To = customer email, all user content HTML-escaped
+- [ ] Handle email failure gracefully — lead is NOT lost; update `emailStatus = "failed"` on the record
+- [ ] Add `RESEND_API_KEY`, `LEAD_NOTIFICATION_EMAIL`, `LEAD_FROM_EMAIL` to `server/.env.example`
+- [ ] Tests: email sent on success, email failure does not break lead creation, HTML escaping
 
 ### Phase 4 — Frontend Form Integration (planned)
 

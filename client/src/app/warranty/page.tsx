@@ -25,23 +25,36 @@ export default function WarrantyPage() {
     <div className="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-white min-h-screen">
       <Container>
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold uppercase tracking-wider">
+        <div data-reveal="group" className="max-w-3xl mx-auto text-center space-y-4 mb-14">
+          <div
+            data-reveal="eyebrow"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold uppercase tracking-wider"
+          >
             <ShieldCheck className="h-4 w-4 text-emerald-700" />
             <span>Asset Protection & Peace of Mind</span>
           </div>
-          <h1 className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900">
+          <h1
+            data-reveal="heading"
+            className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900"
+          >
             Warranty & Support Framework
           </h1>
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+          <p
+            data-reveal="paragraph"
+            className="text-slate-600 text-base sm:text-lg leading-relaxed"
+          >
             Every solar power plant engineered by Fivefold is backed by Tier-1 OEM component warranties and Fivefold workmanship assurance.
           </p>
         </div>
 
         {/* Warranty Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16">
+        <div data-reveal="cards-container" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16">
           {WARRANTY_ITEMS.map((item) => (
-            <div key={item.title} className="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-3">
+            <div
+              key={item.title}
+              data-reveal="card"
+              className="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-3"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-bold uppercase text-brand-green">
                   {item.duration}

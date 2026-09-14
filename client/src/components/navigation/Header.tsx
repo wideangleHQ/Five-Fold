@@ -167,17 +167,19 @@ export const Header: React.FC = () => {
 
           {/* Desktop Right CTA Action Area */}
           <div className="hidden lg:flex items-center gap-3">
-            <button
+            <Button
               onClick={() => setIsSchemeModalOpen(true)}
-              className="px-3.5 py-1.5 text-xs font-semibold rounded-lg border border-[#DCE2E2] bg-white text-[#173B53] hover:bg-[#173B53] hover:border-[#173B53] hover:text-white transition-all duration-200 font-sans"
+              variant="outline"
+              size="sm"
+              className="h-9 px-4 text-xs font-semibold rounded-lg"
             >
               Check Schemes
-            </button>
+            </Button>
             <Button
               href="/contact"
               variant="primary"
               size="sm"
-              className="bg-[#173B53] hover:bg-[#0f2738] text-white py-2 px-4 text-xs font-semibold rounded-lg transition-all duration-200 ease-in-out border-0"
+              className="h-9 px-4 text-xs font-semibold rounded-lg"
             >
               Get a Free Consultation
             </Button>

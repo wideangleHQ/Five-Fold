@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
   ArrowLeft,
@@ -110,25 +110,22 @@ export const ServicesGrid: React.FC = () => {
         >
           {/* Background Image Layer */}
           <div className="absolute inset-0 z-0 overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeSlide.id}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 0.9, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={activeSlide.image}
-                  alt={activeSlide.title}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 98vw"
-                  className="object-cover object-center opacity-90"
-                />
-              </motion.div>
-            </AnimatePresence>
+            <motion.div
+              key={activeSlide.id}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 0.9, scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={activeSlide.image}
+                alt={activeSlide.title}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 98vw"
+                className="object-cover object-center opacity-90"
+              />
+            </motion.div>
 
             {/* Gradient Overlay for Readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#173B53]/95 via-[#173B53]/60 to-[#173B53]/30 z-[1]" />
@@ -136,15 +133,13 @@ export const ServicesGrid: React.FC = () => {
 
           {/* 2. DYNAMIC CONTENT AREA (LEFT ALIGNED WITH PROMINENT TYPOGRAPHY) */}
           <div className="relative z-10 my-auto py-3 sm:py-6 max-w-3xl text-left">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeSlide.id}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="space-y-3.5 sm:space-y-5 text-left"
-              >
+            <motion.div
+              key={activeSlide.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="space-y-3.5 sm:space-y-5 text-left"
+            >
                 {/* Category label */}
                 <div className="text-left">
                   <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1684C7] inline-block">
@@ -180,7 +175,6 @@ export const ServicesGrid: React.FC = () => {
                   </motion.div>
                 </div>
               </motion.div>
-            </AnimatePresence>
           </div>
 
           {/* 3. LOWER CATEGORY SELECTION CONTROLS */}

@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export interface AccordionItemData {
@@ -59,21 +58,19 @@ export const Accordion: React.FC<AccordionProps> = ({
                 )}
               />
             </button>
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.25, ease: "easeInOut" }}
-                  className="overflow-hidden"
-                >
-                  <div className="pt-3 pb-1 font-sans text-sm sm:text-base text-slate-600 leading-relaxed">
-                    {item.answer}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateRows: isOpen ? "1fr" : "0fr",
+                transition: "grid-template-rows 250ms ease-in-out",
+              }}
+            >
+              <div style={{ overflow: "hidden" }}>
+                <div className="pt-3 pb-1 font-sans text-sm sm:text-base text-slate-600 leading-relaxed">
+                  {item.answer}
+                </div>
+              </div>
+            </div>
           </div>
         );
       })}

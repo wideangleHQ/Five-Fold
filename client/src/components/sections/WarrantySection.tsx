@@ -16,23 +16,36 @@ export const WarrantySection: React.FC = () => {
   return (
     <section className="py-20 sm:py-24 bg-white text-brand-charcoal border-t border-b border-slate-200">
       <Container>
-        <div className="max-w-3xl mb-12">
-          <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#20435F]">
+        <div data-reveal="group" className="max-w-3xl mb-12 space-y-2">
+          <span
+            data-reveal="eyebrow"
+            className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#20435F] block"
+          >
             Built for Long-Term Performance
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-charcoal mt-2 tracking-tight">
+          <h2
+            data-reveal="heading"
+            className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-charcoal tracking-tight"
+          >
             Comprehensive Warranty & Component Protection
           </h2>
-          <p className="text-slate-600 text-base sm:text-lg mt-3">
+          <p
+            data-reveal="paragraph"
+            className="text-slate-600 text-base sm:text-lg pt-1"
+          >
             We partner exclusively with certified Tier-1 component manufacturers to ensure your solar installation is fully backed by long-term warranties.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {WARRANTY_ITEMS.map((w, idx) => {
             const Icon = w.icon;
             return (
-              <div key={idx} className="p-6 rounded-xl bg-brand-off-white border border-slate-200 space-y-3">
+              <div
+                key={idx}
+                data-reveal="card"
+                className="p-6 rounded-xl bg-brand-off-white border border-slate-200 space-y-3"
+              >
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#20435F]/10 text-[#20435F]">
                   <Icon className="h-5 w-5" />
                 </div>

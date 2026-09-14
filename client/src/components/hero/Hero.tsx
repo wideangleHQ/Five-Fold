@@ -224,7 +224,7 @@ export const Hero: React.FC = () => {
       }
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => ctx.kill();
   }, []);
 
   // GSAP ScrollTrigger Sequence: Text Exits -> Framed Image Expands -> Fullscreen Climax

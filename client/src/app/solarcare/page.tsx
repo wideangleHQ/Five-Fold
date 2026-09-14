@@ -19,15 +19,24 @@ export default function SolarCarePage() {
       {/* Page Hero */}
       <section className="py-16 sm:py-20 bg-brand-charcoal text-white relative overflow-hidden">
         <Container>
-          <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 rounded-full border border-brand-green/40 bg-brand-green/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-green">
+          <div data-reveal="group" className="max-w-3xl space-y-4">
+            <div
+              data-reveal="eyebrow"
+              className="inline-flex items-center gap-2 rounded-full border border-brand-green/40 bg-brand-green/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-green"
+            >
               <ShieldCheck className="h-4 w-4" />
               Annual Maintenance Contracts
             </div>
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
+            <h1
+              data-reveal="heading"
+              className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight"
+            >
               SolarCare AMC Plans
             </h1>
-            <p className="text-slate-300 text-lg sm:text-xl font-light leading-relaxed">
+            <p
+              data-reveal="paragraph"
+              className="text-slate-300 text-lg sm:text-xl font-light leading-relaxed"
+            >
               Long-term asset operation, scheduled preventive maintenance, thermal imaging diagnostics, and panel cleaning protocols to safeguard generation yield over 25+ years.
             </p>
           </div>
