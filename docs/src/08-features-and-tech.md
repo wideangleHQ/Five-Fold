@@ -112,16 +112,28 @@ Used for:
 
 ## Database
 
-Supabase (planned — not yet integrated)
+**Supabase** — PostgreSQL, accessed via Prisma (Phase 1 complete)
 
-Intended for:
+Used for:
 
-- customer enquiries and lead storage
+- customer enquiries and lead storage (active — `POST /api/leads` persists to Supabase via Prisma)
 - calculator submissions
 - contact forms
 - project and content data where required
 
 See `10-lead-submission-architecture.md` for the full data model and integration specification.
+
+## Transactional Email
+
+**Resend** — notification delivery service (Phase 3, planned)
+
+Used for:
+
+- Sending a structured notification email to `info@fivefold.co.in` for every valid lead submission
+- Email is the business notification layer; Supabase is the source of truth
+- A lead is never lost if email delivery fails
+
+Security: `RESEND_API_KEY` is server-only — never in the React bundle, never in `NEXT_PUBLIC_*` variables. All email delivery originates from the NestJS server.
 
 ## Hosting
 
@@ -133,16 +145,17 @@ See `11-repository-architecture.md` for the full monorepo structure and developm
 
 ## Architecture
 
-**Implemented (Phase 0):**
+**Implemented (Phase 0 + Phase 1 + Phase 2):**
 
 ```
 client/   ← Next.js (React website)
             └─ ContactForm: setTimeout simulation (real API connection is Phase 4)
             └─ SolarCalculator: fully client-side
 
-server/   ← NestJS (Lead API foundation)
+server/   ← NestJS (Lead API — Phase 1 + 2 complete)
             └─ GET /api/health → { status: "ok" }
-            └─ CORS, global validation, env config
+            └─ POST /api/leads → validates, persists via Prisma to Supabase
+            └─ Rate limiting, helmet, honeypot, request-ID logging
 ```
 
 **Full planned architecture:**
@@ -154,11 +167,11 @@ client/ (Next.js)
     ▼
 server/ (NestJS on Railway)
     │
-    ├─── Supabase      (lead persistence — Phase 1)
-    └─── WhatsApp API  (notification — Phase 3)
+    ├─── Supabase via Prisma   (lead persistence — Phase 1 ✓)
+    └─── Resend email API      (notification to info@fivefold.co.in — Phase 3)
 ```
 
-The website UI is unchanged. Form submission will eventually replace the current simulation with a real call to `POST /api/leads` without changing any visible design.
+The website UI is unchanged. Form submission will replace the current simulation with a real call to `POST /api/leads` without changing any visible design (Phase 4).
 
 See `10-lead-submission-architecture.md` and `11-repository-architecture.md` for the complete specification.
 
@@ -189,9 +202,9 @@ Included:
 - Dynamic recommendation logic
 - Repository restructuring: client/server monorepo (complete — Phase 0)
 - NestJS server foundation with health endpoint (complete — Phase 0)
-- Supabase lead integration (planned — Phase 1, see `10-lead-submission-architecture.md`)
-- Lead API: POST /api/leads (planned — Phase 1)
-- WhatsApp Business notification (planned — Phase 3)
+- Supabase lead integration via Prisma (complete — Phase 1)
+- Lead API: POST /api/leads with rate limiting, honeypot, security headers (complete — Phase 2)
+- Resend email notification to `info@fivefold.co.in` (planned — Phase 3)
 - Frontend hosting deployment (Vercel or Railway)
 - Backend hosting deployment (Railway or similar Node.js platform)
 - Project showcase

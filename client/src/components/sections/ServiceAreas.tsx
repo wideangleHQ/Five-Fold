@@ -11,18 +11,30 @@ export const ServiceAreas: React.FC = () => {
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Text */}
-          <div className="lg:col-span-6 space-y-6">
-            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#20435F]">
+          <div data-reveal="group" className="lg:col-span-6 space-y-6">
+            <span
+              data-reveal="eyebrow"
+              className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#20435F] block"
+            >
               Regional Footprint
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-charcoal tracking-tight">
+            <h2
+              data-reveal="heading"
+              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-charcoal tracking-tight"
+            >
               Primary Focus in Odisha, Multi-State Engineering Capability
             </h2>
-            <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+            <p
+              data-reveal="paragraph"
+              className="text-slate-600 text-base sm:text-lg leading-relaxed"
+            >
               Headquartered in Bhubaneswar, Fivefold provides rapid site evaluation and execution teams across key industrial and commercial districts in Odisha.
             </p>
 
-            <div className="p-4 rounded-xl bg-[#0C3046] text-white space-y-2">
+            <div
+              data-reveal="card"
+              className="p-4 rounded-xl bg-[#0C3046] text-white space-y-2"
+            >
               <div className="flex items-center gap-2 font-heading font-bold text-[#00A9D6] text-sm sm:text-base">
                 <Globe className="h-5 w-5" />
                 <span>Pan-India Engineering Consultation</span>
@@ -35,7 +47,10 @@ export const ServiceAreas: React.FC = () => {
 
           {/* Right District Grid */}
           <div className="lg:col-span-6">
-            <div className="p-6 sm:p-8 rounded-2xl bg-brand-off-white border border-slate-200 shadow-sm space-y-6">
+            <div
+              data-reveal="cards-container"
+              className="p-6 sm:p-8 rounded-2xl bg-brand-off-white border border-slate-200 shadow-sm space-y-6"
+            >
               <h3 className="font-heading text-xl font-bold text-brand-charcoal pb-3 border-b border-slate-200 flex items-center gap-2">
                 <MapPin className="h-5 w-5 text-[#20435F]" />
                 <span>Key Odisha Service Hubs</span>
@@ -45,6 +60,7 @@ export const ServiceAreas: React.FC = () => {
                 {PRIMARY_SERVICE_AREAS.map((area, idx) => (
                   <div
                     key={idx}
+                    data-reveal="card"
                     className="p-4 rounded-xl bg-white border border-slate-200/80 shadow-xs flex flex-col justify-between"
                   >
                     <div className="flex items-center gap-1.5 text-xs font-bold text-[#20435F]">

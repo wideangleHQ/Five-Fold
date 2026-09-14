@@ -25,18 +25,27 @@ export default function CommercialSolarPage() {
     <div className="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-white min-h-screen">
       <Container>
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-semibold uppercase tracking-wider">
+        <div data-reveal="group" className="max-w-3xl mx-auto text-center space-y-4 mb-14">
+          <div
+            data-reveal="eyebrow"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-semibold uppercase tracking-wider"
+          >
             <Building2 className="h-4 w-4 text-emerald-400" />
             <span>Commercial Energy Optimization</span>
           </div>
-          <h1 className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900">
+          <h1
+            data-reveal="heading"
+            className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900"
+          >
             Commercial Solar Solutions
           </h1>
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+          <p
+            data-reveal="paragraph"
+            className="text-slate-600 text-base sm:text-lg leading-relaxed"
+          >
             Turn unused roof space on offices, hotels, hospitals, retail centers, and educational campuses into high-yield energy generating assets.
           </p>
-          <div className="pt-2 flex justify-center">
+          <div data-reveal="cta" className="pt-2 flex justify-center">
             <Button href="/contact" variant="primary" size="lg">
               <span>Plan Solar for My Business</span>
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -46,12 +55,19 @@ export default function CommercialSolarPage() {
 
         {/* Commercial Decision Flow */}
         <div className="mb-16 space-y-6">
-          <h2 className="font-heading text-2xl font-bold text-slate-900 text-center">
+          <h2
+            data-reveal="heading"
+            className="font-heading text-2xl font-bold text-slate-900 text-center"
+          >
             Commercial Implementation Journey
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div data-reveal="cards-container" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {COMMERCIAL_NARRATIVE.map((item) => (
-              <div key={item.step} className="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-2">
+              <div
+                key={item.step}
+                data-reveal="card"
+                className="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-2"
+              >
                 <div className="text-xs font-mono font-bold text-slate-400">
                   STEP {item.step}
                 </div>

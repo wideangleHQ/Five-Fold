@@ -22,6 +22,8 @@ It provides an **indicative solar system requirement** based on:
 ↓ **Level 2** — Fivefold preliminary engineering assessment  
 ↓ **Level 3** — Site survey, shadow analysis, professional simulation
 
+When a user acts on the calculator result (clicks a consultation CTA), the frontend submits a lead to `POST /api/leads` including the calculator output fields. The server persists the lead to Supabase and sends a notification email to `info@fivefold.co.in` via Resend. If email delivery fails, the lead is not lost — Supabase is the source of truth. See `10-lead-submission-architecture.md` for the full lead submission flow.
+
 ---
 
 ## Supported Input Modes

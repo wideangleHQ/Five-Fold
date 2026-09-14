@@ -25,18 +25,27 @@ export default function IndustrialSolarPage() {
     <div className="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-white min-h-screen">
       <Container>
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-green text-white text-xs font-semibold uppercase tracking-wider">
+        <div data-reveal="group" className="max-w-3xl mx-auto text-center space-y-4 mb-14">
+          <div
+            data-reveal="eyebrow"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-green text-white text-xs font-semibold uppercase tracking-wider"
+          >
             <Factory className="h-4 w-4 text-emerald-400" />
             <span>Industrial EPC Engineering</span>
           </div>
-          <h1 className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900">
+          <h1
+            data-reveal="heading"
+            className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900"
+          >
             Industrial Solar Solutions
           </h1>
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+          <p
+            data-reveal="paragraph"
+            className="text-slate-600 text-base sm:text-lg leading-relaxed"
+          >
             Megawatt-scale rooftop and ground-mounted solar power plants engineered for manufacturing plants, steel mills, warehouses, and heavy industrial facilities across India.
           </p>
-          <div className="pt-2 flex justify-center">
+          <div data-reveal="cta" className="pt-2 flex justify-center">
             <Button href="/contact" variant="primary" size="lg">
               <span>Discuss My Industrial Project</span>
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -45,9 +54,13 @@ export default function IndustrialSolarPage() {
         </div>
 
         {/* Engineering Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {INDUSTRIAL_PILLARS.map((pillar) => (
-            <div key={pillar.title} className="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-3">
+            <div
+              key={pillar.title}
+              data-reveal="card"
+              className="p-6 rounded-2xl border border-slate-200 bg-slate-50 space-y-3"
+            >
               <div className="flex items-center gap-2 text-brand-green font-bold text-sm">
                 <CheckCircle2 className="h-5 w-5 text-brand-green shrink-0" />
                 <span>{pillar.title}</span>

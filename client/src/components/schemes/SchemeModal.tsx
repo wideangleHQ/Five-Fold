@@ -284,7 +284,12 @@ export const SchemeModal: React.FC<SchemeModalProps> = ({ isOpen, onClose }) => 
               <ArrowRight className="ml-1.5 h-4 w-4" />
             </Button>
           ) : (
-            <Button href="/contact" variant="primary" size="sm" onClick={handleReset}>
+            <Button
+              href={`/contact?source=schemes&propertyType=${encodeURIComponent(propertyType)}&category=${encodeURIComponent(customerCategory)}&capacity=${encodeURIComponent(solarReqKw)}&location=${encodeURIComponent(location)}&existingSolar=${encodeURIComponent(hasExistingSolar)}`}
+              variant="primary"
+              size="sm"
+              onClick={handleReset}
+            >
               <span>Get Assistance from Fivefold</span>
             </Button>
           )}

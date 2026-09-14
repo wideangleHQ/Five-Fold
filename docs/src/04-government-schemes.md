@@ -29,6 +29,8 @@ Each option card shows:
 - Fivefold assistance
 - CTA: **Get Assistance from Fivefold**
 
+When the user submits an assistance enquiry, a lead is created via `POST /api/leads` with `source = "schemes"`. The server persists the lead to Supabase and sends a notification email to `info@fivefold.co.in` via Resend. If email delivery fails, the lead is not lost — Supabase is the source of truth. See `10-lead-submission-architecture.md`.
+
 ## Important Disclaimer
 
 Final eligibility, subsidy, scheme availability and applicable benefits remain subject to prevailing government guidelines.  

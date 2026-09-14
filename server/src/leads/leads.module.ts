@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { EmailModule } from '../email/email.module';
 import { LeadsController } from './leads.controller';
 import { LeadsService } from './leads.service';
 
@@ -15,6 +16,7 @@ import { LeadsService } from './leads.service';
         },
       ],
     }),
+    EmailModule,
   ],
   controllers: [LeadsController],
   providers: [LeadsService],

@@ -8,23 +8,32 @@ export const GovernmentSchemesView: React.FC = () => {
     <div className="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-white min-h-screen">
       <Container>
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-[#20435F] text-xs font-semibold uppercase tracking-wider">
+        <div data-reveal="group" className="max-w-3xl mx-auto text-center space-y-4 mb-14">
+          <div
+            data-reveal="eyebrow"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-[#20435F] text-xs font-semibold uppercase tracking-wider"
+          >
             <ShieldCheck className="h-4 w-4 text-[#20435F]" />
             <span>Government Assistance & Subsidies</span>
           </div>
-          <h1 className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900">
+          <h1
+            data-reveal="heading"
+            className="font-heading text-3xl sm:text-5xl font-extrabold text-slate-900"
+          >
             Government Scheme Discovery
           </h1>
-          <p className="text-slate-600 text-base sm:text-lg leading-relaxed">
+          <p
+            data-reveal="paragraph"
+            className="text-slate-600 text-base sm:text-lg leading-relaxed"
+          >
             Fivefold assists customers with complete documentation, DISCOM net metering applications, and subsidy disbursal tracking under central and state renewable schemes.
           </p>
         </div>
 
         {/* Featured Schemes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {/* PM Surya Ghar */}
-          <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
+          <div data-reveal="card" className="p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-bold uppercase text-[#20435F] px-2.5 py-1 rounded-md bg-[#20435F]/10">
@@ -55,7 +64,7 @@ export const GovernmentSchemesView: React.FC = () => {
           </div>
 
           {/* C&I Schemes */}
-          <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
+          <div data-reveal="card" className="p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-bold uppercase text-slate-700 px-2.5 py-1 rounded-md bg-slate-200">

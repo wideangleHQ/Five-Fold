@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { Send, CheckCircle2, Shield } from "lucide-react";
+import { Send, CheckCircle2, Shield, AlertCircle } from "lucide-react";
 
 const INTEREST_OPTIONS = [
   "Residential Solar",
@@ -14,7 +15,17 @@ const INTEREST_OPTIONS = [
   "Other",
 ];
 
+const SOURCE_TO_INTEREST: Record<string, string> = {
+  solarcare: "SolarCare / AMC",
+  schemes: "Government Scheme Assistance",
+  residential: "Residential Solar",
+  commercial: "Commercial Solar",
+  industrial: "Industrial Solar",
+};
+
 export const ContactForm: React.FC = () => {
+  const searchParams = useSearchParams();
+
   const [interest, setInterest] = useState<string>("Residential Solar");
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -22,23 +33,107 @@ export const ContactForm: React.FC = () => {
   const [location, setLocation] = useState<string>("");
   const [requirement, setRequirement] = useState<string>("");
   const [electricityInfo, setElectricityInfo] = useState<string>("");
+  const [gotcha, setGotcha] = useState<string>("");
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const source = searchParams.get("source");
+    const plan = searchParams.get("plan");
+    const tier = searchParams.get("tier");
+    const loc = searchParams.get("location");
+    const propertyType = searchParams.get("propertyType");
+    const category = searchParams.get("category");
+    const capacity = searchParams.get("capacity");
+    const existingSolar = searchParams.get("existingSolar");
+
+    if (source && SOURCE_TO_INTEREST[source]) setInterest(SOURCE_TO_INTEREST[source]);
+    else if (plan) setInterest("SolarCare / AMC");
+
+    if (loc) setLocation(decodeURIComponent(loc));
+
+    if (plan && tier) {
+      setRequirement(`Interested in SolarCare ${plan} plan, ${tier} tier.`);
+    } else if (propertyType || category) {
+      const parts: string[] = [];
+      if (propertyType) parts.push(`Property type: ${propertyType}`);
+      if (category) parts.push(`Category: ${category}`);
+      if (capacity) parts.push(`Required capacity: ${capacity}`);
+      if (existingSolar) parts.push(`Existing solar: ${existingSolar}`);
+      setRequirement(parts.join(". "));
+    }
+  }, [searchParams]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError(null);
 
-    // Asynchronous lead submission simulation (no blocking DB calls on page load)
-    setTimeout(() => {
-      setIsSubmitting(false);
+    const INTEREST_MAP: Record<string, { leadType: string; source: string }> = {
+      "Residential Solar":          { leadType: "residential", source: "contact" },
+      "Commercial Solar":           { leadType: "commercial",  source: "contact" },
+      "Industrial Solar":           { leadType: "industrial",  source: "contact" },
+      "Government Scheme Assistance": { leadType: "residential", source: "schemes" },
+      "SolarCare / AMC":            { leadType: "solarcare",   source: "solarcare" },
+      "Maintenance":                { leadType: "solarcare",   source: "contact" },
+      "Other":                      { leadType: "other",       source: "contact" },
+    };
+
+    const { leadType, source } = INTEREST_MAP[interest] ?? { leadType: "other", source: "contact" };
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+
+    try {
+      const res = await fetch(`${apiUrl}/api/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          phone,
+          email: email || undefined,
+          city: location || undefined,
+          leadType,
+          source,
+          message: requirement || undefined,
+          electricityInfo: electricityInfo || undefined,
+          _gotcha: gotcha || undefined,
+        }),
+      });
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          throw new Error("Too many requests. Please wait a moment and try again.");
+        }
+        const body = await res.json().catch(() => ({}));
+        throw new Error((body as { message?: string }).message ?? `Error ${res.status}`);
+      }
+
       setIsSubmitted(true);
-    }, 600);
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : "Unable to submit. Please try again or call us directly.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Honeypot */}
+      <input
+        type="text"
+        name="_gotcha"
+        tabIndex={-1}
+        className="hidden"
+        aria-hidden="true"
+        value={gotcha}
+        onChange={(e) => setGotcha(e.target.value)}
+      />
+
       {/* Interest Selector */}
       <div className="space-y-2">
         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
@@ -163,6 +258,17 @@ export const ContactForm: React.FC = () => {
           <p className="text-sky-800 leading-relaxed">
             Thank you, <strong>{name}</strong>. A Fivefold solar engineer will review your details ({interest} in {location}) and connect with you shortly.
           </p>
+        </div>
+      )}
+
+      {/* Submission Error */}
+      {submitError && (
+        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs space-y-1 animate-in fade-in">
+          <div className="flex items-center gap-2 font-bold text-red-950">
+            <AlertCircle className="h-4 w-4 text-red-500 shrink-0" />
+            <span>Submission Failed</span>
+          </div>
+          <p className="text-red-800 leading-relaxed">{submitError}</p>
         </div>
       )}
 

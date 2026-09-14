@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
-import { Activity, ShieldCheck, Cpu, RefreshCw, Sparkles, CheckCircle2 } from "lucide-react";
+import { Activity, CheckCircle2 } from "lucide-react";
 
 const LIFECYCLE_SERVICES = [
   "O&M Comprehensive Framework",
@@ -28,22 +27,34 @@ export const LongTermPerformance: React.FC = () => {
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column Text */}
-          <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#00A9D6]/40 bg-[#00A9D6]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#00A9D6]">
+          <div data-reveal="group" className="lg:col-span-6 space-y-6">
+            <div
+              data-reveal="eyebrow"
+              className="inline-flex items-center gap-2 rounded-full border border-[#00A9D6]/40 bg-[#00A9D6]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#00A9D6]"
+            >
               <Activity className="h-4 w-4" />
               25-Year Asset Protection
             </div>
 
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+            <h2
+              data-reveal="heading"
+              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight"
+            >
               We Stay With You <br />
               <span className="text-[#00A9D6]">After Installation</span>
             </h2>
 
-            <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
+            <p
+              data-reveal="paragraph"
+              className="text-slate-300 text-base sm:text-lg leading-relaxed"
+            >
               Commissioning is only Day 1 of a 25-30 year energy asset. Fivefold maintains an active post-installation engineering presence to ensure generation yield stays projected over decades.
             </p>
 
-            <div className="p-4 rounded-xl bg-white/5 border border-slate-800 space-y-2">
+            <div
+              data-reveal="card"
+              className="p-4 rounded-xl bg-white/5 border border-slate-800 space-y-2"
+            >
               <div className="font-mono text-xs text-[#00A9D6] uppercase tracking-wider font-bold">
                 LIFECYCLE CONTINUUM
               </div>
@@ -54,7 +65,10 @@ export const LongTermPerformance: React.FC = () => {
           </div>
 
           {/* Right Column Services Grid */}
-          <div className="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-[#20435F] border border-[#20435F] shadow-xl space-y-6">
+          <div
+            data-reveal="card"
+            className="lg:col-span-6 p-6 sm:p-8 rounded-2xl bg-[#20435F] border border-[#20435F] shadow-xl space-y-6"
+          >
             <h3 className="font-heading text-xl font-bold text-white pb-3 border-b border-white/20">
               14-Point O&M & Lifespan Checklist
             </h3>

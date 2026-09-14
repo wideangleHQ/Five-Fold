@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
 import { constructMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
@@ -16,15 +17,24 @@ export default function ContactPage() {
       {/* Page Hero */}
       <section className="py-16 sm:py-20 bg-brand-charcoal text-white relative overflow-hidden">
         <Container>
-          <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 rounded-full border border-brand-green/40 bg-brand-green/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-green">
+          <div data-reveal="group" className="max-w-3xl space-y-4">
+            <div
+              data-reveal="eyebrow"
+              className="inline-flex items-center gap-2 rounded-full border border-brand-green/40 bg-brand-green/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-green"
+            >
               <ShieldCheck className="h-4 w-4" />
               Direct Engineering Consultation
             </div>
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
+            <h1
+              data-reveal="heading"
+              className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight"
+            >
               Get a Free Consultation
             </h1>
-            <p className="text-slate-300 text-lg sm:text-xl font-light leading-relaxed">
+            <p
+              data-reveal="paragraph"
+              className="text-slate-300 text-lg sm:text-xl font-light leading-relaxed"
+            >
               Connect directly with senior solar engineers to discuss 3D shadow analysis, roof feasibility, bankable DPR preparation, and project financing.
             </p>
           </div>
@@ -36,14 +46,19 @@ export default function ContactPage() {
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Left Column: Form */}
-            <div className="lg:col-span-7 p-6 sm:p-8 rounded-2xl bg-brand-off-white border border-slate-200 shadow-sm">
+            <div
+              data-reveal="card"
+              className="lg:col-span-7 p-6 sm:p-8 rounded-2xl bg-brand-off-white border border-slate-200 shadow-sm"
+            >
               <h2 className="font-heading text-2xl font-bold text-brand-charcoal mb-2">
                 Request Engineering Evaluation
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 mb-6">
                 Fill out the intent-based form below to receive a customized preliminary assessment.
               </p>
-              <ContactForm />
+              <Suspense>
+                <ContactForm />
+              </Suspense>
             </div>
 
             {/* Right Column: Office Credentials */}

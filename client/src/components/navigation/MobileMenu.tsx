@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin, ChevronRight, X, Calculator, ShieldCheck } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import logoImg from "@/assets/Images/Logos/Five_Fold_White.png";
 
@@ -39,15 +38,13 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   }, [isOpen]);
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
-          className="fixed inset-0 z-50 lg:hidden bg-slate-950/95 backdrop-blur-md flex flex-col justify-between"
-        >
+    <div
+      aria-hidden={!isOpen}
+      style={{ transition: "opacity 150ms ease" }}
+      className={`fixed inset-0 z-50 lg:hidden bg-slate-950/95 backdrop-blur-md flex flex-col justify-between ${
+        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
           {/* Top Bar */}
           <div className="flex items-center justify-between p-4 border-b border-slate-800">
             <Link href="/" onClick={onClose} className="flex items-center group">
@@ -150,8 +147,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
               </div>
             </div>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </div>
   );
 };

@@ -26,30 +26,38 @@ export const FinalCta: React.FC = () => {
           </div>
 
           <Container className="relative z-10 text-center max-w-3xl mx-auto space-y-6 sm:space-y-8">
-            <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.05]">
-              Let&apos;s build your solar future.
-            </h2>
-
-            <p className="font-sans text-slate-200 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-relaxed">
-              Talk to our solar engineers about your project.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
-              <Button
-                href="/contact"
-                variant="primary"
-                className="w-full sm:w-auto bg-white hover:bg-slate-100 text-[#173B53] px-8 py-4 text-sm font-sans font-semibold rounded-lg shadow-md transition-all"
+            <div data-reveal="group" className="space-y-6 sm:space-y-8">
+              <h2
+                data-reveal="heading"
+                className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.05]"
               >
-                <span>Get a Free Consultation</span>
-              </Button>
+                Let&apos;s build your solar future.
+              </h2>
 
-              <a
-                href="tel:+917008101078"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg border border-white/30 hover:border-white/60 text-white font-sans text-sm font-semibold transition-all"
+              <p
+                data-reveal="paragraph"
+                className="font-sans text-slate-200 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-relaxed"
               >
-                <PhoneCall className="h-4 w-4 text-[#1684C7]" />
-                <span>+91 70081 01078</span>
-              </a>
+                Talk to our solar engineers about your project.
+              </p>
+
+              <div data-reveal="cta" className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
+                <Button
+                  href="/contact"
+                  variant="primary"
+                  className="w-full sm:w-auto bg-white hover:bg-slate-100 text-[#173B53] px-8 py-4 text-sm font-sans font-semibold rounded-lg shadow-md transition-all"
+                >
+                  <span>Get a Free Consultation</span>
+                </Button>
+
+                <a
+                  href="tel:+917008101078"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg border border-white/30 hover:border-white/60 text-white font-sans text-sm font-semibold transition-all"
+                >
+                  <PhoneCall className="h-4 w-4 text-[#1684C7]" />
+                  <span>+91 70081 01078</span>
+                </a>
+              </div>
             </div>
           </Container>
 

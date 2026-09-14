@@ -35,5 +35,10 @@ model Lead {
 
   status String @default("new")
 
+  emailStatus   String    @default("pending") @map("email_status")
+  emailSentAt   DateTime? @map("email_sent_at") @db.Timestamptz(6)
+  emailAttempts Int       @default(0) @map("email_attempts")
+  emailError    String?   @map("email_error")
+
   @@map("leads")
 }

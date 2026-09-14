@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 
 // Approved Fourth Section panoramic engineering image asset
@@ -51,23 +50,26 @@ export const EngineeringCapabilities: React.FC = () => {
         <div className="w-full lg:w-[70%] max-w-5xl space-y-3.5 sm:space-y-5 text-left">
           
           {/* Section Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+          <div
+            data-reveal="group"
             className="space-y-1 sm:space-y-1.5 text-left"
           >
             <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block">
               • ENGINEERING PRECISION
             </span>
-            <h2 className="font-heading text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.08]">
+            <h2
+              data-reveal="heading"
+              className="font-heading text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.08]"
+            >
               Engineering Capability &amp; Journey
             </h2>
-            <p className="font-sans text-[#526673] text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl pt-0.5">
+            <p
+              data-reveal="paragraph"
+              className="font-sans text-[#526673] text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl pt-0.5"
+            >
               Every solar power plant engineered by Fivefold follows a strict three-tier engineering framework designed for 25–30 year bankability.
             </p>
-          </motion.div>
+          </div>
 
           {/* Clean Accordion Stages Covering 70% Width */}
           <div className="divide-y divide-[#DCE2E2] border-t border-b border-[#DCE2E2]">
@@ -113,23 +115,21 @@ export const EngineeringCapabilities: React.FC = () => {
                   </button>
 
                   {/* Expandable Detail */}
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.28, ease: "easeInOut" }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pt-1.5 pl-6 sm:pl-9 max-w-2xl">
-                          <p className="font-sans text-xs sm:text-sm text-[#173B53] font-medium leading-relaxed">
-                            {stg.details}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateRows: isOpen ? "1fr" : "0fr",
+                      transition: "grid-template-rows 280ms ease-in-out",
+                    }}
+                  >
+                    <div style={{ overflow: "hidden" }}>
+                      <div className="pt-1.5 pl-6 sm:pl-9 max-w-2xl">
+                        <p className="font-sans text-xs sm:text-sm text-[#173B53] font-medium leading-relaxed">
+                          {stg.details}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -139,11 +139,8 @@ export const EngineeringCapabilities: React.FC = () => {
       </div>
 
       {/* 2. BASE VISUAL: Extra-large size and right-aligned for Mobile / Flip / Tablet */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
+      <div
+        data-reveal="image-container"
         className="w-full relative mt-4 sm:mt-6 md:mt-8 lg:mt-0 h-[400px] xs:h-[450px] sm:h-[540px] md:h-[640px] lg:h-auto lg:absolute lg:inset-x-0 lg:bottom-0 lg:flex lg:items-end lg:justify-center pointer-events-none select-none z-0 overflow-hidden"
       >
         {/* Mobile / Flip Phone / Tablet View: Extra-large right-aligned visual featuring engineer & solar installation */}
@@ -168,7 +165,7 @@ export const EngineeringCapabilities: React.FC = () => {
             className="w-full h-auto max-h-[60vh] object-contain object-bottom block select-none pointer-events-none"
           />
         </div>
-      </motion.div>
+      </div>
 
     </section>
   );

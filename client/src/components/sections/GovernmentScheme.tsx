@@ -145,7 +145,7 @@ export const GovernmentScheme: React.FC = () => {
         }
       }, section);
 
-      return () => ctx.revert();
+      return () => ctx.kill();
     });
 
     return () => mm.revert();

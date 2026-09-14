@@ -15,20 +15,29 @@ export const SolarDecisionPlatform: React.FC = () => {
       <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8 lg:py-8">
         
         {/* Section Header */}
-        <div data-reveal="text" className="max-w-3xl mb-8 sm:mb-10 space-y-2.5">
-          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block">
+        <div data-reveal="group" className="max-w-3xl mb-8 sm:mb-10 space-y-2.5">
+          <span
+            data-reveal="eyebrow"
+            className="text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block"
+          >
             • SOLAR SOLUTION PLATFORM
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.1]">
+          <h2
+            data-reveal="heading"
+            className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.1]"
+          >
             Find the right solar solution for your needs.
           </h2>
-          <p className="font-sans text-[#526673] text-sm sm:text-base leading-relaxed">
+          <p
+            data-reveal="paragraph"
+            className="font-sans text-[#526673] text-sm sm:text-base leading-relaxed"
+          >
             Smart calculations to help you choose correctly.
           </p>
         </div>
 
         {/* 3-Card Asymmetric Editorial Grid with Equal Spacing */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
+        <div data-reveal="cards-container" className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
 
           {/* CARD 01: Large Dominant Vertical Card (Left Column) */}
           <Link

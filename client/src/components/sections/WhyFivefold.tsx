@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { AccordionGallery, type AccordionGalleryItem } from "@/components/ui/AccordionGallery";
 
@@ -128,14 +127,11 @@ export const WhyFivefold: React.FC = () => {
         </div>
 
         {/* 2. MOBILE VIEW: Clean Vertical Stack Showing All Cards */}
-        <div className="flex flex-col gap-4 sm:gap-5 lg:hidden w-full">
-          {ENGINEERING_CARDS.map((card, idx) => (
-            <motion.div
+        <div data-reveal="cards-container" className="flex flex-col gap-4 sm:gap-5 lg:hidden w-full">
+          {ENGINEERING_CARDS.map((card) => (
+            <div
               key={card.num}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-20px" }}
-              transition={{ duration: 0.55, delay: idx * 0.06, ease: "easeOut" }}
+              data-reveal="card"
               className="w-full"
             >
               <Link
@@ -170,7 +166,7 @@ export const WhyFivefold: React.FC = () => {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
 
