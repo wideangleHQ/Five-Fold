@@ -37,7 +37,7 @@ export default function SolarCarePage() {
               data-reveal="paragraph"
               className="text-slate-300 text-lg sm:text-xl font-light leading-relaxed"
             >
-              Long-term asset operation, scheduled preventive maintenance, thermal imaging diagnostics, and panel cleaning protocols to safeguard generation yield over 25+ years.
+              Structured maintenance support, scheduled preventive inspections, diagnostics, and technical care to help protect solar system performance throughout its operating life.
             </p>
           </div>
         </Container>

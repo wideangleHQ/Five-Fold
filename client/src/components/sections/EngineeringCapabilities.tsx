@@ -12,25 +12,45 @@ const STAGES = [
     id: "pre-construction",
     num: "01",
     title: "PRE-CONSTRUCTION",
-    subtitle: "Feasibility, design and bankable project preparation.",
-    details:
-      "Site structural feasibility, 3D shadow path analysis, PVsyst yield simulations, and bankable Detailed Project Report (DPR).",
+    subtitle: "Assess the site, model the system and prepare the project for execution.",
+    capabilities: [
+      "Feasibility Reports & Shadow Analysis",
+      "3D Layout & Capacity Estimations",
+      "PVsyst Yield Simulations",
+      "Bankable DPR Preparation",
+      "Financial Modelling",
+      "Constructibility & Risk Review",
+    ],
   },
   {
     id: "execution",
     num: "02",
     title: "EXECUTION",
-    subtitle: "Precision procurement, installation and grid synchronisation.",
-    details:
-      "Tier-1 component procurement, precision civil installation, DISCOM net-metering compliance, and synchronized grid commissioning.",
+    subtitle: "Turn approved engineering into a controlled, precise and compliant installation.",
+    capabilities: [
+      "Detailed Execution Planning",
+      "Structural Engineering",
+      "Detailed Engineering & Drawings",
+      "Permit & Approval Support",
+      "Procurement",
+      "Installation & Commissioning",
+      "Net Metering Support",
+      "Performance Assurance",
+    ],
   },
   {
     id: "quality",
     num: "03",
     title: "QUALITY & TRACEABILITY",
-    subtitle: "Tier-1 equipment selection, testing and QA protocols.",
-    details:
-      "Factory flash data audits, thermal imaging EL testing, SCADA remote monitoring, and a 25-year performance warranty continuum.",
+    subtitle: "Quality-controlled components, testing and documentation from procurement to commissioning.",
+    capabilities: [
+      "Tier-1 Components",
+      "Strong Procurement Networks with Direct Manufacturers & Suppliers",
+      "Pre-Defined Execution SOPs",
+      "Third-Party Quality Assurance",
+      "Compliance & Testing Processes",
+      "Documentation & Traceability",
+    ],
   },
 ];
 
@@ -61,13 +81,13 @@ export const EngineeringCapabilities: React.FC = () => {
               data-reveal="heading"
               className="font-heading text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.08]"
             >
-              Engineering Capability &amp; Journey
+              Engineering That Drives Performance.
             </h2>
             <p
               data-reveal="paragraph"
               className="font-sans text-[#526673] text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl pt-0.5"
             >
-              Every solar power plant engineered by Fivefold follows a strict three-tier engineering framework designed for 25–30 year bankability.
+              We engineer every solar project around generation, reliability, constructibility and long-term performance.
             </p>
           </div>
 
@@ -92,7 +112,7 @@ export const EngineeringCapabilities: React.FC = () => {
                         <h3 className="font-heading text-xs sm:text-base lg:text-lg font-extrabold text-[#173B53] tracking-tight group-hover:text-[#1684C7] transition-colors">
                           {stg.title}
                         </h3>
-                        <p className="font-sans text-xs sm:text-sm text-[#526673] font-normal leading-relaxed hidden sm:block">
+                        <p className="font-sans text-xs sm:text-sm text-[#526673] font-normal leading-relaxed">
                           {stg.subtitle}
                         </p>
                       </div>
@@ -123,10 +143,15 @@ export const EngineeringCapabilities: React.FC = () => {
                     }}
                   >
                     <div style={{ overflow: "hidden" }}>
-                      <div className="pt-1.5 pl-6 sm:pl-9 max-w-2xl">
-                        <p className="font-sans text-xs sm:text-sm text-[#173B53] font-medium leading-relaxed">
-                          {stg.details}
-                        </p>
+                      <div className="pt-2 pb-1 pl-6 sm:pl-9 max-w-2xl">
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 text-xs sm:text-sm text-[#173B53] font-medium">
+                          {stg.capabilities.map((cap, cIdx) => (
+                            <li key={cIdx} className="flex items-center gap-2">
+                              <span className="h-1.5 w-1.5 rounded-full bg-[#1684C7] shrink-0" />
+                              <span>{cap}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
                   </div>

@@ -130,7 +130,7 @@ export default function EngineeringPage() {
                 <span>Discuss My Project</span>
                 <ArrowRight className="ml-1.5 h-4 w-4" />
               </Button>
-              <Button href="/projects" variant="outline" size="md">
+              <Button href="/#projects" variant="outline" size="md">
                 <span>Explore Our Projects</span>
               </Button>
             </div>
@@ -653,7 +653,7 @@ export default function EngineeringPage() {
             </div>
             
             <div data-reveal="cta" className="flex-shrink-0">
-              <Button href="/projects" variant="outline" size="md">
+              <Button href="/#projects" variant="outline" size="md">
                 <span>View All Projects</span>
                 <ArrowRight className="ml-1.5 h-4 w-4" />
               </Button>

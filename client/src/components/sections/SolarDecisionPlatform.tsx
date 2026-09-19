@@ -4,9 +4,9 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import energyReqImg from "@/assets/Images/Second Section/Energy_Requirement.png";
-import systemSizingImg from "@/assets/Images/Second Section/System_Sizing.png";
-import schemesSavingsImg from "@/assets/Images/Second Section/Schemes_and_Savings.png";
+import energyReqImg from "@/assets/Images/Second Section/Energy Requirement.png";
+import systemSizingImg from "@/assets/Images/Second Section/System Sizing.png";
+import schemesSavingsImg from "@/assets/Images/Second Section/Schemes and Savings.png";
 
 export const SolarDecisionPlatform: React.FC = () => {
   return (
@@ -26,13 +26,13 @@ export const SolarDecisionPlatform: React.FC = () => {
             data-reveal="heading"
             className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.1]"
           >
-            Find the right solar solution for your needs.
+            Find the Right Solar Solution for Your Needs.
           </h2>
           <p
             data-reveal="paragraph"
             className="font-sans text-[#526673] text-sm sm:text-base leading-relaxed"
           >
-            Smart calculations to help you choose correctly.
+            Explore your energy requirements, system sizing and applicable solar scheme support.
           </p>
         </div>
 
@@ -43,7 +43,7 @@ export const SolarDecisionPlatform: React.FC = () => {
           <Link
             href="/solar-calculator"
             data-reveal="card"
-            className="lg:col-span-5 relative rounded-3xl overflow-hidden bg-[#173B53] border border-[#DCE2E2] shadow-[0_10px_30px_-10px_rgba(23,59,83,0.08)] hover:shadow-[0_20px_40px_-12px_rgba(23,59,83,0.16)] transition-all duration-500 group flex flex-col justify-end p-6 sm:p-8 lg:p-10 min-h-[460px] sm:min-h-[520px] lg:min-h-[580px]"
+            className="lg:col-span-5 relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#173B53] border border-[#DCE2E2] shadow-[0_10px_30px_-10px_rgba(23,59,83,0.08)] hover:shadow-[0_20px_40px_-12px_rgba(23,59,83,0.16)] transition-all duration-500 group flex flex-col justify-end p-6 sm:p-8 lg:p-10 min-h-[460px] sm:min-h-[520px] lg:min-h-[580px]"
           >
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
@@ -64,7 +64,7 @@ export const SolarDecisionPlatform: React.FC = () => {
                 Energy Requirement
               </h3>
               <p className="font-sans text-xs sm:text-sm text-slate-200 leading-relaxed max-w-md pt-1">
-                Tell us about your property, monthly usage and available rooftop space for precision solar engineering.
+                Tell us about your property, energy consumption and available rooftop space for a suitable solar system.
               </p>
             </div>
           </Link>
@@ -76,7 +76,7 @@ export const SolarDecisionPlatform: React.FC = () => {
             <Link
               href="/solar-calculator"
               data-reveal="card"
-              className="flex-1 relative rounded-3xl overflow-hidden bg-[#173B53] border border-[#DCE2E2] shadow-[0_10px_30px_-10px_rgba(23,59,83,0.08)] hover:shadow-[0_20px_40px_-12px_rgba(23,59,83,0.16)] transition-all duration-500 group flex flex-col justify-end p-6 sm:p-8 min-h-[230px] sm:min-h-[260px] lg:min-h-[275px]"
+              className="flex-1 relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#173B53] border border-[#DCE2E2] shadow-[0_10px_30px_-10px_rgba(23,59,83,0.08)] hover:shadow-[0_20px_40px_-12px_rgba(23,59,83,0.16)] transition-all duration-500 group flex flex-col justify-end p-6 sm:p-8 min-h-[230px] sm:min-h-[260px] lg:min-h-[275px]"
             >
               {/* Background Image */}
               <div className="absolute inset-0 z-0">
@@ -97,7 +97,7 @@ export const SolarDecisionPlatform: React.FC = () => {
                   System Sizing
                 </h3>
                 <p className="font-sans text-xs sm:text-sm text-slate-200 leading-relaxed max-w-lg pt-1">
-                  Get an indicative recommendation and 25-year bankable yield simulation based on your requirements.
+                  Estimate the right system capacity based on your energy requirements, rooftop space and site conditions.
                 </p>
               </div>
             </Link>
@@ -106,7 +106,7 @@ export const SolarDecisionPlatform: React.FC = () => {
             <Link
               href="/solar-calculator"
               data-reveal="card"
-              className="flex-1 relative rounded-3xl overflow-hidden bg-[#173B53] border border-[#DCE2E2] shadow-[0_10px_30px_-10px_rgba(23,59,83,0.08)] hover:shadow-[0_20px_40px_-12px_rgba(23,59,83,0.16)] transition-all duration-500 group flex flex-col justify-end p-6 sm:p-8 min-h-[230px] sm:min-h-[260px] lg:min-h-[275px]"
+              className="flex-1 relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#173B53] border border-[#DCE2E2] shadow-[0_10px_30px_-10px_rgba(23,59,83,0.08)] hover:shadow-[0_20px_40px_-12px_rgba(23,59,83,0.16)] transition-all duration-500 group flex flex-col justify-end p-6 sm:p-8 min-h-[230px] sm:min-h-[260px] lg:min-h-[275px]"
             >
               {/* Background Image */}
               <div className="absolute inset-0 z-0">
@@ -127,7 +127,7 @@ export const SolarDecisionPlatform: React.FC = () => {
                   Schemes &amp; Savings
                 </h3>
                 <p className="font-sans text-xs sm:text-sm text-slate-200 leading-relaxed max-w-lg pt-1">
-                  Understand applicable government subsidies (PM Surya Ghar up to ₹78,000), commercial tax benefits, and DISCOM net metering.
+                  Understand applicable government scheme support, potential savings and net metering assistance for your solar project.
                 </p>
               </div>
             </Link>

@@ -8,12 +8,17 @@ import { getPublishedProjects, ProjectCategory } from "@/data/projects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
-import stock2Img from "@/assets/Images/Five_fold_stock_2.png";
-import heroBgImg from "@/assets/Images/hero section background.png";
-import skyImg from "@/assets/Images/Five_fold_sky.png";
+import commercialImg from "@/assets/Images/Projectts/Commercial · Bhubaneswar, Odisha.png";
+import governmentImg from "@/assets/Images/Projectts/Government · Bhadrak, Odisha.png";
+import industrialImg from "@/assets/Images/Projectts/Industrial · Kalinganagar, Odisha.png";
+import institutionalImg from "@/assets/Images/Projectts/Institutional · Cuttack, Odisha.png";
 
-const LOCAL_IMAGES = [heroBgImg, stock2Img, stock1Img, skyImg];
+const CATEGORY_IMAGE_MAP: Record<ProjectCategory, typeof commercialImg> = {
+  Industrial: industrialImg,
+  Commercial: commercialImg,
+  Institutional: institutionalImg,
+  Government: governmentImg,
+};
 
 const CATEGORIES: (ProjectCategory | "All")[] = [
   "All",
@@ -51,7 +56,7 @@ export const ProjectsTeaser: React.FC = () => {
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-6 lg:min-h-[100svh] flex flex-col justify-center bg-white text-[#173B53] font-sans">
+    <section id="projects" className="py-12 sm:py-16 lg:py-6 lg:min-h-[100svh] flex flex-col justify-center bg-white text-[#173B53] font-sans">
       <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8">
 
         {/* Header */}
@@ -109,63 +114,56 @@ export const ProjectsTeaser: React.FC = () => {
           ))}
         </div>
 
-        {/* Image-dominant card slider */}
+        {/* Project cards with smooth bottom black gradient & overlaid text */}
         <div
           ref={sliderRef}
           data-reveal="cards-container"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 scrollbar-none snap-x snap-mandatory"
+          className="flex gap-5 sm:gap-6 overflow-x-auto pb-4 scrollbar-none snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {publishedProjects.map((project, idx) => {
-            const projectImg = LOCAL_IMAGES[idx % LOCAL_IMAGES.length];
+          {publishedProjects.map((project) => {
+            const projectImg = CATEGORY_IMAGE_MAP[project.category] || industrialImg;
+
             return (
               <div
                 key={project.id}
                 data-reveal="card"
-                className="w-[78%] sm:w-[42%] lg:w-[29%] xl:w-[23%] flex-shrink-0 snap-start group"
+                className="w-[82%] sm:w-[46%] lg:w-[31%] xl:w-[24%] flex-shrink-0 snap-start group"
               >
-                {/* Large image - 80% of visual weight */}
-                <div className="relative w-full aspect-[3/4] max-h-[46vh] xl:max-h-[50vh] rounded-xl overflow-hidden bg-[#173B53] border border-[#DCE2E2]">
+                <div className="relative w-full aspect-[3/4] max-h-[50vh] xl:max-h-[54vh] rounded-2xl overflow-hidden bg-slate-900 border border-[#DCE2E2] shadow-sm flex flex-col justify-end">
+                  {/* Full background image */}
                   <Image
                     src={projectImg}
-                    alt={project.name}
+                    alt={`${project.name} - ${project.location}`}
                     fill
-                    sizes="(max-width: 640px) 80vw, (max-width: 1024px) 44vw, 28vw"
-                    className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 opacity-90"
+                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 46vw, 25vw"
+                    className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#173B53]/90 via-[#173B53]/20 to-transparent" />
 
-                  {/* Info overlay at image bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 space-y-1">
-                    <p className="font-sans text-[10px] font-semibold uppercase tracking-wider text-white/70">
-                      {project.category} &bull; {project.location}
-                    </p>
-                    <h3 className="font-heading text-base sm:text-lg font-bold text-white tracking-tight leading-snug">
+                  {/* Smooth, subtle black gradient at the bottom only */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 via-35% to-transparent pointer-events-none" />
+
+                  {/* Text content overlaid directly at bottom of card */}
+                  <div className="relative z-10 p-5 sm:p-6 space-y-1 text-left">
+                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#00A9D6] block">
+                      {project.category} · {project.location}
+                    </span>
+                    <h3 className="font-heading text-lg sm:text-xl font-extrabold text-white tracking-tight leading-snug">
                       {project.name}
                     </h3>
-                    <p className="font-mono text-sm font-bold text-[#1684C7]">
-                      {project.capacity}
-                    </p>
+                    <div className="pt-0.5">
+                      <span className="font-mono text-xs sm:text-sm font-bold text-white/90">
+                        {project.capacity}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             );
           })}
         </div>
-
-        {/* Bottom CTA */}
-        <div className="pt-5 flex justify-center sm:justify-start">
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#173B53] hover:text-[#1684C7] transition-colors group"
-          >
-            <span>View all projects</span>
-            <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
-        </div>
-
       </div>
     </section>
   );

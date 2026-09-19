@@ -113,63 +113,122 @@ Do not add decorative icons or badges simply to display these metrics.
 
 ---
 
-## Solutions
+## Solutions Section (Interactive Solution Panel)
 
-Introduce the major customer segments:
+Immediately follows the Solar Solution Platform section. Introduces the four primary customer segments through an interactive full-width panel with contextual navigation and clear routing.
 
-- Residential
-- Commercial
-- Industrial
-- Institutional
+### Solutions Journey
+- **01 / RESIDENTIAL**
+  - **Headline:** `Solar designed for better living.`
+  - **Description:** `Generate your own electricity with a professionally engineered rooftop solar system for your home.`
+  - **CTA:** `Plan My Home Solar →` (`/residential-solar`)
+  - **SEO Intent:** Residential rooftop solar, home solar, rooftop solar Odisha, residential solar Odisha
+- **02 / COMMERCIAL**
+  - **Headline:** `Efficient solar for smarter businesses.`
+  - **Description:** `Turn available commercial rooftop space into a reliable solar asset designed around energy requirements, system performance and long-term returns.`
+  - **CTA:** `Plan My Business Solar →` (`/commercial-solar`)
+  - **SEO Intent:** Commercial solar, commercial rooftop solar, solar for businesses, commercial solar Bhubaneswar/Odisha
+- **03 / INDUSTRIAL**
+  - **Headline:** `Solar engineered for industry.`
+  - **Description:** `High-capacity solar solutions for factories, warehouses and manufacturing facilities, engineered for performance, reliability and long-term operation.`
+  - **CTA:** `Plan My Industrial Solar →` (`/industrial-solar`)
+  - **SEO Intent:** Industrial solar, industrial rooftop solar, solar EPC Odisha
+- **04 / INSTITUTIONAL**
+  - **Headline:** `Reliable solar for institutions.`
+  - **Description:** `Engineered solar solutions for educational, healthcare and institutional facilities, designed around energy requirements, available space and long-term performance.`
+  - **CTA:** `Plan My Institutional Solar →` (`/contact`)
+  - **SEO Intent:** Institutional solar, solar for educational institutions, solar for hospitals
 
-Use one strong visual composition rather than automatically creating four cards.
-
-Each segment must provide a clear route to its existing solution experience.
-
----
-
-## Smart Solar Finder
-
-Introduce the calculator as a useful product experience.
-
-Primary message:
-
-**Find Your Solar Requirement**
-
-The user should understand that Fivefold can help estimate an appropriate solar requirement.
-
-Do not expose every calculator input on the homepage.
-
-The homepage should act as an invitation into the calculator.
-
----
-
-## Projects
-
-Introduce selected project proof through a strong visual portfolio composition.
-
-Prioritize:
-
-- real imagery
-- project capacity
-- location
-- project type
-
-Do not default to a repetitive card grid.
+### Content Restrictions & Compliance
+- **No Unsupported Claims:** Do NOT use `40% Accelerated Depreciation` or generic tax benefits on the homepage solutions slide unless separately verified and approved.
+- **No Guaranteed Returns:** Financial savings, returns, subsidy values, and tax benefits must never be presented as guaranteed. Focus on engineering reliability, system performance, and long-term operation.
 
 ---
 
-## Engineering
+## Solar Solution Platform (Smart Solar Finder Entry Point)
 
-Introduce Fivefold's engineering-led differentiation.
+The section immediately following the Hero acts as a structured entry point into solar evaluation, capacity estimation, and scheme support.
 
-Primary idea:
+- **Eyebrow:** `SOLAR SOLUTION PLATFORM`
+- **Heading:** `Find the Right Solar Solution for Your Needs.`
+- **Supporting Text:** `Explore your energy requirements, system sizing and applicable solar scheme support.`
 
-**Engineering before installation.**
+### Platform Cards:
+1. **Card 01 — Energy Requirement:**
+   `Tell us about your property, energy consumption and available rooftop space for a suitable solar system.`
+2. **Card 02 — System Sizing:**
+   `Estimate the right system capacity based on your energy requirements, rooftop space and site conditions.`
+3. **Card 03 — Schemes & Savings:**
+   `Understand applicable government scheme support, potential savings and net metering assistance for your solar project.`
 
-The detailed Engineering page contains the full process.
+---
 
-The homepage should communicate the philosophy briefly and visually.
+## Projects / Portfolio Section
+
+Showcases verified solar EPC installations across 27 client credentials with interactive category filtering.
+
+- **Eyebrow:** `• PORTFOLIO`
+- **Heading:** `Real Projects. Measurable Impact.`
+- **Filter Tabs:** `All | Industrial | Commercial | Institutional | Government`
+- **Dataset:** 27 verified client installations (7 Industrial, 8 Commercial, 6 Institutional, 6 Government)
+- **Card Content:** Category · Location, Client Project Name, Capacity in kWp
+- **Primary CTA:** `View all projects →` (`/projects`)
+- **Governance:** Project credentials published subject to client-name/publication permissions.
+
+---
+
+## Engineering Section (Engineering Precision)
+
+Introduces Fivefold's engineering-led differentiation through a three-stage interactive accordion framework.
+
+- **Eyebrow:** `• ENGINEERING PRECISION`
+- **Heading:** `Engineering That Drives Performance.`
+- **Supporting Text:** `We engineer every solar project around generation, reliability, constructibility and long-term performance.`
+
+### Engineering Stages:
+1. **01 / PRE-CONSTRUCTION:**
+   - **Subtitle:** `Assess the site, model the system and prepare the project for execution.`
+   - **Capabilities:** Feasibility Reports & Shadow Analysis, 3D Layout & Capacity Estimations, PVsyst Yield Simulations, Bankable DPR Preparation, Financial Modelling, Constructibility & Risk Review.
+2. **02 / EXECUTION:**
+   - **Subtitle:** `Turn approved engineering into a controlled, precise and compliant installation.`
+   - **Capabilities:** Detailed Execution Planning, Structural Engineering, Detailed Engineering & Drawings, Permit & Approval Support, Procurement, Installation & Commissioning, Net Metering Support, Performance Assurance.
+3. **03 / QUALITY & TRACEABILITY:**
+   - **Subtitle:** `Quality-controlled components, testing and documentation from procurement to commissioning.`
+   - **Capabilities:** Tier-1 Components, Strong Procurement Networks with Direct Manufacturers & Suppliers, Pre-Defined Execution SOPs, Third-Party Quality Assurance, Compliance & Testing Processes, Documentation & Traceability.
+
+### Content Restrictions & SEO:
+- **No Conflated Bankability Claims:** Do not use `25–30 year bankability` or guarantee long-term generation/returns.
+- **SEO Intent:** Solar engineering, Solar EPC Odisha, rooftop solar engineering, PVsyst yield simulations, solar quality assurance.
+
+---
+
+## Why Fivefold Section (Differentiation & Value Proposition)
+
+Explains **why Fivefold's engineering-led approach matters** and how it stays accountable across the entire system lifecycle, without duplicating the detailed engineering process from the preceding section.
+
+- **Component:** `client/src/components/sections/WhyFivefold.tsx`
+- **Eyebrow:** `• WHY FIVEFOLD`
+- **Heading:** `We Engineer More Than Solar.`
+- **Supporting Text:** `From engineering and procurement to installation and long-term support, we stay accountable for the performance of your solar system.`
+
+### Four Core Differentiators:
+1. **01 / ENGINEERING — Engineering First**
+   - **Description:** `Feasibility, site analysis, system design and performance modelling before construction begins.`
+   - **Link:** `/engineering`
+2. **02 / EXECUTION — End-to-End Execution**
+   - **Description:** `From procurement and installation to commissioning, we manage the project through every critical stage.`
+   - **Link:** `/engineering`
+3. **03 / PERFORMANCE — Built for Performance**
+   - **Description:** `Systems designed around generation, reliability, constructibility and long-term performance.`
+   - **Link:** `/services`
+4. **04 / QUALITY & SUPPORT — Quality & Long-Term Support**
+   - **Description:** `Quality assurance, monitoring, maintenance and technical support throughout the system lifecycle.`
+   - **Link:** `/solarcare`
+
+### Content Strategy & Restrictions:
+- **Differentiation vs Process:** This section explains *why that approach matters* (accountability, performance, lifecycle care) rather than acting as a duplicate engineering checklist.
+- **No Unverified Claims:** Focus on generation, reliability, constructibility, and long-term performance without claiming guaranteed generation or ROI.
+- **SEO Intent:** Solar EPC company Odisha, engineering-led solar EPC, rooftop solar company Odisha, solar O&M, long-term solar support.
 
 ---
 

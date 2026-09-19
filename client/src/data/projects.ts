@@ -3,180 +3,285 @@ export type ProjectCategory = "Industrial" | "Commercial" | "Institutional" | "G
 export interface Project {
   id: string;
   name: string;
-  client: string;
   location: string;
   capacity: string;
   category: ProjectCategory;
-  image: string;
-  description: string;
+  image?: string;
   published: boolean;
-  highlights?: string[];
+  publishApproved: boolean;
+  description?: string;
 }
 
 /**
- * Projects data layer.
- * CRITICAL GOVERNANCE RULE: Only projects with published === true may reach the UI.
- * Filter is strictly enforced at the data accessor layer (getPublishedProjects).
+ * Authoritative Projects Dataset for Fivefold Renewable.
+ * Source: Client-approved Fivefold Website Details (2) document (Pages 8–10).
+ * 
+ * CRITICAL GOVERNANCE RULES:
+ * 1. Only records with published === true AND publishApproved === true are rendered.
+ * 2. Capacities, locations, and client project names must match verified client credentials.
+ * 3. Separate locations (e.g. H.T. Media Ranchi/Patna/Mohali, MCC Moosapet/Jalandhar) are preserved as distinct records.
  */
 export const PROJECTS_DATA: Project[] = [
-  // Representative EPC Reference Installations (Published with permission)
+  // 1. Initial Representative Set (Deterministic Showcase)
   {
-    id: "industrial-rooftop-odisha-1",
-    name: "Industrial Rooftop Solar Plant",
-    client: "Manufacturing Enterprise",
-    location: "Kalinganagar, Odisha",
-    capacity: "1,200 kWp",
-    category: "Industrial",
-    image: "https://images.unsplash.com/photo-1509391365360-2e959784a276?q=80&w=1200&auto=format&fit=crop",
-    description: "High-yield industrial rooftop PV installation engineered with 3D shadow analysis, custom mounting structures for high wind load, and real-time SCADA integration.",
-    published: true,
-    highlights: ["3D Shadow Analysis", "Custom Structural Design", "SCADA Integration"],
-  },
-  {
-    id: "commercial-complex-bhubaneswar",
-    name: "Commercial Complex Solar System",
-    client: "Commercial Hub",
-    location: "Bhubaneswar, Odisha",
-    capacity: "350 kWp",
-    category: "Commercial",
-    image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1200&auto=format&fit=crop",
-    description: "Bankable rooftop solar plant integrated with net metering, reducing daytime grid dependence by over 75%.",
-    published: true,
-    highlights: ["Net Metering Approved", "Tier-1 Mono PERC Panels", "Zero Export Controller"],
-  },
-  {
-    id: "institutional-campus-solar",
-    name: "Institutional Campus Solar Project",
-    client: "Educational Institution",
-    location: "Cuttack, Odisha",
-    capacity: "250 kWp",
-    category: "Institutional",
-    image: "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?q=80&w=1200&auto=format&fit=crop",
-    description: "Turnkey solar EPC including feasibility report, structural grid verification, and DISCOM grid synchronization.",
-    published: true,
-    highlights: ["Turnkey Execution", "DISCOM Grid Sync", "Preventive O&M Package"],
-  },
-  {
-    id: "govt-building-solar",
-    name: "Government Facility Rooftop Plant",
-    client: "Public Sector Facility",
-    location: "Bhadrak, Odisha",
-    capacity: "150 kWp",
-    category: "Government",
-    image: "https://images.unsplash.com/photo-1548337138-e87d889cc369?q=80&w=1200&auto=format&fit=crop",
-    description: "State government rooftop solar project compliant with DISCOM technical guidelines and net metering norms.",
-    published: true,
-    highlights: ["Strict SOP Compliance", "DISCOM Inspection Passed", "Remote Monitoring"],
-  },
-
-  // Reference data from brief - Kept published: false until client publication permission is explicitly granted
-  {
-    id: "gsi-bhubaneswar",
-    name: "GSI Rooftop Solar",
-    client: "GSI",
-    location: "Bhubaneswar, Odisha",
-    capacity: "98 kWp",
-    category: "Institutional",
-    image: "https://images.unsplash.com/photo-1509391365360-2e959784a276?q=80&w=1200&auto=format&fit=crop",
-    description: "98 kWp Rooftop Solar Installation.",
-    published: false,
-  },
-  {
-    id: "rmnh-bhubaneswar",
-    name: "RMNH Rooftop Solar",
-    client: "RMNH",
-    location: "Bhubaneswar, Odisha",
-    capacity: "200 kWp",
-    category: "Institutional",
-    image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1200&auto=format&fit=crop",
-    description: "200 kWp Rooftop Solar Installation.",
-    published: false,
-  },
-  {
-    id: "loyola-bhubaneswar",
-    name: "Loyola School Solar",
-    client: "Loyola School",
-    location: "Bhubaneswar, Odisha",
-    capacity: "99.84 kWp",
-    category: "Institutional",
-    image: "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?q=80&w=1200&auto=format&fit=crop",
-    description: "99.84 kWp Rooftop Solar Installation.",
-    published: false,
-  },
-  {
-    id: "mindtree-bhubaneswar",
-    name: "Mind Tree Solar Installation",
-    client: "Mind Tree",
-    location: "Bhubaneswar, Odisha",
-    capacity: "550.5 kWp",
-    category: "Commercial",
-    image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1200&auto=format&fit=crop",
-    description: "550.5 kWp Commercial Solar System.",
-    published: false,
-  },
-  {
-    id: "mcc-hyderabad",
-    name: "MCC Rooftop Solar",
-    client: "MCC",
-    location: "Hyderabad",
-    capacity: "512 kWp",
-    category: "Commercial",
-    image: "https://images.unsplash.com/photo-1509391365360-2e959784a276?q=80&w=1200&auto=format&fit=crop",
-    description: "512 kWp Commercial Solar System.",
-    published: false,
-  },
-  {
-    id: "iocl-malda",
-    name: "IOCL Solar Project",
-    client: "IOCL",
-    location: "Malda",
-    capacity: "100 kWp",
-    category: "Industrial",
-    image: "https://images.unsplash.com/photo-1548337138-e87d889cc369?q=80&w=1200&auto=format&fit=crop",
-    description: "100 kWp Industrial Solar Installation.",
-    published: false,
-  },
-  {
-    id: "jindal-wb",
-    name: "Jindal Industrial Solar",
-    client: "Jindal",
-    location: "West Bengal",
+    id: "jindal-jangalpur-wb",
+    name: "Jindal, India",
+    location: "Jangalpur, West Bengal",
     capacity: "1,980 kWp",
     category: "Industrial",
-    image: "https://images.unsplash.com/photo-1509391365360-2e959784a276?q=80&w=1200&auto=format&fit=crop",
-    description: "1,980 kWp Industrial Rooftop Solar Plant.",
-    published: false,
-  },
-  {
-    id: "iocl-paradip",
-    name: "IOCL Paradip Solar",
-    client: "IOCL",
-    location: "Paradip, Odisha",
-    capacity: "110 kWp",
-    category: "Industrial",
-    image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1200&auto=format&fit=crop",
-    description: "110 kWp Industrial Solar Installation.",
-    published: false,
+    published: true,
+    publishApproved: true,
   },
   {
     id: "pepsico-hyderabad",
-    name: "Pepsico Facility Solar",
-    client: "Pepsico",
+    name: "Pepsico, Hyderabad",
     location: "Hyderabad",
     capacity: "244.5 kWp",
+    category: "Commercial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "loyola-school-bhubaneswar",
+    name: "Loyola School",
+    location: "Bhubaneswar, Odisha",
+    capacity: "99.84 kWp",
+    category: "Institutional",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "iocl-paradip-odisha",
+    name: "IOCL, Paradip",
+    location: "Odisha",
+    capacity: "110 kWp",
+    category: "Government",
+    published: true,
+    publishApproved: true,
+  },
+
+  // 2. Industrial Projects
+  {
+    id: "ajanta-pharma-guwahati",
+    name: "Ajanta Pharma",
+    location: "Guwahati, Assam",
+    capacity: "955 kWp",
     category: "Industrial",
-    image: "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?q=80&w=1200&auto=format&fit=crop",
-    description: "244.5 kWp Industrial Rooftop System.",
-    published: false,
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "roca-alwar-rajasthan",
+    name: "ROCA",
+    location: "Alwar, Rajasthan",
+    capacity: "843.2 kWp",
+    category: "Industrial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "seigwerk-bhiwadi",
+    name: "Seigwerk",
+    location: "Bhiwadi, Rajasthan",
+    capacity: "542 kWp",
+    category: "Industrial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "toshiba-india-patancheru",
+    name: "Toshiba India",
+    location: "Patancheru, Telangana",
+    capacity: "473 kWp",
+    category: "Industrial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "sage-metal-ghaziabad",
+    name: "Sage Metal",
+    location: "Sahibabad, Ghaziabad",
+    capacity: "347 kWp",
+    category: "Industrial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "pigeon-india-noida",
+    name: "Pigeon India",
+    location: "Noida, Uttar Pradesh",
+    capacity: "310 kWp",
+    category: "Industrial",
+    published: true,
+    publishApproved: true,
+  },
+
+  // 3. Commercial Projects
+  {
+    id: "mcc-moosapet-hyderabad",
+    name: "MCC, Moosapet",
+    location: "Hyderabad",
+    capacity: "512 kWp",
+    category: "Commercial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "ht-media-patna",
+    name: "H.T. Media",
+    location: "Patna, Bihar",
+    capacity: "311 kWp",
+    category: "Commercial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "ht-media-mohali",
+    name: "H.T. Media",
+    location: "Mohali, Chandigarh",
+    capacity: "177 kWp",
+    category: "Commercial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "ht-media-ranchi",
+    name: "H.T. Media",
+    location: "Ranchi, Jharkhand",
+    capacity: "143 kWp",
+    category: "Commercial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "mcc-jalandhar-punjab",
+    name: "MCC",
+    location: "Jalandhar, Punjab",
+    capacity: "100 kWp",
+    category: "Commercial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "decathlon-omr-chennai",
+    name: "Decathlon – OMR",
+    location: "Chennai",
+    capacity: "90 kWp",
+    category: "Commercial",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "decathlon-nashik",
+    name: "Decathlon – Nashik",
+    location: "Nashik",
+    capacity: "65 kWp",
+    category: "Commercial",
+    published: true,
+    publishApproved: true,
+  },
+
+  // 4. Institutional Projects
+  {
+    id: "mind-tree-bhubaneswar",
+    name: "Mind Tree",
+    location: "Bhubaneswar, Odisha",
+    capacity: "550.5 kWp",
+    category: "Institutional",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "seit-koraput",
+    name: "SEIT",
+    location: "Koraput",
+    capacity: "550.5 kWp",
+    category: "Institutional",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "nalco-research-centre-dhenkanal",
+    name: "Nalco Research Centre",
+    location: "Dhenkanal, Odisha",
+    capacity: "512 kWp",
+    category: "Institutional",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "rmnh-bhubaneswar",
+    name: "RMNH",
+    location: "Bhubaneswar, Odisha",
+    capacity: "200 kWp",
+    category: "Institutional",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "gsi-bhubaneswar",
+    name: "GSI",
+    location: "Bhubaneswar, Odisha",
+    capacity: "98 kWp",
+    category: "Institutional",
+    published: true,
+    publishApproved: true,
+  },
+
+  // 5. Government Projects
+  {
+    id: "geological-survey-india-bhubaneswar",
+    name: "Geological Survey of India",
+    location: "Bhubaneswar, Odisha",
+    capacity: "200 kWp",
+    category: "Government",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "iocl-malda-wb",
+    name: "IOCL, Malda",
+    location: "West Bengal",
+    capacity: "100 kWp",
+    category: "Government",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "iocl-raniganj-wb",
+    name: "IOCL, Raniganj",
+    location: "West Bengal",
+    capacity: "100 kWp",
+    category: "Government",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "202-cobra-battalion-bhubaneswar",
+    name: "202 Cobra Battalion",
+    location: "Bhubaneswar, Odisha",
+    capacity: "99.84 kWp",
+    category: "Government",
+    published: true,
+    publishApproved: true,
+  },
+  {
+    id: "cpwd-nirman-bhawan-bhubaneswar",
+    name: "CPWD – Nirman Bhawan",
+    location: "Bhubaneswar, Odisha",
+    capacity: "98 kWp",
+    category: "Government",
+    published: true,
+    publishApproved: true,
   },
 ];
 
 /**
- * Single function to retrieve published projects only.
- * NEVER bypass this function to ensure unpublished projects are never exposed.
+ * Retrieves published & approved project credentials.
+ * Strictly enforces governance filtering so unapproved/unpublished projects are never exposed.
  */
 export function getPublishedProjects(category?: ProjectCategory | "All"): Project[] {
-  const published = PROJECTS_DATA.filter((p) => p.published === true);
+  const published = PROJECTS_DATA.filter((p) => p.published === true && p.publishApproved === true);
   if (!category || category === "All") {
     return published;
   }
