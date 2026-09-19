@@ -42,7 +42,7 @@ export default function ContactPage() {
       </section>
 
       {/* Main Content Grid */}
-      <section className="py-16 sm:py-20 bg-white text-brand-charcoal">
+      <section className="pt-12 sm:pt-16 pb-4 sm:pb-6 bg-white text-brand-charcoal">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Left Column: Form */}

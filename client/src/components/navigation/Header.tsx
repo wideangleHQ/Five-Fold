@@ -25,7 +25,7 @@ const NAV_ITEMS = [
       { name: "Industrial Solar", href: "/industrial-solar" },
     ],
   },
-  { name: "Projects", href: "/projects" },
+  { name: "Projects", href: "/#projects" },
   { name: "SolarCare", href: "/solarcare" },
   { name: "Schemes", href: "/government-schemes" },
 ];

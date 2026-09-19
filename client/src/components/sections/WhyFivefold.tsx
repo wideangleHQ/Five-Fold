@@ -6,57 +6,62 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { AccordionGallery, type AccordionGalleryItem } from "@/components/ui/AccordionGallery";
 
-import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
-import stock2Img from "@/assets/Images/Five_fold_stock_2.png";
-import heroBgImg from "@/assets/Images/hero section background.png";
-import systemSizingImg from "@/assets/Images/Second Section/System_Sizing.png";
+import preConstructionImg from "@/assets/Images/Why Fivefold/Pre Construction.png";
+import executionImg from "@/assets/Images/Why Fivefold/Execution.png";
+import turnkeyExecutionImg from "@/assets/Images/Why Fivefold/Turnkey Execution.png";
+import qualityTraceabilityImg from "@/assets/Images/Why Fivefold/Quality & Traceability.png";
 
 export interface EngineeringCardData {
   num: string;
+  eyebrow: string;
   title: string;
   heading: string;
   description: string;
   link: string;
-  image: typeof stock1Img;
+  image: typeof preConstructionImg;
   alt: string;
 }
 
 export const ENGINEERING_CARDS: EngineeringCardData[] = [
   {
     num: "01",
-    title: "Pre-Construction",
-    heading: "01 / Pre-Construction",
-    description: "Feasibility, 3D shadow path analysis, and bankable DPR engineering.",
+    eyebrow: "01 / ENGINEERING",
+    title: "Engineering First",
+    heading: "01 / Engineering First",
+    description: "Feasibility, site analysis, system design and performance modelling before construction begins.",
     link: "/engineering",
-    image: stock1Img,
-    alt: "Pre-construction feasibility and 3D shadow path analysis",
+    image: preConstructionImg,
+    alt: "Engineering First — Feasibility, site analysis and performance modelling",
   },
   {
     num: "02",
-    title: "Execution",
-    heading: "02 / Execution",
-    description: "Precision civil installation, Tier-1 procurement, and DISCOM net-metering.",
+    eyebrow: "02 / EXECUTION",
+    title: "End-to-End Execution",
+    heading: "02 / End-to-End Execution",
+    description: "From procurement and installation to commissioning, we manage the project through every critical stage.",
     link: "/engineering",
-    image: systemSizingImg,
-    alt: "Precision solar execution and component installation",
+    image: executionImg,
+    alt: "End-to-End Execution — Procurement, installation and commissioning",
   },
   {
     num: "03",
-    title: "Turnkey Execution",
-    heading: "03 / Turnkey Execution",
-    description: "End-to-end EPC delivery and synchronized grid commissioning.",
+    eyebrow: "03 / PERFORMANCE",
+    title: "Built for Performance",
+    heading: "03 / Built for Performance",
+    description: "Systems designed around generation, reliability, constructibility and long-term performance.",
     link: "/services",
-    image: stock2Img,
-    alt: "Turnkey EPC execution and grid commissioning",
+    image: turnkeyExecutionImg,
+    alt: "Built for Performance — Generation, reliability and constructibility",
   },
   {
     num: "04",
-    title: "Quality & Traceability",
-    heading: "04 / Quality & Traceability",
-    description: "Factory flash data audits, thermal imaging QA, and 25-year assurance.",
+    eyebrow: "04 / QUALITY & SUPPORT",
+    title: "Quality & Long-Term Support",
+    heading: "04 / Quality & Long-Term Support",
+    description: "Quality assurance, monitoring, maintenance and technical support throughout the system lifecycle.",
     link: "/solarcare",
-    image: heroBgImg,
-    alt: "Quality testing and 25-year performance monitoring",
+    image: qualityTraceabilityImg,
+    alt: "Quality & Long-Term Support — QA, monitoring and maintenance",
   },
 ];
 
@@ -85,13 +90,13 @@ export const WhyFivefold: React.FC = () => {
               data-reveal="heading"
               className="font-heading text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight leading-[1.08] text-[#173B53]"
             >
-              The difference between installing panels and engineering power plants.
+              We Engineer More Than Solar.
             </h2>
             <p
               data-reveal="paragraph"
               className="font-sans text-[#526673] text-xs sm:text-base lg:text-lg leading-relaxed max-w-2xl pt-0.5"
             >
-              Engineering discipline built for reliable, long-term solar performance.
+              From engineering and procurement to installation and long-term support, we stay accountable for the performance of your solar system.
             </p>
           </div>
 
@@ -113,13 +118,13 @@ export const WhyFivefold: React.FC = () => {
             defaultIndex={2}
             expandRatio={0.46}
             accentColor="#1684C7"
-            overlayColor="#173B53"
+            overlayColor="#0f172a"
             textColor="#ffffff"
             height={500}
-            radius={24}
+            radius={20}
             gap={14}
             trigger="hover"
-            grayscale={true}
+            grayscale={false}
             duration={0.6}
             tilt={4}
             parallax={0.35}
@@ -136,7 +141,7 @@ export const WhyFivefold: React.FC = () => {
             >
               <Link
                 href={card.link}
-                className="group relative block w-full h-[220px] xs:h-[240px] sm:h-[270px] rounded-2xl overflow-hidden bg-[#173B53] border border-[#DCE2E2]/60 shadow-[0_8px_24px_-12px_rgba(23,59,83,0.18)] transition-all duration-300 active:scale-[0.99]"
+                className="group relative block w-full h-[220px] xs:h-[240px] sm:h-[270px] rounded-2xl overflow-hidden bg-slate-900 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.25)] transition-all duration-300 active:scale-[0.99]"
               >
                 {/* Photographic Cover Image */}
                 <Image
@@ -147,18 +152,21 @@ export const WhyFivefold: React.FC = () => {
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
 
-                {/* Subtle Photographic Bottom Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#173B53]/92 via-[#173B53]/35 to-transparent pointer-events-none" />
+                {/* Smooth Photographic Bottom Black Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 via-40% to-transparent pointer-events-none" />
 
                 {/* Card Content Anchored at Bottom */}
                 <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 z-10 flex items-start gap-3 pointer-events-none">
                   {/* Small Blue Vertical Accent Line */}
                   <span className="w-[3.5px] self-stretch min-h-[38px] bg-[#1684C7] rounded-full shrink-0 shadow-[0_0_10px_rgba(22,132,199,0.7)] mt-0.5" />
 
-                  {/* Level 1 Title & Level 2 Description */}
+                  {/* Level 1 Eyebrow & Title & Level 2 Description */}
                   <div className="space-y-0.5 sm:space-y-1 min-w-0">
-                    <h3 className="font-heading font-bold text-white text-base xs:text-lg sm:text-xl tracking-tight leading-snug truncate">
-                      {card.heading}
+                    <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-[#00A9D6] block">
+                      {card.eyebrow}
+                    </span>
+                    <h3 className="font-heading font-bold text-white text-base xs:text-lg sm:text-xl tracking-tight leading-snug">
+                      {card.title}
                     </h3>
                     <p className="font-sans text-white/90 text-xs sm:text-sm font-normal leading-relaxed line-clamp-2">
                       {card.description}

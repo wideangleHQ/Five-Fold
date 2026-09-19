@@ -4,7 +4,7 @@ import { HelpCircle, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Accordion } from "@/components/ui/Accordion";
 import { FAQS_DATA } from "@/data/faqs";
-import { constructMetadata } from "@/lib/seo";
+import { constructMetadata, generateFaqSchema } from "@/lib/seo";
 
 export const metadata: Metadata = constructMetadata({
   title: "Frequently Asked Questions | Fivefold Renewable",
@@ -13,8 +13,14 @@ export const metadata: Metadata = constructMetadata({
 });
 
 export default function FaqPage() {
+  const faqSchema = generateFaqSchema(FAQS_DATA);
+
   return (
     <div className="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-white min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <Container>
         {/* Header */}
         <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
@@ -38,3 +44,4 @@ export default function FaqPage() {
     </div>
   );
 }
+

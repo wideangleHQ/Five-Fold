@@ -9,7 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about",
     "/engineering",
     "/services",
-    "/projects",
     "/solarcare",
     "/schemes",
     "/contact",
@@ -22,14 +21,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route === "" ? 1.0 : 0.8,
   }));
 
-  // Only published projects leak into sitemap
-  const publishedProjects = getPublishedProjects();
-  const projectRoutes = publishedProjects.map((project) => ({
-    url: `${baseUrl}/projects#${project.id}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
-  return [...staticRoutes, ...projectRoutes];
+  return staticRoutes;
 }

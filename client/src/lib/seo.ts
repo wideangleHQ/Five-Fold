@@ -62,6 +62,14 @@ export function constructMetadata({
       description,
       images: [image],
     },
+    icons: {
+      icon: [
+        { url: "/favicon.png", type: "image/png" },
+        { url: "/icon.png", type: "image/png" },
+      ],
+      shortcut: "/favicon.png",
+      apple: "/apple-icon.png",
+    },
     robots: {
       index: true,
       follow: true,
@@ -103,3 +111,19 @@ export function generateOrganizationSchema() {
     },
   };
 }
+
+export function generateFaqSchema(faqs: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+}
+

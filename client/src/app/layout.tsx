@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "@/lib/patchDomRemoval";
 import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollRevealInitializer } from "@/components/ui/ScrollRevealInitializer";
-import { ProgressiveBlur } from "@/components/ui/ProgressiveBlur";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
-import { FivefoldPreloader } from "@/components/ui/FivefoldPreloader";
 import { constructMetadata, generateOrganizationSchema } from "@/lib/seo";
 
 // Load local Inter font files from src/assets/fonts/Inter
@@ -51,14 +50,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col font-sans bg-white text-brand-charcoal antialiased pb-0 mb-0">
-        <FivefoldPreloader />
+      <body className="min-h-screen flex flex-col font-sans bg-white text-brand-charcoal antialiased overflow-x-hidden pb-0 mb-0">
         <SmoothScrollProvider>
           <ScrollRevealInitializer />
-          <ProgressiveBlur position="top" height="100px" blurAmount="6px" />
-          <ProgressiveBlur position="bottom" height="100px" blurAmount="6px" />
           <Header />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 overflow-x-hidden w-full">{children}</main>
           <Footer />
         </SmoothScrollProvider>
       </body>

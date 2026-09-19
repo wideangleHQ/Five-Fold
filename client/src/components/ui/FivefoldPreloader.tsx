@@ -18,24 +18,30 @@ export const FivefoldPreloader: React.FC = () => {
       const finish = () => setDone(true);
 
       if (reduced) {
-        gsap.set(".ff-brand", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
+        gsap.set(".ff-brand-container", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
         gsap.to(rootRef.current, { opacity: 0, duration: 0.3, delay: 0.45, onComplete: finish });
         return;
       }
 
-      gsap.set(".ff-brand", { opacity: 0, y: 20, scale: 0.98, filter: "blur(8px)" });
+      gsap.set(".ff-brand-container", { opacity: 0, y: 20, scale: 0.98, filter: "blur(8px)" });
+      gsap.set(".ff-progress", { width: "0%" });
 
       gsap
         .timeline({ onComplete: finish })
         .to(
-          ".ff-brand",
+          ".ff-brand-container",
           { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "power3.out" },
           0.1,
         )
         .to(
-          ".ff-brand",
+          ".ff-progress",
+          { width: "100%", duration: 0.7, ease: "power2.inOut" },
+          "-=0.1"
+        )
+        .to(
+          ".ff-brand-container",
           { opacity: 0, y: -8, scale: 0.985, filter: "blur(8px)", duration: 0.35, ease: "power3.inOut" },
-          "+=0.25",
+          "+=0.1",
         )
         .to(
           ".ff-panel",
@@ -64,7 +70,7 @@ export const FivefoldPreloader: React.FC = () => {
 
       <div className="absolute inset-0 flex items-center justify-center px-6">
         <div
-          className="ff-brand flex items-center justify-center will-change-transform"
+          className="ff-brand-container flex flex-col items-center justify-center will-change-transform space-y-6"
           style={{ opacity: 0 }}
         >
           <Image
@@ -73,12 +79,12 @@ export const FivefoldPreloader: React.FC = () => {
             priority
             className="w-auto h-12 sm:h-16 md:h-20 max-w-[260px] sm:max-w-[340px] md:max-w-[420px] object-contain drop-shadow-sm"
           />
+          {/* Progress Bar Container */}
+          <div className="w-48 sm:w-64 h-1 bg-white/20 rounded-full overflow-hidden">
+            <div className="ff-progress h-full bg-[#1684C7] w-0" />
+          </div>
         </div>
       </div>
-
-      <noscript>
-        <style>{`[data-ff-preloader]{display:none!important}`}</style>
-      </noscript>
     </div>
   );
 };

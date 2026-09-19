@@ -10,161 +10,216 @@ The information below should NOT automatically become cards, icons or dense UI.
 
 # ENGINEERING CAPABILITY
 
-Engineering is a major Fivefold differentiator.
+Engineering is Fivefold's primary core differentiator, ensuring projects are designed around generation, reliability, constructibility, and long-term performance.
 
-Core process:
+## Section Specifications (Homepage Component)
 
-## Pre-Construction
+- **Component:** `client/src/components/sections/EngineeringCapabilities.tsx`
+- **Eyebrow:** `• ENGINEERING PRECISION`
+- **Heading:** `Engineering That Drives Performance.`
+- **Supporting Copy:** `We engineer every solar project around generation, reliability, constructibility and long-term performance.`
 
-Feasibility → Shadow Analysis → 3D Layout → PVsyst → DPR → Financial Modelling → Risk Review
+### Three-Stage Engineering Accordion
 
-## Execution
+#### 01 — PRE-CONSTRUCTION
+- **Subtitle:** `Assess the site, model the system and prepare the project for execution.`
+- **Expanded Capabilities:**
+  - Feasibility Reports & Shadow Analysis
+  - 3D Layout & Capacity Estimations
+  - PVsyst Yield Simulations
+  - Bankable DPR Preparation
+  - Financial Modelling
+  - Constructibility & Risk Review
 
-Engineering → Procurement → Installation → Commissioning → Performance Assurance
+#### 02 — EXECUTION
+- **Subtitle:** `Turn approved engineering into a controlled, precise and compliant installation.`
+- **Expanded Capabilities:**
+  - Detailed Execution Planning
+  - Structural Engineering
+  - Detailed Engineering & Drawings
+  - Permit & Approval Support
+  - Procurement
+  - Installation & Commissioning
+  - Net Metering Support
+  - Performance Assurance
 
-## Quality
-
-Tier-1 Components → QA → Testing → Documentation → Traceability
-
----
-
-## Presentation Principle
-
-The engineering experience should communicate:
-
-**Engineering before installation.**
-
-Show the process in three high-level stages:
-
-01 — PRE-CONSTRUCTION  
-02 — EXECUTION  
-03 — QUALITY
-
-The detailed capabilities should be revealed progressively.
-
-Do NOT display every capability simultaneously.
-
-Do NOT create an icon for every capability.
-
-Do NOT create 15+ cards.
-
-Use typography, whitespace, one strong supporting visual and subtle motion.
-
-The experience should feel precise and editorial rather than like a technical dashboard.
-
----
-
-# PROJECTS & CREDENTIALS
-
-Showcase selected Fivefold installations.
-
-Each project may contain:
-
-- Project Name
-- Location
-- Capacity (kWp)
-- Project Type
-
-Filters:
-
-- Residential
-- Commercial
-- Industrial
-- Institutional
-- Location
-- Capacity
-
-Project names must only be published subject to applicable client-name / publication permissions.
-
-Existing examples include:
-
-- GSI — Bhubaneswar — 98 kWp
-- RMNH — Bhubaneswar — 200 kWp
-- Loyola School — Bhubaneswar — 99.84 kWp
-- Mind Tree — Bhubaneswar — 550.5 kWp
-- Multiple industrial projects across India
-
-Only use verified project information.
+#### 03 — QUALITY & TRACEABILITY
+- **Subtitle:** `Quality-controlled components, testing and documentation from procurement to commissioning.`
+- **Expanded Capabilities:**
+  - Tier-1 Components
+  - Strong Procurement Networks with Direct Manufacturers & Suppliers
+  - Pre-Defined Execution SOPs
+  - Third-Party Quality Assurance
+  - Compliance & Testing Processes
+  - Documentation & Traceability
 
 ---
 
-## Project Presentation Principle
+## Content Restrictions & Compliance Guidelines
 
-Projects are proof.
+> [!IMPORTANT]
+> **Strict Engineering Copy Rules:**
+> 1. **Do Not Conflate Bankability:** The client document separately mentions 25–30 year plant performance and Bankable DPR preparation. Do NOT combine these into unsupported phrases like `"25–30 year bankability"`.
+> 2. **No Guaranteed Generation:** Do not claim guaranteed savings, guaranteed generation, or guaranteed returns unless explicitly supported and legally approved.
+> 3. **Process Integrity:** The section must demonstrate the sequential discipline: **Engineering → Execution → Quality & Traceability** rather than functioning as an unstructured service list.
 
-Prioritize:
+---
 
-1. Real imagery
-2. Capacity
-3. Location
-4. Project type
+## SEO Intent & Target Keywords
 
-Use strong editorial project compositions.
+- Solar engineering, solar EPC company Odisha, rooftop solar engineering
+- PVsyst yield simulations, solar structural engineering, bankable DPR preparation
+- Solar quality assurance, solar installation & commissioning Odisha
 
-Do not default to a uniform grid of identical cards.
+---
 
-A project can occupy substantial visual space when appropriate.
+# PROJECTS & PORTFOLIO (PROJECT CREDENTIALS)
+
+Showcases Fivefold's verified track record of high-yield rooftop and ground-mounted solar installations engineered across industrial, commercial, institutional, and government sectors.
+
+## Section Specifications (Homepage Component)
+
+- **Component:** `client/src/components/sections/ProjectsTeaser.tsx`
+- **Data Source:** `client/src/data/projects.ts`
+- **Eyebrow:** `• PORTFOLIO`
+- **Heading:** `Real Projects. Measurable Impact.`
+- **Filter Tabs:** `All | Industrial | Commercial | Institutional | Government`
+- **Card Format:** Category · Location, Project Name, Capacity (kWp)
+- **Primary CTA:** `View all projects →` (links to `/projects`)
+
+---
+
+## Authoritative Project Credentials (27 Verified Projects)
+
+Source: Client-Approved Website Details Document (Pages 8–10).
+
+| # | Project Name | Location | Capacity | Category | Permission Status |
+|---|---|---|---|---|---|
+| **01** | Jindal, India | Jangalpur, West Bengal | 1,980 kWp | Industrial | Published / Approved |
+| **02** | Pepsico, Hyderabad | Hyderabad | 244.5 kWp | Commercial | Published / Approved |
+| **03** | Loyola School | Bhubaneswar, Odisha | 99.84 kWp | Institutional | Published / Approved |
+| **04** | IOCL, Paradip | Odisha | 110 kWp | Government | Published / Approved |
+| **05** | Ajanta Pharma | Guwahati, Assam | 955 kWp | Industrial | Published / Approved |
+| **06** | ROCA | Alwar, Rajasthan | 843.2 kWp | Industrial | Published / Approved |
+| **07** | Seigwerk | Bhiwadi, Rajasthan | 542 kWp | Industrial | Published / Approved |
+| **08** | Toshiba India | Patancheru, Telangana | 473 kWp | Industrial | Published / Approved |
+| **09** | Sage Metal | Sahibabad, Ghaziabad | 347 kWp | Industrial | Published / Approved |
+| **10** | Pigeon India | Noida, Uttar Pradesh | 310 kWp | Industrial | Published / Approved |
+| **11** | MCC, Moosapet | Hyderabad | 512 kWp | Commercial | Published / Approved |
+| **12** | H.T. Media | Patna, Bihar | 311 kWp | Commercial | Published / Approved |
+| **13** | H.T. Media | Mohali, Chandigarh | 177 kWp | Commercial | Published / Approved |
+| **14** | H.T. Media | Ranchi, Jharkhand | 143 kWp | Commercial | Published / Approved |
+| **15** | MCC | Jalandhar, Punjab | 100 kWp | Commercial | Published / Approved |
+| **16** | Decathlon – OMR | Chennai | 90 kWp | Commercial | Published / Approved |
+| **17** | Decathlon – Nashik | Nashik | 65 kWp | Commercial | Published / Approved |
+| **18** | Mind Tree | Bhubaneswar, Odisha | 550.5 kWp | Institutional | Published / Approved |
+| **19** | SEIT | Koraput | 550.5 kWp | Institutional | Published / Approved |
+| **20** | Nalco Research Centre | Dhenkanal, Odisha | 512 kWp | Institutional | Published / Approved |
+| **21** | RMNH | Bhubaneswar, Odisha | 200 kWp | Institutional | Published / Approved |
+| **22** | GSI | Bhubaneswar, Odisha | 98 kWp | Institutional | Published / Approved |
+| **23** | Geological Survey of India | Bhubaneswar, Odisha | 200 kWp | Government | Published / Approved |
+| **24** | IOCL, Malda | West Bengal | 100 kWp | Government | Published / Approved |
+| **25** | IOCL, Raniganj | West Bengal | 100 kWp | Government | Published / Approved |
+| **26** | 202 Cobra Battalion | Bhubaneswar, Odisha | 99.84 kWp | Government | Published / Approved |
+| **27** | CPWD – Nirman Bhawan | Bhubaneswar, Odisha | 98 kWp | Government | Published / Approved |
+
+---
+
+## Category Distribution (27 Total)
+
+- **Industrial (7):** Jindal India (1,980 kWp), Ajanta Pharma (955 kWp), ROCA (843.2 kWp), Seigwerk (542 kWp), Toshiba India (473 kWp), Sage Metal (347 kWp), Pigeon India (310 kWp).
+- **Commercial (8):** MCC Moosapet (512 kWp), H.T. Media Patna (311 kWp), Pepsico Hyderabad (244.5 kWp), H.T. Media Mohali (177 kWp), H.T. Media Ranchi (143 kWp), MCC Jalandhar (100 kWp), Decathlon OMR (90 kWp), Decathlon Nashik (65 kWp).
+- **Institutional (6):** Mind Tree (550.5 kWp), SEIT (550.5 kWp), Nalco Research Centre (512 kWp), RMNH (200 kWp), Loyola School (99.84 kWp), GSI (98 kWp).
+- **Government (6):** Geological Survey of India (200 kWp), IOCL Paradip (110 kWp), IOCL Malda (100 kWp), IOCL Raniganj (100 kWp), 202 Cobra Battalion (99.84 kWp), CPWD Nirman Bhawan (98 kWp).
+
+---
+
+## Data Governance & Publication Rules
+
+> [!IMPORTANT]
+> **Publication Permission & Content Governance:**
+> 1. **Client Name Permission:** Project credentials must only be published subject to applicable client-name/publication permissions. The data model enforces `publishApproved: boolean` and `published: boolean`.
+> 2. **Separate Multi-Location Projects:** Multi-location client installations (H.T. Media in Patna, Ranchi, Mohali; MCC in Moosapet, Jalandhar) are separate, distinct records and must not be merged.
+> 3. **No Fabricated Impact Metrics:** Do not claim unverified generation totals, financial savings, or CO₂ reduction numbers on cards unless explicitly provided in client documentation.
+> 4. **Image Handling:** Project category visual representations must never falsely claim to be actual on-site photography of a specific named enterprise without verified rights.
+
+---
+
+## SEO Intent & Target Keywords
+
+- Solar projects Odisha, solar EPC projects Odisha, industrial solar projects
+- Commercial rooftop solar, institutional solar projects Bhubaneswar
+- Government solar projects Odisha, rooftop solar EPC company Odisha
 
 The project experience should feel like an engineering portfolio.
 
 ---
 
-# SOLARCARE AMC
+# SOLARCARE AMC PLANS
 
-SolarCare is Fivefold's long-term maintenance and support offering.
+SolarCare represents Fivefold's structured Annual Maintenance Contracts (AMC) designed to help protect solar system performance throughout its operating life.
 
-## Plans
+## Section Specifications (Homepage & Dedicated Page)
 
-### Essential — 1 Year
-Routine preventive maintenance and inspection.
-
-### Plus — 3 Years
-Enhanced monitoring and priority service.
-
-### Premium — 5 Years
-Maintenance, cleaning, diagnostics and priority support.
-
-### Elite — 10 Years
-Long-term technical consultation, health audits and dedicated support.
+- **Components:** `client/src/components/sections/SolarCareTeaser.tsx`, `client/src/app/solarcare/page.tsx`
+- **Data Source:** `client/src/data/solarcare-plans.ts`
+- **Eyebrow:** `• SOLARCARE AMC PLANS`
+- **Heading:** `SolarCare Asset Management Plans`
+- **Supporting Text:** `Structured maintenance support designed to help protect solar system performance throughout its operating life.`
 
 ---
 
-## SolarCare Finder
+## Approved SolarCare AMC Plans (4 Plans)
 
-Existing inputs:
+Source: Client-Approved Website Details (3) Document (Pages 10–11).
 
-- System size
-- System age
-- Current condition
-- Required maintenance frequency
-
-The user receives an indicative recommendation.
-
-Primary action:
-
-**Find the Right AMC Plan**
+| Plan | Duration | Approved Client Description | CTA Target |
+|---|---|---|---|
+| **SolarCare Essential** | 1 Year | Routine preventive maintenance and inspection support. | `/contact?plan=essential` |
+| **SolarCare Plus** | 3 Years | Extended maintenance support with enhanced monitoring and priority service. | `/contact?plan=plus` |
+| **SolarCare Premium** | 5 Years | Comprehensive preventive maintenance, cleaning, diagnostics and priority support. | `/contact?plan=premium` |
+| **SolarCare Elite** | 10 Years | Long-term maintenance support with technical consultation, health audits and dedicated service support. | `/contact?plan=elite` |
 
 ---
 
-## SolarCare Presentation Principle
+## Content Restrictions & Governance Rules
 
-Do NOT present the four plans as generic SaaS pricing cards.
+> [!IMPORTANT]
+> **Strict SolarCare Plan Rules:**
+> 1. **Prior Confirmation Required:** AMC scope, custom inclusions, and pricing should be confirmed with Fivefold Renewable before publication.
+> 2. **No Invented Pricing:** Do NOT display unconfirmed prices, discounts, monthly breakdowns, or "starting from" estimates.
+> 3. **No Unsupported Feature Matrices:** Do not invent visit counts (e.g. "2 visits/yr", "4 visits/yr"), cleaning frequencies, SCADA telemetry mandates, or SLAs per plan unless explicitly defined by the client.
+> 4. **No Artificial Segmentation:** Do not assign arbitrary capacity limits (e.g. `< 10 kWp`) or audience labels to specific plans.
+> 5. **No Marketing Badges:** Remove "MOST POPULAR" or "ENTERPRISE & MW" ranking badges.
+> 6. **Separation from General Support:** General Long-Term Performance Support capabilities (e.g., earthing checks, lightning protection, cable audits) are documented separately and must not be falsely claimed as unique features of any single plan.
 
-Use a restrained comparison or editorial selection experience.
+---
 
-Show the essential information first.
+## Long-Term Performance Support (General Capabilities)
 
-Reveal additional details progressively.
+These represent broader post-installation engineering capabilities across the asset lifecycle:
+- O&M Framework
+- Remote Monitoring
+- Preventive Maintenance Planning
+- Performance Diagnostics
+- Energy Generation Analysis
+- Solar Panel Cleaning
+- Inverter Health Checks
+- Earthing Inspection
+- Lightning Protection Inspection
+- Structure Inspection
+- Cable & Connector Inspection
+- Remote Technical Support
+- Warranty Claim Assistance
+- Asset Life Optimisation
 
-Avoid:
+---
 
-- badges
-- decorative icons
-- glowing borders
-- excessive feature lists
-- pricing-dashboard aesthetics
+## SEO Intent & Target Keywords
 
-SolarCare should feel like a premium asset-care service.
+- Solar AMC Odisha, solar maintenance Odisha, SolarCare AMC
+- Solar system maintenance, solar O&M Bhubaneswar, rooftop solar maintenance
+- Solar performance support, solar plant inspection Odisha
 
 ---
 

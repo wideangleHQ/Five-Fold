@@ -8,9 +8,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SchemeModal } from "@/components/schemes/SchemeModal";
 
-import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
-import stock2Img from "@/assets/Images/Five_fold_stock_2.png";
-import heroBgImg from "@/assets/Images/hero section background.png";
+import pmSuryaGharImg from "@/assets/Images/Goverment Schemes/PM Surya Ghar Yojna.png";
+import pmKusumImg from "@/assets/Images/Goverment Schemes/PM Kusum Yojna.png";
+import odishaPolicyImg from "@/assets/Images/Goverment Schemes/Odisha Renewable Energy Policy 2022.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +18,7 @@ interface SchemeData {
   id: string;
   num: string;
   name: string;
+  category: string;
   descriptor: string;
   ctaHref: string;
   image: StaticImageData;
@@ -27,29 +28,32 @@ const SCHEMES: SchemeData[] = [
   {
     id: "surya-ghar",
     num: "01",
-    name: "PM Surya Ghar",
+    name: "PM Surya Ghar: Muft Bijli Yojana",
+    category: "Residential Rooftop Scheme",
     descriptor:
-      "Control energy costs effortlessly. PM Surya Ghar direct subsidies up to Rs 78,000 ensure rapid payback and 25-year rooftop solar performance.",
+      "Direct central DBT subsidy up to ₹78,000 for homes (₹30,000/kW for 1–2 kW, ₹78,000 for ≥3 kW).\nGenerates up to 300 units of free electricity monthly to slash household power bills by up to 90%.\nIncludes collateral-free loans (~7%) with national portal integration and DISCOM net metering.\nFivefold delivers turnkey site feasibility, structural engineering, and fast-track subsidy processing.",
     ctaHref: "/government-schemes",
-    image: stock1Img,
+    image: pmSuryaGharImg,
   },
   {
-    id: "ci-tax",
+    id: "pm-kusum",
     num: "02",
-    name: "C&I Tax Benefits",
+    name: "PM-KUSUM Yojana",
+    category: "Agricultural & Rural Solar",
     descriptor:
-      "Accelerate business tax deductions with 40% Accelerated Depreciation on commercial and industrial rooftop solar assets.",
-    ctaHref: "/contact",
-    image: stock2Img,
+      "Substantial 60% combined government subsidy (30% Central + 30% State) for solar irrigation pumps.\nEmpowers farmers and rural cooperatives to de-dieselize water pumping and eliminate fuel costs.\nEnables steady supplemental income by exporting surplus solar power back to the DISCOM grid.\nSupports 0.5 MW to 2 MW decentralized ground-mount solar plants on fallow agricultural land.",
+    ctaHref: "/government-schemes",
+    image: pmKusumImg,
   },
   {
-    id: "discom",
+    id: "orep-2022",
     num: "03",
-    name: "DISCOM Net Metering",
+    name: "Odisha Renewable Energy Policy 2022",
+    category: "Commercial, Industrial & Utility",
     descriptor:
-      "End-to-end statutory grid compliance, bidirectional net metering approvals, and synchronized DISCOM power export across Odisha.",
+      "State clean energy framework providing 50 paise/unit electricity duty exemption for up to 20 years.\nOffers 50% concession on cross-subsidy and transmission charges for captive & open-access users.\nFeatures 100% land conversion charge reimbursement and single-window clearance via OREDA & GRIDCO.\nFivefold provides end-to-end EPC, CEIG safety approvals, and DISCOM synchronization across Odisha.",
     ctaHref: "/government-schemes",
-    image: heroBgImg,
+    image: odishaPolicyImg,
   },
 ];
 
@@ -145,10 +149,17 @@ export const GovernmentScheme: React.FC = () => {
         }
       }, section);
 
-      return () => ctx.kill();
+      return () => {
+        if (scrollTriggerInstance.current) {
+          scrollTriggerInstance.current.kill(true, false);
+        }
+        ctx.kill();
+      };
     });
 
-    return () => mm.revert();
+    return () => {
+      mm.revert();
+    };
   }, [prefersReducedMotion]);
 
   return (
@@ -221,27 +232,32 @@ export const GovernmentScheme: React.FC = () => {
               return (
                 <div
                   key={scheme.id}
-                  className="scheme-slide w-[78vw] lg:w-[76vw] max-w-[1360px] shrink-0 grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6 h-[48vh] sm:h-[50vh] min-h-[360px] max-h-[500px] transition-opacity duration-300"
+                  className="scheme-slide w-[78vw] lg:w-[76vw] max-w-[1360px] shrink-0 grid grid-cols-12 gap-4 sm:gap-5 lg:gap-6 h-[52vh] sm:h-[55vh] min-h-[420px] max-h-[560px] transition-opacity duration-300"
                   style={{
                     opacity: isActive ? 1 : 0.85,
                   }}
                 >
                   {/* Left: Text Card (Dark Solid Color #173B53) */}
-                  <div className="col-span-5 bg-[#173B53] text-white rounded-[2rem] lg:rounded-[2.5rem] p-6 sm:p-7 lg:p-9 flex flex-col justify-between shadow-sm relative overflow-hidden text-left">
-                    <div className="space-y-2 sm:space-y-2.5 lg:space-y-3">
-                      <span className="font-mono text-xs font-bold text-[#1684C7] tracking-[0.2em] uppercase block">
-                        {scheme.num}
-                      </span>
-                      <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-[1.1]">
+                  <div className="col-span-5 bg-[#173B53] text-white rounded-2xl lg:rounded-3xl p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-sm relative overflow-hidden text-left border border-[#173B53]">
+                    <div className="space-y-2 sm:space-y-2.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold text-[#1684C7] tracking-[0.2em] uppercase">
+                          {scheme.num}
+                        </span>
+                        <span className="text-[11px] font-mono font-medium text-white/60 uppercase tracking-wider">
+                          • {scheme.category}
+                        </span>
+                      </div>
+                      <h3 className="font-heading text-2xl sm:text-3xl lg:text-[2rem] font-extrabold text-white tracking-tight leading-[1.12]">
                         {scheme.name}
                       </h3>
-                      <p className="font-sans text-xs sm:text-sm lg:text-[0.92rem] text-white/80 leading-relaxed max-w-sm pt-1">
+                      <p className="font-sans text-xs sm:text-sm text-white/85 leading-relaxed pt-1 whitespace-pre-line">
                         {scheme.descriptor}
                       </p>
                     </div>
 
                     {/* Bottom: Minimal Progress Indicator */}
-                    <div className="pt-4 space-y-2">
+                    <div className="pt-3 space-y-2">
                       <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-white rounded-full transition-all duration-500"
@@ -258,7 +274,7 @@ export const GovernmentScheme: React.FC = () => {
                   </div>
 
                   {/* Right: Large Image Card */}
-                  <div className="col-span-7 relative rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden bg-slate-100 shadow-sm">
+                  <div className="col-span-7 relative rounded-2xl lg:rounded-3xl overflow-hidden bg-slate-100 shadow-sm border border-[#DCE2E2]/70">
                     <Image
                       src={scheme.image}
                       alt={scheme.name}
@@ -337,13 +353,18 @@ export const GovernmentScheme: React.FC = () => {
             >
               {/* Text Card */}
               <div className="bg-[#173B53] text-white rounded-2xl p-5 space-y-2">
-                <span className="font-mono text-[10px] font-bold text-[#1684C7] tracking-widest uppercase block">
-                  {scheme.num} / 03
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] font-bold text-[#1684C7] tracking-widest uppercase block">
+                    {scheme.num} / 03
+                  </span>
+                  <span className="text-[10px] font-mono text-white/60 uppercase">
+                    {scheme.category}
+                  </span>
+                </div>
                 <h3 className="font-heading text-xl font-bold text-white tracking-tight">
                   {scheme.name}
                 </h3>
-                <p className="font-sans text-xs text-white/80 leading-relaxed">
+                <p className="font-sans text-xs text-white/85 leading-relaxed whitespace-pre-line">
                   {scheme.descriptor}
                 </p>
 

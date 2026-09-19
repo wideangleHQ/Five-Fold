@@ -31,66 +31,100 @@ export const GovernmentSchemesView: React.FC = () => {
         </div>
 
         {/* Featured Schemes */}
-        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div data-reveal="cards-container" className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16">
           {/* PM Surya Ghar */}
-          <div data-reveal="card" className="p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
+          <div data-reveal="card" className="p-7 lg:p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold uppercase text-[#20435F] px-2.5 py-1 rounded-md bg-[#20435F]/10">
+                <span className="text-xs font-mono font-bold uppercase text-[#173B53] px-2.5 py-1 rounded-md bg-[#173B53]/10">
                   Residential Scheme
                 </span>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sky-100 text-[#20435F]">
-                  PM Surya Ghar
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sky-100 text-[#173B53]">
+                  01
                 </span>
               </div>
-              <h2 className="font-heading text-2xl font-bold text-slate-900">
+              <h2 className="font-heading text-xl lg:text-2xl font-bold text-slate-900">
                 PM Surya Ghar: Muft Bijli Yojana
               </h2>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Central government flagship rooftop solar scheme providing financial assistance to residential households across Odisha.
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Central government flagship rooftop solar scheme delivering up to 300 units of free power monthly and direct DBT subsidies.
               </p>
               <div className="space-y-2 pt-2 border-t border-slate-200">
-                <div className="text-xs font-bold text-slate-900">Subsidy Slab Structure:</div>
-                <ul className="text-xs text-slate-600 space-y-1 list-disc list-inside">
+                <div className="text-xs font-bold text-slate-900">Key Benefits &amp; Subsidies:</div>
+                <ul className="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
                   <li><strong>Up to 2 kW:</strong> ₹30,000 per kW (Up to ₹60,000)</li>
-                  <li><strong>3 kW & Above:</strong> Fixed ₹78,000 maximum direct subsidy</li>
-                  <li><strong>Housing Societies / RWA:</strong> ₹18,000 per kW (Up to 500 kW)</li>
+                  <li><strong>3 kW &amp; Above:</strong> Fixed ₹78,000 direct DBT subsidy</li>
+                  <li><strong>Collateral-Free Loan:</strong> Low ~7% interest bank financing</li>
+                  <li><strong>DISCOM Integration:</strong> Net metering across TPCODL/TPNODL</li>
                 </ul>
               </div>
             </div>
             <Button href="/contact" variant="primary" size="md">
-              <span>Apply with Fivefold Assistance</span>
+              <span>Apply with Fivefold</span>
             </Button>
           </div>
 
-          {/* C&I Schemes */}
-          <div data-reveal="card" className="p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
+          {/* PM KUSUM */}
+          <div data-reveal="card" className="p-7 lg:p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold uppercase text-emerald-800 px-2.5 py-1 rounded-md bg-emerald-100">
+                  Agricultural Scheme
+                </span>
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                  02
+                </span>
+              </div>
+              <h2 className="font-heading text-xl lg:text-2xl font-bold text-slate-900">
+                PM-KUSUM Yojana
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Empowering farmers and rural institutions with standalone solar irrigation pumps and solarized agricultural feeders.
+              </p>
+              <div className="space-y-2 pt-2 border-t border-slate-200">
+                <div className="text-xs font-bold text-slate-900">Key Benefits &amp; Subsidies:</div>
+                <ul className="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                  <li><strong>60% Subsidy:</strong> 30% Central + 30% State assistance</li>
+                  <li><strong>Diesel Elimination:</strong> Zero recurring agricultural fuel cost</li>
+                  <li><strong>Surplus Energy Sale:</strong> Earn revenue by feeding grid</li>
+                  <li><strong>0.5 to 2 MW Plants:</strong> Component A barren land solar</li>
+                </ul>
+              </div>
+            </div>
+            <Button href="/contact" variant="primary" size="md">
+              <span>Explore PM-KUSUM</span>
+            </Button>
+          </div>
+
+          {/* Odisha Renewable Energy Policy 2022 */}
+          <div data-reveal="card" className="p-7 lg:p-8 rounded-2xl border border-slate-200 bg-slate-50 space-y-6 flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-bold uppercase text-slate-700 px-2.5 py-1 rounded-md bg-slate-200">
-                  Commercial & Industrial
+                  C&amp;I &amp; Utility
                 </span>
                 <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-800">
-                  Tax & Open Access
+                  03
                 </span>
               </div>
-              <h2 className="font-heading text-2xl font-bold text-slate-900">
-                C&I Tax Benefits & Net Metering
+              <h2 className="font-heading text-xl lg:text-2xl font-bold text-slate-900">
+                Odisha RE Policy 2022
               </h2>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Industrial and commercial enterprises benefit from accelerated depreciation and DISCOM grid-export approvals.
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                State framework accelerating clean energy adoption for commercial, industrial, and institutional enterprises.
               </p>
               <div className="space-y-2 pt-2 border-t border-slate-200">
-                <div className="text-xs font-bold text-slate-900">Core Benefits:</div>
-                <ul className="text-xs text-slate-600 space-y-1 list-disc list-inside">
-                  <li><strong>40% Accelerated Depreciation:</strong> Significant income tax relief</li>
-                  <li><strong>GST Input Tax Credit:</strong> Standard GST offset for commercial assets</li>
-                  <li><strong>DISCOM Net Metering:</strong> Banking surplus solar energy into the grid</li>
+                <div className="text-xs font-bold text-slate-900">Key Incentives &amp; Concessions:</div>
+                <ul className="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                  <li><strong>Electricity Duty:</strong> 50 paise/unit exemption (up to 20 yrs)</li>
+                  <li><strong>Cross-Subsidy Relief:</strong> 50% concession on wheeling/charges</li>
+                  <li><strong>Land Exemption:</strong> 100% conversion fee reimbursement</li>
+                  <li><strong>Single Window:</strong> Fast-track approvals via OREDA &amp; GRIDCO</li>
                 </ul>
               </div>
             </div>
             <Button href="/contact" variant="secondary" size="md">
-              <span>Discuss Commercial Project</span>
+              <span>Discuss Commercial EPC</span>
             </Button>
           </div>
         </div>
