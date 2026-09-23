@@ -9,7 +9,6 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { MobileMenu } from "./MobileMenu";
-import { SchemeModal } from "@/components/schemes/SchemeModal";
 import logoImg from "@/assets/Images/Logos/Five_Fold_White.png";
 
 const NAV_ITEMS = [
@@ -35,7 +34,6 @@ export const Header: React.FC = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
-  const [isSchemeModalOpen, setIsSchemeModalOpen] = useState(false);
   const pathname = usePathname();
   const lastScrollY = useRef(0);
 
@@ -168,14 +166,6 @@ export const Header: React.FC = () => {
           {/* Desktop Right CTA Action Area */}
           <div className="hidden lg:flex items-center gap-3">
             <Button
-              onClick={() => setIsSchemeModalOpen(true)}
-              variant="outline"
-              size="sm"
-              className="h-9 px-4 text-xs font-semibold rounded-lg"
-            >
-              Check Schemes
-            </Button>
-            <Button
               href="/contact"
               variant="primary"
               size="sm"
@@ -203,12 +193,6 @@ export const Header: React.FC = () => {
         onClose={() => setIsMobileMenuOpen(false)}
         navItems={NAV_ITEMS}
         currentPath={pathname || "/"}
-      />
-
-      {/* Government Scheme Discovery Modal */}
-      <SchemeModal
-        isOpen={isSchemeModalOpen}
-        onClose={() => setIsSchemeModalOpen(false)}
       />
     </>
   );
