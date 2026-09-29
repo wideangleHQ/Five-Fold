@@ -126,12 +126,15 @@ export const Hero: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Draw frame 0 on canvas as soon as canvas is mounted or images load
+  // Draw frame 0 on canvas and refresh ScrollTrigger as soon as images load
   useEffect(() => {
     if (canvasRef.current) {
       canvasRef.current.width = window.innerWidth;
       canvasRef.current.height = window.innerHeight;
       renderFrame(0);
+    }
+    if (imagesLoaded) {
+      ScrollTrigger.refresh();
     }
   }, [imagesLoaded]);
 
@@ -251,6 +254,7 @@ export const Hero: React.FC = () => {
         start: "top top",
         end: "bottom bottom",
         scrub: 0.5,
+        invalidateOnRefresh: true,
       },
     });
 
@@ -358,7 +362,7 @@ export const Hero: React.FC = () => {
       {/* STICKY FULL-VIEWPORT STAGE */}
       <div
         ref={stickyRef}
-        className="sticky top-0 h-screen h-[100svh] w-full overflow-hidden bg-white flex flex-col justify-start"
+        className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden bg-white flex flex-col justify-start"
       >
         {/* ATMOSPHERIC CLOUD BACKGROUND LAYER (Opacity 20%) */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -375,7 +379,7 @@ export const Hero: React.FC = () => {
         {/* 1. EDITORIAL HERO COPY CONTAINER (Controlled Max-Width & Generous Breathing Space) */}
         <div
           ref={overlayRef}
-          className="relative z-20 w-full pt-14 xs:pt-16 sm:pt-24 md:pt-28 lg:pt-32 pb-2 sm:pb-3 px-4 sm:px-6 lg:px-8 xl:px-12 text-center shrink-0 pointer-events-auto"
+          className="relative z-20 w-full pt-[calc(8rem+env(safe-area-inset-top,0px))] xs:pt-[calc(9rem+env(safe-area-inset-top,0px))] sm:pt-[calc(10rem+env(safe-area-inset-top,0px))] md:pt-40 lg:pt-48 pb-2 sm:pb-3 px-4 sm:px-6 lg:px-8 xl:px-12 text-center shrink-0 pointer-events-auto"
         >
           <div className="max-w-3xl lg:max-w-4xl mx-auto space-y-1.5 sm:space-y-3.5">
             
@@ -422,7 +426,7 @@ export const Hero: React.FC = () => {
         >
           <div
             ref={frameRef}
-            className="absolute bottom-0 left-1/2 h-[100svh] w-[92vw] sm:w-[82vw] lg:w-[72vw] xl:w-[70vw] overflow-hidden bg-[#173B53] pointer-events-auto"
+            className="absolute bottom-0 left-1/2 h-screen h-[100dvh] w-[92vw] sm:w-[82vw] lg:w-[72vw] xl:w-[70vw] overflow-hidden bg-[#173B53] pointer-events-auto"
             style={{
               borderRadius: "1.5rem",
               border: "1px solid #DCE2E2",

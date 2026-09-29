@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { EmailService } from '../email/email.service';
+import { EmailNotificationService } from '../notifications/email-notification.service';
 import { CreateLeadDto } from './dto/create-lead.dto';
 
 export interface LeadCreatedResult {
@@ -14,7 +14,7 @@ export class LeadsService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly email: EmailService,
+    private readonly emailNotification: EmailNotificationService,
   ) {}
 
   async create(dto: CreateLeadDto, requestId?: string): Promise<LeadCreatedResult> {
@@ -57,8 +57,10 @@ export class LeadsService {
       `Lead created: ${lead.id} source=${dto.source ?? 'unknown'} [${requestId ?? '-'}]`,
     );
 
+    // Trigger email notification after successful persistence.
+    // Failure here must not invalidate the saved lead.
     const now = new Date();
-    const { sent, error: emailError } = await this.email.sendLeadNotification({
+    const { sent, error: emailError } = await this.emailNotification.sendLeadNotification({
       id: lead.id,
       createdAt: now,
       name: dto.name,
@@ -77,6 +79,7 @@ export class LeadsService {
     });
 
     // Best-effort: update email tracking status. Failure here does not fail the request.
+    // We mark the status based on the notification outcome.
     try {
       await this.prisma.lead.update({
         where: { id: lead.id },

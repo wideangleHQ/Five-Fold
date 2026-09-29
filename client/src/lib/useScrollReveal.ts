@@ -1,18 +1,40 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+/**
+ * Progressive reveal for every `[data-reveal]` element on the current route.
+ *
+ * LIFECYCLE CONTRACT (this is the part that used to be broken)
+ * ----------------------------------------------------------
+ * `gsap.fromTo()` renders its "from" state immediately when it is created, so
+ * every matched element is pushed to `opacity: 0` the moment this hook runs and
+ * is only made visible again when its ScrollTrigger fires. That makes teardown
+ * safety-critical, not cosmetic:
+ *
+ *   - `tween.kill()` leaves the element frozen at `opacity: 0` forever.
+ *   - `ctx.revert()` restores the element's pre-animation inline styles and kills
+ *     ONLY the animations/ScrollTriggers this context created.
+ *
+ * This hook is mounted once in the root layout, so it must therefore never reach
+ * outside its own context — the previous `ScrollTrigger.getAll().forEach(st =>
+ * st.kill())` destroyed other components' triggers and, because it did not
+ * revert, stranded their hidden elements permanently.
+ */
 export function useScrollReveal() {
   const pathname = usePathname();
 
-  useEffect(() => {
+  // useLayoutEffect (not useEffect) so the "from" state is applied before the
+  // browser paints — otherwise every reveal element flashes visible-then-hidden.
+  useLayoutEffect(() => {
     if (typeof window === "undefined") return;
 
     const isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -302,17 +324,17 @@ export function useScrollReveal() {
       });
     });
 
-    // Refresh ScrollTrigger after next tick to accommodate DOM measurements
-    const timeoutId = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 100);
+    // Re-measure now, then again at the points where the layout is actually
+    // known to be stable (webfont swap, sub-resource load). See the helper for
+    // why this replaces the previous fixed 100 ms timer.
+    const stopLayoutRefresh = scheduleScrollTriggerRefresh();
 
     return () => {
-      clearTimeout(timeoutId);
-      // Kill ScrollTriggers without reverting inline styles.
-      // ctx.revert() writes initial CSS back to DOM nodes React is simultaneously
-      // reconciling on navigation, causing removeChild errors in OuterLayoutRouter.
-      ScrollTrigger.getAll().forEach((st) => st.kill());
+      stopLayoutRefresh();
+      // `revert`, never `kill`: it restores the inline styles this context wrote
+      // (so nothing is stranded at `opacity: 0`) and it disposes of exactly the
+      // animations and ScrollTriggers created above — nothing else in the app.
+      ctx.revert();
     };
   }, [pathname]);
 }

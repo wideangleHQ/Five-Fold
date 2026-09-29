@@ -19,7 +19,11 @@ export const FivefoldPreloader: React.FC = () => {
 
       if (reduced) {
         gsap.set(".ff-brand-container", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
-        gsap.to(rootRef.current, { opacity: 0, duration: 0.3, delay: 0.45, onComplete: finish });
+        if (rootRef.current) {
+          gsap.to(rootRef.current, { opacity: 0, duration: 0.3, delay: 0.45, onComplete: finish });
+        } else {
+          finish();
+        }
         return;
       }
 
@@ -50,7 +54,16 @@ export const FivefoldPreloader: React.FC = () => {
         );
     }, rootRef);
 
-    return () => ctx.kill();
+    // This overlay is an opaque `fixed inset-0 z-[9999]` layer, so `done` is the
+    // only thing standing between it and a permanently blank page. The timeline's
+    // onComplete normally flips it, but if the animation is torn down early
+    // (route change, StrictMode double-invoke, GSAP throwing) onComplete never
+    // fires. Always release the overlay on teardown so an interrupted intro can
+    // never leave the site covered.
+    return () => {
+      ctx.kill();
+      setDone(true);
+    };
   }, []);
 
   if (done) return null;

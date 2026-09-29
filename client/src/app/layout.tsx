@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import "@/lib/patchDomRemoval";
 import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollRevealInitializer } from "@/components/ui/ScrollRevealInitializer";

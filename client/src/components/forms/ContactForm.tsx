@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Send, CheckCircle2, Shield, AlertCircle } from "lucide-react";
+import { submitLead } from "@/services/leads";
 
 const INTEREST_OPTIONS = [
   "Residential Solar",
@@ -71,54 +72,33 @@ export const ContactForm: React.FC = () => {
     setIsSubmitting(true);
     setSubmitError(null);
 
-    const INTEREST_MAP: Record<string, { leadType: string; source: string }> = {
-      "Residential Solar":          { leadType: "residential", source: "contact" },
-      "Commercial Solar":           { leadType: "commercial",  source: "contact" },
-      "Industrial Solar":           { leadType: "industrial",  source: "contact" },
-      "Government Scheme Assistance": { leadType: "residential", source: "schemes" },
-      "SolarCare / AMC":            { leadType: "solarcare",   source: "solarcare" },
-      "Maintenance":                { leadType: "solarcare",   source: "contact" },
-      "Other":                      { leadType: "other",       source: "contact" },
-    };
-
-    const { leadType, source } = INTEREST_MAP[interest] ?? { leadType: "other", source: "contact" };
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
-
-    try {
-      const res = await fetch(`${apiUrl}/api/leads`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          phone,
-          email: email || undefined,
-          city: location || undefined,
-          leadType,
-          source,
-          message: requirement || undefined,
-          electricityInfo: electricityInfo || undefined,
-          _gotcha: gotcha || undefined,
-        }),
-      });
-
-      if (!res.ok) {
-        if (res.status === 429) {
-          throw new Error("Too many requests. Please wait a moment and try again.");
+    const result = await submitLead(
+      {
+        name,
+        phone,
+        email: email || undefined,
+        city: location || "Unknown",
+        leadType: interest,
+        source: "contact",
+        message: requirement || undefined,
+        electricityInfo: electricityInfo || undefined,
+        _gotcha: gotcha || undefined,
+      },
+      ({
+        success,
+        leadId,
+        error,
+      }) => {
+        if (success) {
+          setIsSubmitted(true);
+        } else {
+          setSubmitError(
+            error ?? "Unable to submit. Please try again or call us directly.",
+          );
         }
-        const body = await res.json().catch(() => ({}));
-        throw new Error((body as { message?: string }).message ?? `Error ${res.status}`);
-      }
-
-      setIsSubmitted(true);
-    } catch (err) {
-      setSubmitError(
-        err instanceof Error
-          ? err.message
-          : "Unable to submit. Please try again or call us directly.",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+        setIsSubmitting(false);
+      },
+    );
   };
 
   return (

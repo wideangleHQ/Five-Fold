@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useLayoutEffect, useState, useCallback } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SchemeModal } from "@/components/schemes/SchemeModal";
+import { scheduleScrollTriggerRefresh } from "@/lib/scrollTriggerRefresh";
 
 import pmSuryaGharImg from "@/assets/Images/Goverment Schemes/PM Surya Ghar Yojna.png";
 import pmKusumImg from "@/assets/Images/Goverment Schemes/PM Kusum Yojna.png";
@@ -71,7 +72,9 @@ export const GovernmentScheme: React.FC = () => {
   const goToSlide = useCallback((index: number) => {
     const clampedIndex = Math.max(0, Math.min(SCHEMES.length - 1, index));
     const st = scrollTriggerInstance.current;
-    if (st) {
+    // `scrollTriggerInstance` is cleared on teardown; reading start/end from a
+    // killed trigger would scroll to a stale offset, so only trust a live one.
+    if (st && st.isActive !== undefined) {
       const totalScroll = st.end - st.start;
       const targetScroll = st.start + (clampedIndex / (SCHEMES.length - 1)) * totalScroll;
       window.scrollTo({
@@ -97,7 +100,10 @@ export const GovernmentScheme: React.FC = () => {
     goToSlide(activeIndex + 1);
   };
 
-  useEffect(() => {
+  // Scroll to slide on desktop via ScrollTrigger.
+  // useLayoutEffect (not useEffect) so the pin is created after layout but torn
+  // down during React's deletion traversal — see the cleanup note below.
+  useLayoutEffect(() => {
     if (prefersReducedMotion) return;
 
     const mm = gsap.matchMedia();
@@ -149,16 +155,28 @@ export const GovernmentScheme: React.FC = () => {
         }
       }, section);
 
+      // Slide images have to land before the pinned travel distance can be
+      // trusted, so re-measure on the real layout-settled events instead of a
+      // fixed delay.
+      const stopLayoutRefresh = scheduleScrollTriggerRefresh();
+
       return () => {
-        if (scrollTriggerInstance.current) {
-          scrollTriggerInstance.current.kill(true, false);
-        }
-        ctx.kill();
+        stopLayoutRefresh();
+        // Order matters. ScrollTrigger reparents `section` into its
+        // `div.pin-spacer`; `ctx.revert()` unwinds that and restores the
+        // section under its real parent. Because this is a layout effect, React
+        // runs this destroy during its deletion traversal — i.e. *before* it
+        // calls removeChild on the section — so React never observes a reparented
+        // node. That is what previously threw NotFoundError, and why
+        // lib/patchDomRemoval.ts could be removed.
+        ctx.revert();
+        scrollTriggerInstance.current = null;
       };
     });
 
     return () => {
       mm.revert();
+      scrollTriggerInstance.current = null;
     };
   }, [prefersReducedMotion]);
 

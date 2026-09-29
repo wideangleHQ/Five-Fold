@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { calculateSolarRequirement } from "@/lib/solar-engine";
 import type { CalculatorInput, SolarCalculationResult } from "@/lib/solar-engine";
 import { sqFtToM2 } from "@/lib/solar-engine/roof-feasibility";
+import { submitLead, type SubmitLeadDto } from "@/services/leads";
 
 // ─── Step 1: Property Type ────────────────────────────────────────────────────
 
@@ -241,44 +242,49 @@ export function SolarCalculator() {
     institutional: "consultation",
   };
 
-  async function handleCqSubmit(e: React.FormEvent) {
+  // Extract calculator lead data into the centralized DTO shape.
+  const calcExtractData = (): SubmitLeadDto => ({
+    name: cqName,
+    phone: cqPhone,
+    email: cqEmail || undefined,
+    city: location || "Unknown",
+    leadType: CALC_LEAD_TYPE_MAP[propertyType] ?? "other",
+    source: "solar-calculator",
+    message: undefined,
+    electricityInfo: undefined,
+    _gotcha: cqGotcha || undefined,
+    monthlyConsumptionKwh: result?.consumption.monthlyConsumptionKWh || undefined,
+    recommendedSystemKwp: result?.recommendedSystemKWp || undefined,
+    estimatedAnnualSavingsInr: result?.estimatedAnnualSavingsINR || undefined,
+    potentialSubsidyInr: result?.potentialSubsidyINR || undefined,
+    scheme: undefined,
+  });
+
+  const calcOnResult = ({
+    success,
+    leadId,
+    error,
+  }: {
+    success: boolean;
+    leadId?: string;
+    error?: string;
+  }) => {
+    if (success) {
+      setCqSubmitted(true);
+    } else {
+      setCqError(error ?? "Unable to submit. Please try again or call us directly.");
+    }
+    setCqSubmitting(false);
+  };
+
+
+  const calcHandleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (cqSubmitting) return;
     setCqSubmitting(true);
     setCqError(null);
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
-    try {
-      const res = await fetch(`${apiUrl}/api/leads`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: cqName,
-          phone: cqPhone,
-          email: cqEmail || undefined,
-          city: location || undefined,
-          leadType: CALC_LEAD_TYPE_MAP[propertyType] ?? "other",
-          source: "solar-calculator",
-          _gotcha: cqGotcha || undefined,
-          monthlyConsumptionKwh: result?.consumption.monthlyConsumptionKWh || undefined,
-          recommendedSystemKwp: result?.recommendedSystemKWp || undefined,
-          estimatedAnnualSavingsInr: result?.estimatedAnnualSavingsINR || undefined,
-          potentialSubsidyInr: result?.potentialSubsidyINR || undefined,
-        }),
-      });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        if (res.status === 429) throw new Error("Too many requests. Please wait a moment and try again.");
-        throw new Error((body as { message?: string }).message ?? `Error ${res.status}`);
-      }
-      setCqSubmitted(true);
-    } catch (err) {
-      setCqError(
-        err instanceof Error ? err.message : "Unable to submit. Please try again or call us directly.",
-      );
-    } finally {
-      setCqSubmitting(false);
-    }
-  }
+    const leadData = calcExtractData();
+    await submitLead(leadData, calcOnResult);
+  };
 
   function canProceedStep1() { return !!propertyType; }
   function canProceedStep2() {
@@ -767,7 +773,7 @@ export function SolarCalculator() {
             <p className="text-sm font-semibold text-[#111615] mb-4">
               Get a detailed assessment from Fivefold engineers
             </p>
-            <form onSubmit={handleCqSubmit} className="space-y-3">
+            <form onSubmit={calcHandleSubmit} className="space-y-3">
               <input
                 type="text"
                 name="_gotcha"
