@@ -379,7 +379,7 @@ export const Hero: React.FC = () => {
         {/* 1. EDITORIAL HERO COPY CONTAINER (Controlled Max-Width & Generous Breathing Space) */}
         <div
           ref={overlayRef}
-          className="relative z-20 w-full pt-[calc(8rem+env(safe-area-inset-top,0px))] xs:pt-[calc(9rem+env(safe-area-inset-top,0px))] sm:pt-[calc(10rem+env(safe-area-inset-top,0px))] md:pt-40 lg:pt-48 pb-2 sm:pb-3 px-4 sm:px-6 lg:px-8 xl:px-12 text-center shrink-0 pointer-events-auto"
+          className="relative z-20 w-full pt-[calc(5.5rem+env(safe-area-inset-top,0px))] xs:pt-[calc(6.5rem+env(safe-area-inset-top,0px))] sm:pt-[calc(7.5rem+env(safe-area-inset-top,0px))] md:pt-28 lg:pt-32 pb-2 sm:pb-3 px-4 sm:px-6 lg:px-8 xl:px-12 text-center shrink-0 pointer-events-auto"
         >
           <div className="max-w-3xl lg:max-w-4xl mx-auto space-y-1.5 sm:space-y-3.5">
             
