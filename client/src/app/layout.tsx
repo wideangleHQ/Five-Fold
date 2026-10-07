@@ -5,6 +5,7 @@ import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollRevealInitializer } from "@/components/ui/ScrollRevealInitializer";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
+import { FivefoldPreloader } from "@/components/ui/FivefoldPreloader";
 import { constructMetadata, generateOrganizationSchema } from "@/lib/seo";
 
 // Load local Inter font files from src/assets/fonts/Inter
@@ -50,6 +51,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col font-sans bg-white text-brand-charcoal antialiased pb-0 mb-0">
+        <FivefoldPreloader />
         <SmoothScrollProvider>
           <ScrollRevealInitializer />
           <Header />

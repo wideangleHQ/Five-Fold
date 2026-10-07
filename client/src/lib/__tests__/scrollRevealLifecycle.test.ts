@@ -71,8 +71,12 @@ describe("scroll animation teardown is scoped and does not use timer workarounds
 
   it("the preloader guarantees it cannot permanently cover the page", () => {
     const preloader = readCode("components/ui/FivefoldPreloader.tsx");
-    // The overlay is `fixed inset-0 z-[9999]`; if onComplete never fires the
-    // whole site stays hidden, so teardown must release it.
-    expect(preloader).toMatch(/ctx\.kill\(\);\s*\n\s*setDone\(true\);/);
+    // A hard failsafe timer must release the overlay if the timeline never
+    // completes. Cleanup must NOT call setDone: StrictMode runs
+    // mount -> cleanup -> mount and would remove the overlay instantly.
+    expect(preloader).toMatch(/HARD_FAILSAFE_MS/);
+    expect(preloader).not.toMatch(/ctx\.kill\(\);\s*\n\s*setDone\(true\)/);
+    expect(readCode("app/layout.tsx")).toMatch(/<FivefoldPreloader/);
+    expect(readCode("app/template.tsx")).not.toMatch(/FivefoldPreloader/);
   });
 });

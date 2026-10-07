@@ -5,64 +5,104 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import logoImg from "@/assets/Images/Logos/Five_Fold_White.png";
 
-const PANEL_COUNT = 10;
+// 6×8 on portrait, 8×6 on landscape: same 48 nodes, CSS reshapes the grid, so the
+// SSR markup already covers every viewport and GSAP's grid:"auto" reads the live layout.
+const TILE_COUNT = 48;
+const MIN_VISIBLE_S = 0.9;
+const LOAD_TIMEOUT_S = 3;
+const HARD_FAILSAFE_MS = 8000;
 
+/**
+ * Root cause of the "not working" preloader:
+ * - It was mounted from app/template.tsx, which remounts on every navigation, so it
+ *   replayed on every route change instead of once per page load.
+ * - Its effect cleanup called setDone(true). React StrictMode (dev) runs
+ *   mount → cleanup → mount, so the overlay was removed on the first cleanup, before
+ *   the animation could be seen.
+ * Fix: mounted once from the root layout; cleanup only releases listeners/timers and
+ * a separate hard failsafe guarantees the overlay can never cover the page forever.
+ */
 export const FivefoldPreloader: React.FC = () => {
   const rootRef = useRef<HTMLDivElement>(null);
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const html = document.documentElement;
+    const prevOverflow = html.style.overflow;
+    html.style.overflow = "hidden";
+
+    const block = (e: Event) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    };
+    window.addEventListener("wheel", block, { capture: true, passive: false });
+    window.addEventListener("touchmove", block, { capture: true, passive: false });
+
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const unlock = () => {
+      window.removeEventListener("wheel", block, { capture: true });
+      window.removeEventListener("touchmove", block, { capture: true });
+      html.style.overflow = prevOverflow;
+    };
+
+    let released = false;
+    const release = () => {
+      if (released) return;
+      released = true;
+      unlock();
+      setDone(true);
+    };
+
+    const failsafe = window.setTimeout(release, HARD_FAILSAFE_MS);
 
     const ctx = gsap.context(() => {
-      const finish = () => setDone(true);
-
       if (reduced) {
-        gsap.set(".ff-brand-container", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
-        if (rootRef.current) {
-          gsap.to(rootRef.current, { opacity: 0, duration: 0.3, delay: 0.45, onComplete: finish });
-        } else {
-          finish();
-        }
+        gsap.to(root, { opacity: 0, duration: 0.3, delay: 0.3, onComplete: release });
         return;
       }
 
-      gsap.set(".ff-brand-container", { opacity: 0, y: 20, scale: 0.98, filter: "blur(8px)" });
-      gsap.set(".ff-progress", { width: "0%" });
-
-      gsap
-        .timeline({ onComplete: finish })
+      let pageReady = false;
+      const tl = gsap.timeline({ onComplete: release });
+      tl.fromTo(
+        ".ff-brand",
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        0.05,
+      )
+        // Hold here until the page underneath is ready (or the load timeout fires).
+        .call(() => { if (!pageReady) tl.pause(); }, [], MIN_VISIBLE_S)
+        .to(".ff-brand", { opacity: 0, y: -8, duration: 0.3, ease: "power3.inOut" })
         .to(
-          ".ff-brand-container",
-          { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "power3.out" },
-          0.1,
-        )
-        .to(
-          ".ff-progress",
-          { width: "100%", duration: 0.7, ease: "power2.inOut" },
-          "-=0.1"
-        )
-        .to(
-          ".ff-brand-container",
-          { opacity: 0, y: -8, scale: 0.985, filter: "blur(8px)", duration: 0.35, ease: "power3.inOut" },
-          "+=0.1",
-        )
-        .to(
-          ".ff-panel",
-          { yPercent: -100, duration: 0.55, ease: "power3.inOut", stagger: 0.04 },
-          "-=0.05",
+          ".ff-tile",
+          {
+            scale: 0,
+            duration: 0.45,
+            ease: "power3.inOut",
+            stagger: { amount: 0.55, from: "start", grid: "auto" },
+          },
+          "-=0.1",
         );
-    }, rootRef);
 
-    // This overlay is an opaque `fixed inset-0 z-[9999]` layer, so `done` is the
-    // only thing standing between it and a permanently blank page. The timeline's
-    // onComplete normally flips it, but if the animation is torn down early
-    // (route change, StrictMode double-invoke, GSAP throwing) onComplete never
-    // fires. Always release the overlay on teardown so an interrupted intro can
-    // never leave the site covered.
+      const ready = Promise.all([
+        document.fonts ? document.fonts.ready : Promise.resolve(),
+        document.readyState === "complete"
+          ? Promise.resolve()
+          : new Promise<void>((r) => window.addEventListener("load", () => r(), { once: true })),
+      ]);
+      const timeout = new Promise<void>((r) => gsap.delayedCall(LOAD_TIMEOUT_S, r));
+      Promise.race([ready, timeout]).then(() => {
+        pageReady = true;
+        if (tl.paused()) tl.resume();
+      });
+    }, root);
+
     return () => {
+      window.clearTimeout(failsafe);
+      unlock();
       ctx.kill();
-      setDone(true);
     };
   }, []);
 
@@ -73,31 +113,33 @@ export const FivefoldPreloader: React.FC = () => {
       ref={rootRef}
       data-ff-preloader
       aria-hidden="true"
-      className="fixed inset-0 z-[9999] overflow-hidden pointer-events-none select-none"
+      className="fixed inset-0 z-[100] overflow-hidden select-none"
     >
-      <div className="absolute inset-0 flex">
-        {Array.from({ length: PANEL_COUNT }, (_, i) => (
-          <div key={i} className="ff-panel flex-1 -mr-px bg-[#173B53] will-change-transform" />
+      <div className="absolute inset-0 grid grid-cols-6 grid-rows-8 md:grid-cols-8 md:grid-rows-6">
+        {Array.from({ length: TILE_COUNT }, (_, i) => (
+          <div
+            key={i}
+            className="ff-tile bg-brand-navy will-change-transform"
+            style={{ boxShadow: "0 0 0 1px #173B53" }}
+          />
         ))}
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center px-6">
-        <div
-          className="ff-brand-container flex flex-col items-center justify-center will-change-transform space-y-6"
-          style={{ opacity: 0 }}
-        >
+      <div className="absolute inset-0 flex items-center justify-center px-6 pointer-events-none">
+        <div className="ff-brand will-change-transform" style={{ opacity: 0 }}>
           <Image
             src={logoImg}
             alt="Fivefold Renewable"
             priority
-            className="w-auto h-12 sm:h-16 md:h-20 max-w-[260px] sm:max-w-[340px] md:max-w-[420px] object-contain drop-shadow-sm"
+            sizes="(max-width: 640px) 260px, (max-width: 768px) 340px, 420px"
+            className="w-auto h-12 sm:h-16 md:h-20 max-w-[260px] sm:max-w-[340px] md:max-w-[420px] object-contain"
           />
-          {/* Progress Bar Container */}
-          <div className="w-48 sm:w-64 h-1 bg-white/20 rounded-full overflow-hidden">
-            <div className="ff-progress h-full bg-[#1684C7] w-0" />
-          </div>
         </div>
       </div>
+
+      <noscript>
+        <style>{`[data-ff-preloader]{display:none!important}`}</style>
+      </noscript>
     </div>
   );
 };

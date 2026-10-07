@@ -42,15 +42,15 @@ const DEFAULT_APPLIANCES: ApplianceState = {
 };
 
 const APPLIANCE_LABELS: { key: keyof Omit<ApplianceState, "otherWatts" | "otherHoursPerDay">; label: string; hint: string }[] = [
-  { key: "fans",           label: "Ceiling Fans",    hint: "~75W each" },
-  { key: "lights",         label: "LED Lights",      hint: "~10W each" },
-  { key: "acs",            label: "ACs (1.5 ton)",   hint: "~1400W each" },
-  { key: "refrigerators",  label: "Refrigerators",   hint: "~150W each" },
-  { key: "waterPumps",     label: "Water Pumps",     hint: "~750W each" },
-  { key: "washingMachines",label: "Washing Machines",hint: "~500W each" },
-  { key: "computers",      label: "Computers/Laptops",hint: "~150W each" },
-  { key: "geysers",        label: "Geysers",         hint: "~2000W each" },
-  { key: "tvs",            label: "TVs",             hint: "~100W each" },
+  { key: "fans",           label: "Ceiling Fans",     hint: "~60–75 W, 10 h/day" },
+  { key: "lights",         label: "LED Bulbs",        hint: "~9 W each, 6 h/day" },
+  { key: "acs",            label: "ACs (1.5 ton)",    hint: "~800–1,800 W inverter, 8 h/day" },
+  { key: "refrigerators",  label: "Refrigerators",    hint: "~1–2 units/day (cycles 24 h)" },
+  { key: "waterPumps",     label: "Water Pumps (1 HP)",hint: "~750–1,500 W, 1 h/day" },
+  { key: "washingMachines",label: "Washing Machines", hint: "~400–800 W, 1 h/day" },
+  { key: "computers",      label: "Laptops/Computers",hint: "~45–90 W (laptop), 6 h/day" },
+  { key: "geysers",        label: "Geysers",          hint: "~2,000–3,000 W, 30 min/day" },
+  { key: "tvs",            label: "TVs (43\")",        hint: "~70–100 W, 5 h/day" },
 ];
 
 // ─── Step 3: Rooftop & Location ───────────────────────────────────────────────

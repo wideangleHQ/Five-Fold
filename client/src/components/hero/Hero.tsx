@@ -4,8 +4,6 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Button } from "@/components/ui/Button";
-import { ArrowRight } from "lucide-react";
 import skyBg from "@/assets/Images/Five_fold_sky.png";
 import { HERO_FRAME_SOURCES, HERO_FIRST_FRAME } from "@/data/heroFrames";
 
@@ -138,24 +136,31 @@ export const Hero: React.FC = () => {
     }
   }, [imagesLoaded]);
 
-  // Set initial frame position before paint — on mobile, 70% of card is visible; on desktop, positioned safely below CTA
+  // Helper to compute initial image Y position with controlled responsive gap below hero text
+  const getInitialImageY = () => {
+    if (!overlayRef.current) return window.innerHeight * 0.42;
+    const overlayBottom = overlayRef.current.getBoundingClientRect().bottom;
+    const w = window.innerWidth;
+
+    let gap: number;
+    if (w < 640) {
+      gap = 28; // Mobile: 24–40px
+    } else if (w < 1024) {
+      gap = 40; // Tablet: 30–50px
+    } else if (w < 1280) {
+      gap = 54; // Laptop: 40–65px
+    } else {
+      gap = 68; // Desktop: 50–80px
+    }
+
+    return overlayBottom + gap;
+  };
+
+  // Set initial frame position before paint — positioned with controlled gap below hero text
   useLayoutEffect(() => {
     const updateFramePosition = () => {
       if (!frameRef.current) return;
-      const isMobile = window.innerWidth < 640;
-      let safeY: number;
-
-      if (isMobile) {
-        // Mobile View Only: Card is 70% visible (top of card positioned at 30% from top of viewport)
-        safeY = window.innerHeight * 0.30;
-      } else {
-        const ctaEl = overlayRef.current?.querySelector(".hero-ctas");
-        safeY = window.innerHeight * 0.58;
-        if (ctaEl) {
-          const ctaBottom = ctaEl.getBoundingClientRect().bottom;
-          safeY = Math.max(ctaBottom + 28, window.innerHeight * 0.52);
-        }
-      }
+      const safeY = getInitialImageY();
 
       gsap.set(frameRef.current, {
         xPercent: -50,
@@ -188,7 +193,6 @@ export const Hero: React.FC = () => {
       const eyebrow = overlayRef.current!.querySelector(".hero-eyebrow");
       const heading = overlayRef.current!.querySelector("h1");
       const paragraph = overlayRef.current!.querySelector("p");
-      const buttons = overlayRef.current!.querySelector(".hero-ctas");
 
       if (eyebrow) {
         loadTl.fromTo(
@@ -214,15 +218,6 @@ export const Hero: React.FC = () => {
           { opacity: 0, y: 14 },
           { opacity: 1, y: 0, duration: 0.7 },
           0.24
-        );
-      }
-
-      if (buttons) {
-        loadTl.fromTo(
-          buttons,
-          { opacity: 0, y: 12 },
-          { opacity: 1, y: 0, duration: 0.65 },
-          0.36
         );
       }
     }, sectionRef);
@@ -262,29 +257,15 @@ export const Hero: React.FC = () => {
     if (overlayRef.current) {
       tl.to(
         overlayRef.current,
-        { y: -100, opacity: 0, ease: "power2.inOut", duration: 0.28 },
+        { y: -80, opacity: 0, ease: "power2.inOut", duration: 0.28 },
         0
       );
     }
 
-    // 2. Frame rises from bottom-peek and expands to fullscreen
-    // fromTo with immediateRender:true (GSAP default) applies the "from" state at tween creation,
-    // making initial positioning independent of whether useLayoutEffect's gsap.set has run yet.
+    // 2. Frame rises from controlled initial gap and expands to fullscreen
     if (frameRef.current) {
       const isMobile = window.innerWidth < 640;
-      let safeY: number;
-
-      if (isMobile) {
-        // Mobile View Only: Card starts 70% visible (at 30% from viewport top)
-        safeY = window.innerHeight * 0.30;
-      } else {
-        const ctaEl = overlayRef.current?.querySelector(".hero-ctas");
-        safeY = window.innerHeight * 0.58;
-        if (ctaEl) {
-          const ctaBottom = ctaEl.getBoundingClientRect().bottom;
-          safeY = Math.max(ctaBottom + 28, window.innerHeight * 0.52);
-        }
-      }
+      const safeY = getInitialImageY();
 
       tl.fromTo(
         frameRef.current,
@@ -376,10 +357,10 @@ export const Hero: React.FC = () => {
           />
         </div>
 
-        {/* 1. EDITORIAL HERO COPY CONTAINER (Controlled Max-Width & Generous Breathing Space) */}
+        {/* 1. EDITORIAL HERO COPY CONTAINER (Controlled Max-Width & Balanced Vertical Clearance) */}
         <div
           ref={overlayRef}
-          className="relative z-20 w-full pt-[calc(5.5rem+env(safe-area-inset-top,0px))] xs:pt-[calc(6.5rem+env(safe-area-inset-top,0px))] sm:pt-[calc(7.5rem+env(safe-area-inset-top,0px))] md:pt-28 lg:pt-32 pb-2 sm:pb-3 px-4 sm:px-6 lg:px-8 xl:px-12 text-center shrink-0 pointer-events-auto"
+          className="relative z-20 w-full pt-[calc(4.75rem+env(safe-area-inset-top,0px))] xs:pt-[calc(5.25rem+env(safe-area-inset-top,0px))] sm:pt-20 md:pt-24 lg:pt-28 xl:pt-32 pb-0 px-4 sm:px-6 lg:px-8 xl:px-12 text-center shrink-0 pointer-events-auto"
         >
           <div className="max-w-3xl lg:max-w-4xl mx-auto space-y-1.5 sm:space-y-3.5">
             
@@ -404,18 +385,6 @@ export const Hero: React.FC = () => {
             <p className="font-sans text-[11px] sm:text-sm md:text-[0.95rem] text-[#526673] font-normal max-w-md md:max-w-xl mx-auto leading-tight sm:leading-relaxed pt-0.5 hidden xs:block">
               Bankable rooftop and megawatt-scale solar engineering, DISCOM net metering, and 25-year performance assurance.
             </p>
-
-            {/* Primary CTA */}
-            <div className="hero-ctas pt-1 sm:pt-2.5 flex items-center justify-center">
-              <Button
-                href="/smart-solar-calculator"
-                variant="primary"
-                className="bg-[#173B53] hover:bg-[#0f2738] text-white px-5 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-sm font-sans font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 inline-flex items-center justify-center gap-2 group border-0"
-              >
-                <span>Find My Solar Solution</span>
-                <ArrowRight className="h-4 w-4 text-[#1684C7] group-hover:translate-x-0.5 transition-transform" />
-              </Button>
-            </div>
           </div>
         </div>
 

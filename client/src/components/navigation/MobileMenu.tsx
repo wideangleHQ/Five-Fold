@@ -123,7 +123,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                 className="w-full text-xs font-semibold py-2.5"
               >
                 <Calculator className="mr-1.5 h-4 w-4" />
-                <span>Solar Calculator</span>
+                <span>Find My Solar Solution</span>
               </Button>
               <Button
                 href="/contact"

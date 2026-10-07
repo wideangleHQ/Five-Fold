@@ -64,11 +64,11 @@ export const EngineeringCapabilities: React.FC = () => {
 
   return (
     <section className="min-h-[90svh] lg:h-[90svh] py-8 sm:py-10 lg:py-8 flex flex-col justify-between lg:justify-start bg-white text-[#173B53] font-sans relative overflow-hidden">
-      
+
       {/* 1. OVERLAY TEXT & ACCORDION CONTAINER (Left Aligned, Covering 70% Width with Generous Top Padding) */}
       <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-12 pt-2 sm:pt-4 lg:pt-8 relative z-10">
         <div className="w-full lg:w-[70%] max-w-5xl space-y-3.5 sm:space-y-5 text-left">
-          
+
           {/* Section Header */}
           <div
             data-reveal="group"
@@ -120,11 +120,10 @@ export const EngineeringCapabilities: React.FC = () => {
 
                     {/* Minimal Toggle Icon */}
                     <div
-                      className={`h-5 w-5 sm:h-7 sm:w-7 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                        isOpen
+                      className={`h-5 w-5 sm:h-7 sm:w-7 rounded-full flex items-center justify-center shrink-0 transition-colors ${isOpen
                           ? "bg-[#173B53] text-white"
                           : "bg-[#F6F3EC] text-[#526673] group-hover:bg-[#DCE2E2]"
-                      }`}
+                        }`}
                     >
                       {isOpen ? (
                         <Minus className="h-3 w-3 sm:h-3.5 sm:w-3.5" />

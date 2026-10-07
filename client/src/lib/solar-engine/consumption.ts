@@ -5,7 +5,7 @@
 
 import type { CalculatorInput, ConsumptionResult } from "./types";
 import { estimateConsumptionFromBill } from "@/data/solar/tariffs";
-import { APPLIANCE_WATTS } from "@/data/solar/system-assumptions";
+import { APPLIANCE_WATTS, APPLIANCE_HOURS_PER_DAY } from "@/data/solar/system-assumptions";
 import { safeNumber } from "./validation";
 
 const DAYS_PER_MONTH = 30;
@@ -16,16 +16,17 @@ const DAYS_PER_MONTH = 30;
  * This is the lowest-confidence mode because rated power ≠ actual operating power.
  */
 function estimateFromAppliances(appliances: NonNullable<CalculatorInput["appliances"]>): number {
+  const h = APPLIANCE_HOURS_PER_DAY;
   const items: Array<{ watts: number; count: number; hoursPerDay: number }> = [
-    { watts: APPLIANCE_WATTS.fan,           count: appliances.fans,           hoursPerDay: 12 },
-    { watts: APPLIANCE_WATTS.light,         count: appliances.lights,         hoursPerDay: 8  },
-    { watts: APPLIANCE_WATTS.ac_1_5ton,     count: appliances.acs,            hoursPerDay: 8  },
-    { watts: APPLIANCE_WATTS.refrigerator,  count: appliances.refrigerators,  hoursPerDay: 24 },
-    { watts: APPLIANCE_WATTS.waterPump,     count: appliances.waterPumps,     hoursPerDay: 4  },
-    { watts: APPLIANCE_WATTS.washingMachine,count: appliances.washingMachines,hoursPerDay: 1  },
-    { watts: APPLIANCE_WATTS.computer,      count: appliances.computers,      hoursPerDay: 8  },
-    { watts: APPLIANCE_WATTS.geyser,        count: appliances.geysers,        hoursPerDay: 1  },
-    { watts: APPLIANCE_WATTS.tv,            count: appliances.tvs,            hoursPerDay: 6  },
+    { watts: APPLIANCE_WATTS.fan,           count: appliances.fans,           hoursPerDay: h.fan           },
+    { watts: APPLIANCE_WATTS.light,         count: appliances.lights,         hoursPerDay: h.light         },
+    { watts: APPLIANCE_WATTS.ac_1_5ton,     count: appliances.acs,            hoursPerDay: h.ac_1_5ton     },
+    { watts: APPLIANCE_WATTS.refrigerator,  count: appliances.refrigerators,  hoursPerDay: h.refrigerator  },
+    { watts: APPLIANCE_WATTS.waterPump,     count: appliances.waterPumps,     hoursPerDay: h.waterPump     },
+    { watts: APPLIANCE_WATTS.washingMachine,count: appliances.washingMachines,hoursPerDay: h.washingMachine},
+    { watts: APPLIANCE_WATTS.computer,      count: appliances.computers,      hoursPerDay: h.computer      },
+    { watts: APPLIANCE_WATTS.geyser,        count: appliances.geysers,        hoursPerDay: h.geyser        },
+    { watts: APPLIANCE_WATTS.tv,            count: appliances.tvs,            hoursPerDay: h.tv            },
     { watts: appliances.otherWatts,         count: 1,                         hoursPerDay: appliances.otherHoursPerDay },
   ];
 

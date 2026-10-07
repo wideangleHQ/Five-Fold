@@ -132,21 +132,65 @@ export const ANNUAL_DEGRADATION_RATE = 0.005;
 export const CO2_FACTOR_KG_PER_KWH = 0.82;
 
 /**
- * Appliance power consumption defaults (Watts).
- * Used for appliance-based consumption estimation.
- * Source: BEE (Bureau of Energy Efficiency) India typical appliance ratings
- * Last verified: 2024-06
+ * Appliance power consumption — typical operating wattage (Watts).
+ *
+ * Source: Household Electrical Load & Consumption List reference chart.
+ * Formula: Units/day = Quantity × Wattage × UsageHours / 1000
+ *
+ * For appliances with compressor cycling (refrigerator, inverter AC) the wattage
+ * here is the effective average operating wattage, not the rated peak, so that
+ *   wattage × APPLIANCE_HOURS_PER_DAY[key] / 1000
+ * produces the reference's approximate units/day midpoint.
+ *
+ * Last verified against reference chart: 2026-10
  */
 export const APPLIANCE_WATTS: Record<string, number> = {
-  fan: 75,
-  light: 10,      // LED
-  ac_1ton: 1100,
-  ac_1_5ton: 1400,
-  ac_2ton: 1800,
-  refrigerator: 150,
-  waterPump: 750,
-  washingMachine: 500,
-  geyser: 2000,
-  computer: 150,
-  tv: 100,
+  // Ceiling Fan: 60–75 W range, reference example uses 70 W
+  fan: 70,
+  // LED Bulb: 9 W fixed
+  light: 9,
+  // Inverter AC — effective average operating wattage (not peak rated):
+  //   1 Ton: 700–1,200 W rated → ~900 W effective @ 8h gives ~7.2 units/day (ref: 5–8)
+  ac_1ton: 900,
+  //   1.5 Ton: 800–1,800 W rated → ~1,000 W effective @ 8h gives 8 units/day (ref: 6–10)
+  ac_1_5ton: 1000,
+  //   2 Ton: 1,300–2,200 W rated → ~1,300 W effective @ 8h gives 10.4 units/day (ref: 9–14)
+  ac_2ton: 1300,
+  // Refrigerator: 150–300 W rated, compressor cycles ~33% duty.
+  //   200 W effective @ 8h run-equivalent = 1.6 units/day (ref: 1–2)
+  refrigerator: 200,
+  // Water Pump 1 HP: 750–1,500 W → 900 W midpoint @ 1h = 0.90 units/day (ref: 0.75–1.10)
+  waterPump: 900,
+  // Washing Machine: 400–800 W → 600 W midpoint @ 1h = 0.60 units/day (ref: 0.4–0.8)
+  washingMachine: 600,
+  // Geyser: 2,000–3,000 W → 2,500 W midpoint @ 0.5h = 1.25 units/day (ref: 1–1.5)
+  geyser: 2500,
+  // Laptop: 45–90 W → 70 W midpoint @ 6h = 0.42 units/day (ref: 0.27–0.54)
+  computer: 70,
+  // LED TV 43": 70–100 W → 85 W midpoint @ 5h = 0.425 units/day (ref: 0.35–0.50)
+  tv: 85,
+};
+
+/**
+ * Typical daily usage hours per appliance (hours/day).
+ *
+ * Source: Household Electrical Load & Consumption List reference chart.
+ * For cycling appliances (refrigerator, AC), these are effective run-equivalent
+ * hours rather than "plugged-in" hours — paired with the effective wattage in
+ * APPLIANCE_WATTS so that watts × hours / 1000 ≈ reference units/day midpoint.
+ *
+ * Last verified against reference chart: 2026-10
+ */
+export const APPLIANCE_HOURS_PER_DAY: Record<string, number> = {
+  fan: 10,           // Ceiling Fan: 10h (reference)
+  light: 6,          // LED Bulb: 6h (reference)
+  ac_1ton: 8,        // Inverter AC: 8h (reference)
+  ac_1_5ton: 8,      // Inverter AC: 8h (reference)
+  ac_2ton: 8,        // Inverter AC: 8h (reference)
+  refrigerator: 8,   // Effective run hours (compressor cycling, ~33% duty of 24h)
+  waterPump: 1,      // Water Pump: 1h (reference)
+  washingMachine: 1, // Washing Machine: 1h (reference)
+  geyser: 0.5,       // Geyser: 30 min (reference)
+  computer: 6,       // Laptop: 6h (reference)
+  tv: 5,             // LED TV: 5h (reference)
 };
