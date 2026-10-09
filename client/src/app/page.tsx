@@ -1,7 +1,6 @@
 import { Hero } from "@/components/hero/Hero";
 import { SolarDecisionPlatform } from "@/components/sections/SolarDecisionPlatform";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
-import { EngineeringCapabilities } from "@/components/sections/EngineeringCapabilities";
 import { GovernmentScheme } from "@/components/sections/GovernmentScheme";
 import { ProjectsTeaser } from "@/components/sections/ProjectsTeaser";
 import { SolarCareTeaser } from "@/components/sections/SolarCareTeaser";
@@ -18,28 +17,25 @@ export default function HomePage() {
       {/* 02 — FIND YOUR SOLAR SOLUTION (SOLAR DECISION PLATFORM) */}
       <SolarDecisionPlatform />
 
-      {/* 04 — RESIDENTIAL / COMMERCIAL / INDUSTRIAL SOLUTIONS GRID */}
+      {/* 03 — RESIDENTIAL / COMMERCIAL / INDUSTRIAL SOLUTIONS GRID */}
       <ServicesGrid />
 
-      {/* 05 — ENGINEERING ADVANTAGE */}
-      <EngineeringCapabilities />
-
-      {/* 06 — GOVERNMENT SCHEME */}
+      {/* 04 — GOVERNMENT SCHEME */}
       <GovernmentScheme />
 
-      {/* 07 — PROJECTS & CREDENTIALS */}
+      {/* 05 — PROJECTS & CREDENTIALS */}
       <ProjectsTeaser />
 
-      {/* 08 — LIGHT ENGINEERING STATEMENT (VISUAL RESET) */}
+      {/* 06 — ENGINEERING (INCL. ENGINEERING PRECISION) */}
       <WhyFivefold />
 
-      {/* 09 — SOLARCARE AMC PLANS (HORIZONTAL PLAN COMPARISON) */}
+      {/* 07 — SOLARCARE AMC PLANS (HORIZONTAL PLAN COMPARISON) */}
       <SolarCareTeaser />
 
-      {/* 10 — FAQ */}
+      {/* 08 — FAQ */}
       <FaqSection />
 
-      {/* 11 — FINAL CONSULTATION CTA */}
+      {/* 09 — FINAL CONSULTATION CTA */}
       <FinalCta />
     </>
   );

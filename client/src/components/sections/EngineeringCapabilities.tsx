@@ -63,13 +63,10 @@ export const EngineeringCapabilities: React.FC = () => {
   };
 
   return (
-    <section className="min-h-[90svh] lg:h-[90svh] py-8 sm:py-10 lg:py-8 flex flex-col justify-between lg:justify-start bg-white text-[#173B53] font-sans relative overflow-hidden">
+    <div className="mt-10 sm:mt-12 lg:mt-14 text-[#173B53] font-sans">
+      <div className="space-y-3.5 sm:space-y-5 text-left">
 
-      {/* 1. OVERLAY TEXT & ACCORDION CONTAINER (Left Aligned, Covering 70% Width with Generous Top Padding) */}
-      <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-12 pt-2 sm:pt-4 lg:pt-8 relative z-10">
-        <div className="w-full lg:w-[70%] max-w-5xl space-y-3.5 sm:space-y-5 text-left">
-
-          {/* Section Header */}
+          {/* Subsection Header */}
           <div
             data-reveal="group"
             className="space-y-1 sm:space-y-1.5 text-left"
@@ -77,12 +74,12 @@ export const EngineeringCapabilities: React.FC = () => {
             <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-[#1684C7] block">
               • ENGINEERING PRECISION
             </span>
-            <h2
+            <h3
               data-reveal="heading"
-              className="font-heading text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-[#173B53] tracking-tight leading-[1.08]"
+              className="font-heading text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-extrabold text-[#173B53] tracking-tight leading-[1.08]"
             >
               Engineering That Drives Performance.
-            </h2>
+            </h3>
             <p
               data-reveal="paragraph"
               className="font-sans text-[#526673] text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl pt-0.5"
@@ -109,9 +106,9 @@ export const EngineeringCapabilities: React.FC = () => {
                         {stg.num}
                       </span>
                       <div className="space-y-0.5">
-                        <h3 className="font-heading text-xs sm:text-base lg:text-lg font-extrabold text-[#173B53] tracking-tight group-hover:text-[#1684C7] transition-colors">
+                        <h4 className="font-heading text-xs sm:text-base lg:text-lg font-extrabold text-[#173B53] tracking-tight group-hover:text-[#1684C7] transition-colors">
                           {stg.title}
-                        </h3>
+                        </h4>
                         <p className="font-sans text-xs sm:text-sm text-[#526673] font-normal leading-relaxed">
                           {stg.subtitle}
                         </p>
@@ -159,38 +156,34 @@ export const EngineeringCapabilities: React.FC = () => {
             })}
           </div>
 
-        </div>
       </div>
 
-      {/* 2. BASE VISUAL: Extra-large size and right-aligned for Mobile / Flip / Tablet */}
+      {/* Banner visual — in normal flow, aligned to the section's container */}
       <div
         data-reveal="image-container"
-        className="w-full relative mt-4 sm:mt-6 md:mt-8 lg:mt-0 h-[400px] xs:h-[450px] sm:h-[540px] md:h-[640px] lg:h-auto lg:absolute lg:inset-x-0 lg:bottom-0 lg:flex lg:items-end lg:justify-center pointer-events-none select-none z-0 overflow-hidden"
+        className="w-full relative mt-6 sm:mt-8 lg:mt-10 rounded-[20px] overflow-hidden pointer-events-none select-none"
       >
-        {/* Mobile / Flip Phone / Tablet View: Extra-large right-aligned visual featuring engineer & solar installation */}
-        <div className="relative w-full h-full lg:hidden flex justify-end items-end">
+        {/* Mobile / tablet: cropped, right-aligned visual */}
+        <div className="relative w-full h-[320px] sm:h-[420px] md:h-[520px] lg:hidden">
           <Image
             src={bannerImg}
             alt="Fivefold Engineering Precision - Rooftop Solar EPC Installation"
             fill
-            priority
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
-            className="object-cover object-right-bottom scale-[1.12] sm:scale-100 origin-bottom-right select-none pointer-events-none"
+            sizes="100vw"
+            className="object-cover object-right-bottom"
           />
         </div>
 
-        {/* Desktop & Laptop View: Uncropped 100% full-width panoramic visual */}
+        {/* Desktop: uncropped panoramic visual */}
         <div className="hidden lg:block w-full">
           <Image
             src={bannerImg}
             alt="Fivefold Engineering Precision - Rooftop Solar EPC Installation"
-            priority
-            sizes="100vw"
-            className="w-full h-auto max-h-[60vh] object-contain object-bottom block select-none pointer-events-none"
+            sizes="(min-width: 1780px) 1780px, 100vw"
+            className="w-full h-auto max-h-[60vh] object-cover object-bottom block"
           />
         </div>
       </div>
-
-    </section>
+    </div>
   );
 };

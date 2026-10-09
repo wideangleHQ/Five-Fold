@@ -2,10 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onAnimationStart" | "onDrag" | "onDragStart" | "onDragEnd" | "style"> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "amber";
   size?: "sm" | "md" | "lg";
   href?: string;
@@ -38,41 +37,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const combinedClassName = cn(baseStyles, variants[variant], sizes[size], className);
 
-    const springTransition = {
-      type: "spring",
-      stiffness: 400,
-      damping: 25,
-      mass: 0.8,
-    };
-
     if (href) {
       return (
-        <motion.div
-          whileHover={{ scale: 1.025, y: -1 }}
-          whileTap={{ scale: 0.98 }}
-          transition={springTransition}
-          className="inline-block"
-        >
-          <Link href={href} className={combinedClassName}>
-            {children}
-          </Link>
-        </motion.div>
+        <Link href={href} className={combinedClassName}>
+          {children}
+        </Link>
       );
     }
 
     return (
-      <motion.button
-        ref={ref}
-        whileHover={{ scale: 1.025, y: -1 }}
-        whileTap={{ scale: 0.98 }}
-        transition={springTransition}
-        className={combinedClassName}
-        {...props}
-      >
+      <button ref={ref} className={combinedClassName} {...props}>
         {children}
-      </motion.button>
+      </button>
     );
   }
 );
 
 Button.displayName = "Button";
+

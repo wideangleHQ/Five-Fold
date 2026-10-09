@@ -28,6 +28,13 @@ if (typeof window !== "undefined") {
  * outside its own context — the previous `ScrollTrigger.getAll().forEach(st =>
  * st.kill())` destroyed other components' triggers and, because it did not
  * revert, stranded their hidden elements permanently.
+ *
+ * Triggers use `toggleActions: "play play none none"` (onLeave=play covers a scroll jump that skips the whole trigger range) instead of `once: true`.
+ * `once` makes a trigger kill itself the instant it fires, and ScrollTrigger's
+ * refresh loop walks its global trigger list by index while refreshing earlier
+ * triggers — a self-kill mid-loop leaves `_triggers[i]` undefined and throws
+ * "Cannot read properties of undefined (reading 'end')" whenever a reveal
+ * element is already past its start line (e.g. a short or pre-scrolled page).
  */
 export function useScrollReveal() {
   const pathname = usePathname();
@@ -77,7 +84,7 @@ export function useScrollReveal() {
           scrollTrigger: {
             trigger: group,
             start: "top 83%",
-            once: true,
+            toggleActions: "play play none none",
           },
         });
 
@@ -186,7 +193,7 @@ export function useScrollReveal() {
             scrollTrigger: {
               trigger: el,
               start: "top 83%",
-              once: true,
+              toggleActions: "play play none none",
             },
           }
         );
@@ -212,7 +219,7 @@ export function useScrollReveal() {
             scrollTrigger: {
               trigger: el,
               start: "top 83%",
-              once: true,
+              toggleActions: "play play none none",
             },
           }
         );
@@ -240,7 +247,7 @@ export function useScrollReveal() {
               scrollTrigger: {
                 trigger: container,
                 start: "top 83%",
-                once: true,
+                toggleActions: "play play none none",
               },
             }
           );
@@ -264,7 +271,7 @@ export function useScrollReveal() {
             scrollTrigger: {
               trigger: card,
               start: "top 83%",
-              once: true,
+              toggleActions: "play play none none",
             },
           }
         );
@@ -291,7 +298,7 @@ export function useScrollReveal() {
             scrollTrigger: {
               trigger: imgEl,
               start: "top 83%",
-              once: true,
+              toggleActions: "play play none none",
             },
           }
         );
@@ -317,7 +324,7 @@ export function useScrollReveal() {
             scrollTrigger: {
               trigger: btn,
               start: "top 85%",
-              once: true,
+              toggleActions: "play play none none",
             },
           }
         );

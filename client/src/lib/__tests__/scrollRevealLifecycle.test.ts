@@ -62,6 +62,12 @@ describe("scroll animation teardown is scoped and does not use timer workarounds
     expect(governmentScheme).toMatch(/SCHEMES\.length/);
   });
 
+  it("useScrollReveal triggers never self-kill via once:true (refresh-loop crash)", () => {
+    const hook = readCode("lib/useScrollReveal.ts");
+    expect(hook).not.toMatch(/once:\s*true/);
+    expect(hook).toMatch(/toggleActions:\s*"play play none none"/);
+  });
+
   it("the global removeChild monkey-patch is gone from the app", () => {
     // It masked the NotFoundError instead of fixing it, and permanently
     // overrode Node.prototype for the whole app.

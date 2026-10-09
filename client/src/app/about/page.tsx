@@ -16,6 +16,7 @@ import {
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { constructMetadata } from "@/lib/seo";
+import { EngineeringCapabilities } from "@/components/sections/EngineeringCapabilities";
 
 // Approved local assets
 import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
@@ -407,6 +408,15 @@ export default function AboutPage() {
             })}
           </div>
 
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 05b — ENGINEERING PRECISION (moved from homepage)                         */}
+      {/* ========================================================================= */}
+      <section className="pb-16 sm:pb-20 lg:pb-24 bg-white">
+        <div className="w-full max-w-7xl lg:max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+          <EngineeringCapabilities />
         </div>
       </section>
 
