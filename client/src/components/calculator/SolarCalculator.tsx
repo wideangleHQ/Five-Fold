@@ -7,6 +7,8 @@ import { Container } from "@/components/ui/Container";
 import { calculateSolarRequirement } from "@/lib/solar-engine";
 import type { CalculatorInput, SolarCalculationResult } from "@/lib/solar-engine";
 import { sqFtToM2 } from "@/lib/solar-engine/roof-feasibility";
+import { calculateApplianceLoad } from "@/lib/solar-engine/appliance-load";
+import { APPLIANCES, APPLIANCE_GROUPS, type ApplianceSpec } from "@/data/solar/appliances";
 import { submitLead, type SubmitLeadDto } from "@/services/leads";
 
 // ─── Step 1: Property Type ────────────────────────────────────────────────────
@@ -31,27 +33,24 @@ const USAGE_MODES: { id: InputMode; label: string; sublabel: string }[] = [
 ];
 
 interface ApplianceState {
-  fans: number; lights: number; acs: number; refrigerators: number;
-  waterPumps: number; washingMachines: number; computers: number;
-  geysers: number; tvs: number; otherWatts: number; otherHoursPerDay: number;
+  quantities: Record<string, number>;
+  otherWatts: number;
+  otherHoursPerDay: number;
 }
 
-const DEFAULT_APPLIANCES: ApplianceState = {
-  fans: 0, lights: 0, acs: 0, refrigerators: 0, waterPumps: 0,
-  washingMachines: 0, computers: 0, geysers: 0, tvs: 0, otherWatts: 0, otherHoursPerDay: 2,
-};
+const DEFAULT_APPLIANCES: ApplianceState = { quantities: {}, otherWatts: 0, otherHoursPerDay: 2 };
 
-const APPLIANCE_LABELS: { key: keyof Omit<ApplianceState, "otherWatts" | "otherHoursPerDay">; label: string; hint: string }[] = [
-  { key: "fans",           label: "Ceiling Fans",     hint: "~60–75 W, 10 h/day" },
-  { key: "lights",         label: "LED Bulbs",        hint: "~9 W each, 6 h/day" },
-  { key: "acs",            label: "ACs (1.5 ton)",    hint: "~800–1,800 W inverter, 8 h/day" },
-  { key: "refrigerators",  label: "Refrigerators",    hint: "~1–2 units/day (cycles 24 h)" },
-  { key: "waterPumps",     label: "Water Pumps (1 HP)",hint: "~750–1,500 W, 1 h/day" },
-  { key: "washingMachines",label: "Washing Machines", hint: "~400–800 W, 1 h/day" },
-  { key: "computers",      label: "Laptops/Computers",hint: "~45–90 W (laptop), 6 h/day" },
-  { key: "geysers",        label: "Geysers",          hint: "~2,000–3,000 W, 30 min/day" },
-  { key: "tvs",            label: "TVs (43\")",        hint: "~70–100 W, 5 h/day" },
-];
+function fmtHours(h: number): string {
+  if (h < 1) return `${Math.round(h * 60)} min/day`;
+  return `${h} h/day`;
+}
+
+function applianceHint(a: ApplianceSpec): string {
+  const w = a.wattsMin === a.wattsMax
+    ? `${a.wattsMin.toLocaleString("en-IN")} W`
+    : `${a.wattsMin.toLocaleString("en-IN")}–${a.wattsMax.toLocaleString("en-IN")} W`;
+  return `${w} · ${fmtHours(a.hoursPerDay)}`;
+}
 
 // ─── Step 3: Rooftop & Location ───────────────────────────────────────────────
 
@@ -185,7 +184,10 @@ export function SolarCalculator() {
   const [cqSubmitted, setCqSubmitted] = useState(false);
   const [cqError, setCqError] = useState<string | null>(null);
 
-  function updateAppliance(key: keyof ApplianceState, val: number) {
+  function setQuantity(id: string, val: number) {
+    setAppliances((prev) => ({ ...prev, quantities: { ...prev.quantities, [id]: val } }));
+  }
+  function updateOther(key: "otherWatts" | "otherHoursPerDay", val: number) {
     setAppliances((prev) => ({ ...prev, [key]: val }));
   }
 
@@ -291,11 +293,7 @@ export function SolarCalculator() {
     if (inputMode === "consumption") return Number(monthlyKWh) > 0;
     if (inputMode === "bill") return Number(monthlyBillINR) > 0;
     if (inputMode === "appliances") {
-      const total = Object.entries(appliances).reduce((s, [k, v]) => {
-        if (k !== "otherWatts" && k !== "otherHoursPerDay") return s + (v as number);
-        return s;
-      }, 0);
-      return total > 0 || appliances.otherWatts > 0;
+      return calculateApplianceLoad(appliances.quantities, appliances.otherWatts, appliances.otherHoursPerDay).monthlyMidUnits > 0;
     }
     return false;
   }
@@ -408,45 +406,66 @@ export function SolarCalculator() {
         {inputMode === "appliances" && (
           <div>
             <p className="text-xs text-slate-400 mb-4">
-              Add the number of each appliance you use. We calculate from standard BEE power ratings.
+              Add the number of each appliance you use. Units/day = Quantity × Wattage × Hours ÷ 1000, and
+              Units/month = Units/day × 30 (1 kWh = 1 Unit). Values are indicative.
             </p>
-            <div className="space-y-0 divide-y divide-slate-50">
-              {APPLIANCE_LABELS.map(({ key, label, hint }) => (
-                <Counter
-                  key={key}
-                  value={appliances[key as keyof ApplianceState] as number}
-                  onChange={(v) => updateAppliance(key as keyof ApplianceState, v)}
-                  label={label}
-                  hint={hint}
-                />
-              ))}
-              <div className="py-3">
-                <p className="text-sm font-medium text-[#111615] mb-2">Other appliances (optional)</p>
-                <div className="flex gap-3">
-                  <div className="flex-1">
-                    <input
-                      type="number"
-                      min={0}
-                      value={appliances.otherWatts || ""}
-                      onChange={(e) => updateAppliance("otherWatts", Number(e.target.value))}
-                      placeholder="Total watts"
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#20435F]"
+            {APPLIANCE_GROUPS.map((group) => (
+              <div key={group} className="mb-4">
+                <p className="font-mono text-[10px] text-slate-400 tracking-[0.15em] uppercase mb-1">{group}</p>
+                <div className="divide-y divide-slate-50">
+                  {APPLIANCES.filter((a) => a.group === group).map((a) => (
+                    <Counter
+                      key={a.id}
+                      value={appliances.quantities[a.id] ?? 0}
+                      onChange={(v) => setQuantity(a.id, v)}
+                      label={a.name}
+                      hint={applianceHint(a)}
                     />
-                  </div>
-                  <div className="flex-1">
-                    <input
-                      type="number"
-                      min={0}
-                      max={24}
-                      value={appliances.otherHoursPerDay || ""}
-                      onChange={(e) => updateAppliance("otherHoursPerDay", Number(e.target.value))}
-                      placeholder="Hours/day"
-                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#20435F]"
-                    />
-                  </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div className="py-3">
+              <p className="text-sm font-medium text-[#111615] mb-2">Other appliances (optional)</p>
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <input
+                    type="number"
+                    min={0}
+                    value={appliances.otherWatts || ""}
+                    onChange={(e) => updateOther("otherWatts", Number(e.target.value))}
+                    placeholder="Total watts"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#20435F]"
+                  />
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="number"
+                    min={0}
+                    max={24}
+                    value={appliances.otherHoursPerDay || ""}
+                    onChange={(e) => updateOther("otherHoursPerDay", Number(e.target.value))}
+                    placeholder="Hours/day"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#20435F]"
+                  />
                 </div>
               </div>
             </div>
+            {(() => {
+              const load = calculateApplianceLoad(appliances.quantities, appliances.otherWatts, appliances.otherHoursPerDay);
+              if (load.monthlyMidUnits <= 0) return null;
+              const f = (n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: 1 });
+              const range = (r: { min: number; max: number }) => (r.min === r.max ? f(r.min) : `${f(r.min)}–${f(r.max)}`);
+              return (
+                <div className="sticky bottom-0 mt-2 p-3 rounded-xl bg-[#F6F3EC] border border-slate-100">
+                  <p className="text-xs text-slate-500">Estimated consumption</p>
+                  <p className="font-heading text-lg font-extrabold text-[#20435F]">
+                    {range(load.monthlyUnits)} units/month
+                  </p>
+                  <p className="text-xs text-slate-400">{range(load.dailyUnits)} units/day · 1 kWh = 1 unit</p>
+                </div>
+              );
+            })()}
           </div>
         )}
 
@@ -657,10 +676,16 @@ export function SolarCalculator() {
               <span className="text-slate-500">Estimated system cost</span>
               <span className="font-semibold text-[#111615]">₹{fmt(r.grossSystemCostINR)}</span>
             </div>
-            {r.potentialSubsidyINR > 0 && (
+            {r.subsidy.centralSubsidyINR > 0 && (
               <div className="flex justify-between text-emerald-700">
                 <span>Central subsidy (PM Surya Ghar)</span>
-                <span className="font-semibold">- ₹{fmt(r.potentialSubsidyINR)}</span>
+                <span className="font-semibold">- ₹{fmt(r.subsidy.centralSubsidyINR)}</span>
+              </div>
+            )}
+            {r.subsidy.stateSubsidyINR > 0 && (
+              <div className="flex justify-between text-emerald-700">
+                <span>Odisha state subsidy</span>
+                <span className="font-semibold">- ₹{fmt(r.subsidy.stateSubsidyINR)}</span>
               </div>
             )}
             <div className="flex justify-between border-t border-slate-100 pt-2.5">
@@ -671,8 +696,10 @@ export function SolarCalculator() {
 
           {isResidential && r.subsidy.applicableSchemes.length > 0 && (
             <div className="mt-4 p-3 bg-[#F7F8F5] rounded-xl">
-              <p className="text-xs font-semibold text-[#20435F] mb-1">Applicable Scheme</p>
-              <p className="text-xs text-slate-600">{r.subsidy.applicableSchemes[0]}</p>
+              <p className="text-xs font-semibold text-[#20435F] mb-1">Applicable Schemes</p>
+              {r.subsidy.applicableSchemes.map((name) => (
+                <p key={name} className="text-xs text-slate-600">{name}</p>
+              ))}
               <p className="text-xs text-slate-400 mt-1">{r.subsidy.breakdown}</p>
             </div>
           )}

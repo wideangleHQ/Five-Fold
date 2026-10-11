@@ -5,43 +5,15 @@
 
 import type { CalculatorInput, ConsumptionResult } from "./types";
 import { estimateConsumptionFromBill } from "@/data/solar/tariffs";
-import { APPLIANCE_WATTS, APPLIANCE_HOURS_PER_DAY } from "@/data/solar/system-assumptions";
 import { safeNumber } from "./validation";
-
-const DAYS_PER_MONTH = 30;
-
-/**
- * Estimate monthly consumption from appliance list.
- * kWh = (power_kW × hours_per_day × days_per_month) per appliance.
- * This is the lowest-confidence mode because rated power ≠ actual operating power.
- */
-function estimateFromAppliances(appliances: NonNullable<CalculatorInput["appliances"]>): number {
-  const h = APPLIANCE_HOURS_PER_DAY;
-  const items: Array<{ watts: number; count: number; hoursPerDay: number }> = [
-    { watts: APPLIANCE_WATTS.fan,           count: appliances.fans,           hoursPerDay: h.fan           },
-    { watts: APPLIANCE_WATTS.light,         count: appliances.lights,         hoursPerDay: h.light         },
-    { watts: APPLIANCE_WATTS.ac_1_5ton,     count: appliances.acs,            hoursPerDay: h.ac_1_5ton     },
-    { watts: APPLIANCE_WATTS.refrigerator,  count: appliances.refrigerators,  hoursPerDay: h.refrigerator  },
-    { watts: APPLIANCE_WATTS.waterPump,     count: appliances.waterPumps,     hoursPerDay: h.waterPump     },
-    { watts: APPLIANCE_WATTS.washingMachine,count: appliances.washingMachines,hoursPerDay: h.washingMachine},
-    { watts: APPLIANCE_WATTS.computer,      count: appliances.computers,      hoursPerDay: h.computer      },
-    { watts: APPLIANCE_WATTS.geyser,        count: appliances.geysers,        hoursPerDay: h.geyser        },
-    { watts: APPLIANCE_WATTS.tv,            count: appliances.tvs,            hoursPerDay: h.tv            },
-    { watts: appliances.otherWatts,         count: 1,                         hoursPerDay: appliances.otherHoursPerDay },
-  ];
-
-  const totalWattHoursPerDay = items.reduce(
-    (sum, item) => sum + item.watts * item.count * item.hoursPerDay,
-    0
-  );
-  const monthlyKWh = (totalWattHoursPerDay / 1000) * DAYS_PER_MONTH;
-  return safeNumber(monthlyKWh);
-}
+import { calculateApplianceLoad } from "./appliance-load";
+import { DAYS_PER_MONTH } from "@/data/solar/appliances";
 
 export function calculateConsumption(input: CalculatorInput): ConsumptionResult {
   let monthlyConsumptionKWh = 0;
   let isEstimated = false;
   let estimationMethod = "";
+  let applianceRange: { min: number; max: number } | undefined;
 
   if (input.inputMode === "consumption" && input.monthlyConsumptionKWh !== null) {
     monthlyConsumptionKWh = safeNumber(input.monthlyConsumptionKWh);
@@ -58,12 +30,19 @@ export function calculateConsumption(input: CalculatorInput): ConsumptionResult 
       "Actual consumption may vary.";
 
   } else if (input.inputMode === "appliances" && input.appliances) {
-    monthlyConsumptionKWh = estimateFromAppliances(input.appliances);
+    const load = calculateApplianceLoad(
+      input.appliances.quantities,
+      input.appliances.otherWatts,
+      input.appliances.otherHoursPerDay,
+    );
+    monthlyConsumptionKWh = safeNumber(load.monthlyMidUnits);
+    applianceRange = load.monthlyUnits;
     isEstimated = true;
     estimationMethod =
-      "Estimated from appliance list using BEE standard wattage ratings. " +
-      "Actual consumption depends on usage patterns and appliance efficiency. " +
-      "Treat as a rough estimate.";
+      "Estimated from your appliance list: Units/day = Quantity × Wattage × Usage hours ÷ 1000, " +
+      "Units/month = Units/day × 30 (1 kWh = 1 Unit). Wattage ranges use their midpoint; " +
+      "refrigerator and inverter-AC use approximate figures because of compressor cycling. " +
+      "Indicative only — not actual consumption.";
   }
 
   const annualConsumptionKWh = monthlyConsumptionKWh * 12;
@@ -75,5 +54,11 @@ export function calculateConsumption(input: CalculatorInput): ConsumptionResult 
     averageDailyKWh: safeNumber(averageDailyKWh),
     isEstimated,
     estimationMethod,
+    ...(applianceRange && {
+      monthlyConsumptionRangeKWh: {
+        min: safeNumber(applianceRange.min),
+        max: safeNumber(applianceRange.max),
+      },
+    }),
   };
 }

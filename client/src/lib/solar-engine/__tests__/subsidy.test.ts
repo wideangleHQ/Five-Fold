@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { calculateSubsidy } from "../subsidy";
-import { computePMSuryaGharSubsidy } from "@/data/solar/subsidies";
+import { computePMSuryaGharSubsidy, computeOdishaStateSubsidy } from "@/data/solar/subsidies";
 
 describe("PM Surya Ghar subsidy slabs", () => {
   it("1 kWp → ₹30,000", () => {
@@ -56,5 +56,27 @@ describe("calculateSubsidy engine", () => {
   it("subsidy is never negative", () => {
     const result = calculateSubsidy("residential", 0.5);
     expect(result.totalSubsidyINR).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe("Odisha state additional subsidy", () => {
+  it.each([[1, 25000], [2, 50000], [3, 60000], [5, 60000], [10, 60000], [0, 0]])(
+    "%s kWp → ₹%s",
+    (kwp, expected) => {
+      expect(computeOdishaStateSubsidy(kwp).stateSubsidyINR).toBe(expected);
+    },
+  );
+
+  it("residential 3 kWp: central ₹78,000 + state ₹60,000 = ₹1,38,000", () => {
+    const r = calculateSubsidy("residential", 3);
+    expect(r.centralSubsidyINR).toBe(78000);
+    expect(r.stateSubsidyINR).toBe(60000);
+    expect(r.totalSubsidyINR).toBe(138000);
+    expect(r.applicableSchemes.some((s) => s.includes("Odisha"))).toBe(true);
+  });
+
+  it("commercial and industrial get no state top-up", () => {
+    expect(calculateSubsidy("commercial", 3).stateSubsidyINR).toBe(0);
+    expect(calculateSubsidy("industrial", 3).stateSubsidyINR).toBe(0);
   });
 });

@@ -14,15 +14,8 @@ export type InputMode = "bill" | "consumption" | "appliances";
 export type ConfidenceLevel = "high" | "medium" | "low";
 
 export interface ApplianceInput {
-  fans: number;
-  lights: number;
-  acs: number;           // 1.5-ton ACs
-  refrigerators: number;
-  waterPumps: number;
-  washingMachines: number;
-  computers: number;
-  geysers: number;
-  tvs: number;
+  /** Quantity per appliance id (see data/solar/appliances.ts) */
+  quantities: Record<string, number>;
   /** Any additional wattage the user specifies */
   otherWatts: number;
   /** Hours per day the "other" appliances run */
@@ -63,6 +56,8 @@ export interface ConsumptionResult {
   /** Was consumption estimated from bill (less accurate) or directly provided? */
   isEstimated: boolean;
   estimationMethod: string;
+  /** Appliance mode only: monthly range from wattage/usage ranges (min–max) */
+  monthlyConsumptionRangeKWh?: { min: number; max: number };
 }
 
 export interface SolarResourceResult {

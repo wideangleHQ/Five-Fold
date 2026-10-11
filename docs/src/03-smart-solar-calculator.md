@@ -38,7 +38,9 @@ Confidence penalty: 20 points.
 Important: bills include fixed charges, electricity duty, and taxes that are NOT proportional to energy use.
 
 ### Mode C — Appliance Estimation (Lower Confidence)
-User specifies appliance counts. Engine uses BEE standard wattage ratings × typical hours/day.  
+User picks from 35 appliances (Household Electrical Load & Consumption List) and sets quantities.  
+`Units/day = Quantity × Wattage × Usage hours ÷ 1000`, `Units/month = Units/day × 30` (1 kWh = 1 Unit).  
+Wattage ranges are carried as min–max (shown to the user) and fed to sizing at the midpoint. Refrigerator and inverter ACs use the table's approximate units/day because of compressor cycling. Source of truth: `client/src/data/solar/appliances.ts`; logic: `client/src/lib/solar-engine/appliance-load.ts`.  
 Confidence penalty: 35 points.  
 Rated power ≠ actual operating power; treat as rough estimate.
 
@@ -280,7 +282,8 @@ All results are clearly labelled as **preliminary estimates**.
 | `client/src/data/solar/subsidies.ts` | PM Surya Ghar slabs, subsidy calculator |
 | `client/src/data/solar/regulatory.ts` | OERC net metering rules, system size caps |
 | `client/src/data/solar/discom.ts` | District→DISCOM mapping, DISCOM info |
-| `client/src/data/solar/system-assumptions.ts` | Performance ratio, loss factors, area density, appliance watts, CO2 factor |
+| `client/src/data/solar/system-assumptions.ts` | Performance ratio, loss factors, area density, CO2 factor |
+| `client/src/data/solar/appliances.ts` | 35-appliance load table (watt ranges, hours/day, cycling flags) |
 
 ---
 

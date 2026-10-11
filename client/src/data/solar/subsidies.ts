@@ -165,12 +165,62 @@ export function computePMSuryaGharSubsidy(systemKWp: number): {
 }
 
 /**
+ * Odisha State Additional Subsidy — residential rooftop solar
+ * Flat state top-up on top of PM Surya Ghar, reported as:
+ *   1 kW → ₹25,000 | 2 kW → ₹50,000 | 3 kW and above → ₹60,000 (cap)
+ * Modelled as ₹25,000/kWp for the first 2 kWp + ₹10,000 for the 3rd kWp, capped at ₹60,000.
+ * Combined with the central ₹78,000 this gives the reported ₹1,38,000 at 3 kWp.
+ *
+ * Sources (verified 2026-10): Odisha government / discom announcements as reported by
+ * powerline.net.in (2025-09-03), pv-magazine-india.com and odishabytes.com.
+ * Eligibility, exact conditions and fund availability must be confirmed with OREDA
+ * (https://oreda.in) or the consumer's discom (TPCODL / TPWODL / TPNODL / TPSODL).
+ */
+export const ODISHA_STATE_TOPUP: SubsidyScheme = {
+  id: "odisha_state_topup",
+  name: "Odisha State Additional Subsidy (Residential Rooftop Solar)",
+  authority: "Government of Odisha / OREDA",
+  applicableTo: ["residential"],
+  maxSystemKWp: 10,
+  slabs: [
+    { fromKWp: 0, toKWp: 2, rateINRPerKWp: 25000, fixedAmountINR: null, notes: "₹25,000/kWp for the first 2 kWp — max ₹50,000" },
+    { fromKWp: 2, toKWp: 3, rateINRPerKWp: 10000, fixedAmountINR: null, notes: "₹10,000 for the 3rd kWp — total ₹60,000" },
+    { fromKWp: 3, toKWp: null, rateINRPerKWp: null, fixedAmountINR: 60000, notes: "Fixed ₹60,000 maximum for 3 kWp and above" },
+  ],
+  source: "Odisha government / discom announcements (reported Sept 2025); confirm with OREDA",
+  effectiveFrom: "2025-01",
+  lastVerified: "2026-10",
+  notes:
+    "Paid in addition to PM Surya Ghar for eligible residential consumers. " +
+    "Subject to scheme continuity, fund availability and eligibility verification.",
+};
+
+export const ODISHA_STATE_TOPUP_CAP_INR = 60000;
+
+/** Odisha state top-up for an individual residential rooftop system. */
+export function computeOdishaStateSubsidy(systemKWp: number): {
+  stateSubsidyINR: number;
+  breakdown: string;
+} {
+  if (!(systemKWp > 0)) return { stateSubsidyINR: 0, breakdown: "" };
+  const [s1, s2] = ODISHA_STATE_TOPUP.slabs;
+  const first = Math.min(systemKWp, 2);
+  const second = systemKWp > 2 ? Math.min(systemKWp - 2, 1) : 0;
+  const total = Math.min(first * (s1.rateINRPerKWp ?? 0) + second * (s2.rateINRPerKWp ?? 0), ODISHA_STATE_TOPUP_CAP_INR);
+  let breakdown = `${first.toFixed(2)} kWp × ₹25,000 = ₹${(first * 25000).toLocaleString("en-IN")}`;
+  if (second > 0) breakdown += ` + ${second.toFixed(2)} kWp × ₹10,000 = ₹${(second * 10000).toLocaleString("en-IN")}`;
+  if (systemKWp > 3) breakdown += ` (capped at ₹${ODISHA_STATE_TOPUP_CAP_INR.toLocaleString("en-IN")})`;
+  return { stateSubsidyINR: total, breakdown };
+}
+
+/**
  * All available schemes indexed by scheme ID.
  * Extend this when new state or central schemes are added.
  */
 export const ALL_SCHEMES: Record<string, SubsidyScheme> = {
   pm_surya_ghar_individual: PM_SURYA_GHAR,
   pm_surya_ghar_rwa: PM_SURYA_GHAR_RWA,
+  odisha_state_topup: ODISHA_STATE_TOPUP,
 };
 
 /**

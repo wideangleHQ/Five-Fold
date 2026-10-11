@@ -4,7 +4,7 @@
  */
 
 import type { PropertyType, SubsidyResult } from "./types";
-import { computePMSuryaGharSubsidy, ACCELERATED_DEPRECIATION } from "@/data/solar/subsidies";
+import { computePMSuryaGharSubsidy, computeOdishaStateSubsidy, ACCELERATED_DEPRECIATION } from "@/data/solar/subsidies";
 
 export function calculateSubsidy(
   propertyType: PropertyType,
@@ -34,14 +34,19 @@ export function calculateSubsidy(
     );
   }
 
-  // State subsidy: Odisha does not currently publish a verified additional state cash subsidy
-  // for individual consumers beyond PM Surya Ghar. Flag for verification.
-  const stateSubsidyINR = 0;
+  let stateSubsidyINR = 0;
   if (propertyType === "residential") {
-    warnings.push(
-      "Odisha state-level additional assistance: verify current scheme status with OREDA " +
-        "(https://oreda.in) as state-specific supplements change periodically."
-    );
+    const state = computeOdishaStateSubsidy(systemKWp);
+    stateSubsidyINR = state.stateSubsidyINR;
+    if (stateSubsidyINR > 0) {
+      breakdown += ` | Odisha state: ${state.breakdown} = ₹${stateSubsidyINR.toLocaleString("en-IN")}`;
+      applicableSchemes.push("Odisha State Additional Subsidy (OREDA / Government of Odisha)");
+      warnings.push(
+        "Odisha state top-up is indicative and paid in addition to the central subsidy for eligible " +
+          "residential consumers. Confirm current eligibility and fund availability with OREDA " +
+          "(https://oreda.in) or your discom before applying."
+      );
+    }
   }
 
   const totalSubsidyINR = centralSubsidyINR + stateSubsidyINR;

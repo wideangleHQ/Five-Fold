@@ -37,3 +37,11 @@ Final eligibility, subsidy, scheme availability and applicable benefits remain s
 **Do not hardcode specific subsidy amounts.**
 
 This turns a static information page into a genuine lead-generation tool.
+
+## Odisha State Additional Subsidy (Calculator)
+
+The Solar Calculator adds the Odisha state top-up for **residential** systems on top of PM Surya Ghar:
+1 kWp ₹25,000 · 2 kWp ₹50,000 · 3 kWp and above ₹60,000 (cap), i.e. up to ₹1,38,000 combined at 3 kWp.
+Modelled in `client/src/data/solar/subsidies.ts` (`ODISHA_STATE_TOPUP`, last verified 2026-10).
+Amounts are from published reports of the Odisha discom/government announcement; confirm current
+eligibility and fund availability with OREDA / the consumer's discom before relying on them.

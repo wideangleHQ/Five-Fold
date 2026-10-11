@@ -16,11 +16,9 @@ const BASE: CalculatorInput = {
   sanctionedLoadKW: null,
 };
 
-const EMPTY_APPLIANCES = {
-  fans: 0, lights: 0, acs: 0, refrigerators: 0, waterPumps: 0,
-  washingMachines: 0, computers: 0, geysers: 0, tvs: 0,
-  otherWatts: 0, otherHoursPerDay: 2,
-};
+const appl = (quantities: Record<string, number>, otherWatts = 0, otherHoursPerDay = 2) => ({
+  quantities, otherWatts, otherHoursPerDay,
+});
 
 describe("calculateConsumption", () => {
   it("returns direct consumption when inputMode is consumption", () => {
@@ -48,78 +46,34 @@ describe("calculateConsumption", () => {
     expect(result.monthlyConsumptionKWh).toBe(0);
   });
 
-  // ── Reference chart validation ────────────────────────────────────────────
-  // Formula: Units/day = Qty × Watts × Hours / 1000; Units/month = Units/day × 30
-  // Source: Household Electrical Load & Consumption List chart
+  // Appliance mode: Units/day = Qty × W × h / 1000; Units/month = Units/day × 30.
+  // Wattage ranges feed the engine at their midpoint and expose the full range.
 
-  it("Test 1 — LED Bulb: 1 × 9W × 6h/day = 0.054 units/day = 1.62 units/month", () => {
-    const result = calculateConsumption({
-      ...BASE,
-      inputMode: "appliances",
-      appliances: { ...EMPTY_APPLIANCES, lights: 1 },
-    });
-    // 1 × 9 × 6 × 30 / 1000 = 1.62
-    expect(result.monthlyConsumptionKWh).toBeCloseTo(1.62, 2);
-    expect(result.averageDailyKWh).toBeCloseTo(0.054, 3);
+  it("4 ceiling fans (60–75 W, 10 h): midpoint 81 units/month, range 72–90", () => {
+    const r = calculateConsumption({ ...BASE, inputMode: "appliances", appliances: appl({ ceiling_fan: 4 }) });
+    expect(r.monthlyConsumptionKWh).toBeCloseTo(81, 8);
+    expect(r.monthlyConsumptionRangeKWh!.min).toBeCloseTo(72, 8);
+    expect(r.monthlyConsumptionRangeKWh!.max).toBeCloseTo(90, 8);
+    expect(r.isEstimated).toBe(true);
   });
 
-  it("Test 2 — Ceiling Fan: 4 × 70W × 10h/day = 2.8 units/day = 84 units/month", () => {
-    // This is the explicit reference example:
-    // "4 ceiling fans × 70 W × 10 hours/day / 1000 = 2.8 kWh/day = 84 units/month"
-    const result = calculateConsumption({
-      ...BASE,
-      inputMode: "appliances",
-      appliances: { ...EMPTY_APPLIANCES, fans: 4 },
-    });
-    expect(result.monthlyConsumptionKWh).toBeCloseTo(84, 0);
-    expect(result.averageDailyKWh).toBeCloseTo(2.8, 1);
+  it("single LED bulb: 1.62 units/month, 0.054 units/day", () => {
+    const r = calculateConsumption({ ...BASE, inputMode: "appliances", appliances: appl({ led_bulb: 1 }) });
+    expect(r.monthlyConsumptionKWh).toBeCloseTo(1.62, 8);
+    expect(r.averageDailyKWh).toBeCloseTo(0.054, 8);
   });
 
-  it("Test 3 — zero quantity produces zero consumption", () => {
-    const result = calculateConsumption({
-      ...BASE,
-      inputMode: "appliances",
-      appliances: { ...EMPTY_APPLIANCES },
-    });
-    expect(result.monthlyConsumptionKWh).toBe(0);
+  it("multiple appliances: monthly is the daily total × 30 (not 30 × 30)", () => {
+    const r = calculateConsumption({ ...BASE, inputMode: "appliances", appliances: appl({ ceiling_fan: 4, led_bulb: 10 }) });
+    const dailyMid = (2.94 + 3.54) / 2;
+    expect(r.monthlyConsumptionKWh).toBeCloseTo(dailyMid * 30, 8);
+    expect(r.averageDailyKWh).toBeCloseTo(dailyMid, 8);
   });
 
-  it("Test 4 — multiple appliances: total is sum of each", () => {
-    // fans: 4 × 70W × 10h × 30d / 1000 = 84
-    // lights: 10 × 9W × 6h × 30d / 1000 = 16.2
-    // total: 100.2 kWh/month
-    const result = calculateConsumption({
-      ...BASE,
-      inputMode: "appliances",
-      appliances: { ...EMPTY_APPLIANCES, fans: 4, lights: 10 },
-    });
-    expect(result.monthlyConsumptionKWh).toBeCloseTo(100.2, 1);
-  });
-
-  it("Test 5 — monthly is daily × 30, not recalculated separately", () => {
-    const result = calculateConsumption({
-      ...BASE,
-      inputMode: "appliances",
-      appliances: { ...EMPTY_APPLIANCES, fans: 2 },
-    });
-    // 2 × 70 × 10 × 30 / 1000 = 42
-    expect(result.monthlyConsumptionKWh).toBeCloseTo(42, 1);
-    expect(result.averageDailyKWh).toBeCloseTo(result.monthlyConsumptionKWh / 30, 4);
-  });
-
-  it("Test 6 — otherWatts: 0 watts or 0 hours produces 0 contribution", () => {
-    const result = calculateConsumption({
-      ...BASE,
-      inputMode: "appliances",
-      appliances: { ...EMPTY_APPLIANCES, otherWatts: 0, otherHoursPerDay: 4 },
-    });
-    expect(result.monthlyConsumptionKWh).toBe(0);
-
-    const result2 = calculateConsumption({
-      ...BASE,
-      inputMode: "appliances",
-      appliances: { ...EMPTY_APPLIANCES, otherWatts: 500, otherHoursPerDay: 0 },
-    });
-    expect(result2.monthlyConsumptionKWh).toBe(0);
+  it("empty or invalid appliance input gives 0, never NaN", () => {
+    for (const q of [{}, { ceiling_fan: -2 }, { ceiling_fan: NaN }]) {
+      const r = calculateConsumption({ ...BASE, inputMode: "appliances", appliances: appl(q as Record<string, number>) });
+      expect(r.monthlyConsumptionKWh).toBe(0);
+    }
   });
 });
