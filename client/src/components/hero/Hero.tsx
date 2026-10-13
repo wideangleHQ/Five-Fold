@@ -372,13 +372,9 @@ export const Hero: React.FC = () => {
             </div>
 
             {/* Main Hero Headline with deliberate line breaks */}
-            <h1 className="font-heading text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.08] text-[#173B53]">
-              <span className="block whitespace-normal sm:whitespace-nowrap">
-                Powering Odisha with
-              </span>
-              <span className="block text-[#1684C7] mt-0.5">
-                Smarter Solar Energy
-              </span>
+            <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-[4rem] font-extrabold tracking-tight leading-[1.08] text-[#173B53]">
+              <span className="block whitespace-normal sm:whitespace-nowrap">Invest in Green.</span>{" "}
+              <span className="block text-[#1684C7] mt-0.5">Benefit for Life.</span>
             </h1>
 
             {/* Supporting Copy */}

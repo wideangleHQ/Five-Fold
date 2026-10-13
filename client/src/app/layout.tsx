@@ -5,6 +5,7 @@ import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollRevealInitializer } from "@/components/ui/ScrollRevealInitializer";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { FivefoldPreloader } from "@/components/ui/FivefoldPreloader";
 import { constructMetadata, generateOrganizationSchema } from "@/lib/seo";
 
@@ -57,6 +58,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-1 w-full">{children}</main>
           <Footer />
+          <WhatsAppButton />
         </SmoothScrollProvider>
       </body>
     </html>

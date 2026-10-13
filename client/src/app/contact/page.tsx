@@ -4,6 +4,7 @@ import { constructMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { Phone, Mail, MapPin, Clock, ShieldCheck } from "lucide-react";
+import { COMPANY_CONTACT } from "@/lib/company";
 
 export const metadata: Metadata = constructMetadata({
   title: "Contact Fivefold Renewable | Solar EPC Consultation",
@@ -82,9 +83,8 @@ export default function ContactPage() {
                   <div className="flex items-start gap-3">
                     <Phone className="h-5 w-5 text-brand-amber shrink-0 mt-0.5" />
                     <div>
-                      <strong className="block text-white">Direct Phone / Helplines</strong>
-                      <span>+91 70081 01078</span> <br />
-                      <span>+91 70081 33792</span>
+                      <strong className="block text-white">Phone / WhatsApp</strong>
+                      <a href={COMPANY_CONTACT.phoneHref} className="hover:underline">{COMPANY_CONTACT.phoneDisplay}</a>
                     </div>
                   </div>
 

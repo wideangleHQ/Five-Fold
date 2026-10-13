@@ -37,6 +37,7 @@ import {
 } from "@/data/engineering";
 import { PerformanceFormula } from "@/components/engineering/PerformanceFormula";
 import heroBgImg from "@/assets/Images/hero section background.png";
+import { COMPANY_CONTACT } from "@/lib/company";
 
 export const metadata: Metadata = constructMetadata({
   title: "Engineering Capability | Solar Performance Starts Before Installation",
@@ -752,7 +753,7 @@ export default function EngineeringPage() {
                   </Button>
 
                   <a
-                    href="tel:+917008101078"
+                    href={COMPANY_CONTACT.phoneHref}
                     className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg border border-white/30 hover:border-white/60 text-white font-sans text-sm font-semibold transition-all"
                   >
                     <PhoneCall className="h-4 w-4 text-cyan-400" />

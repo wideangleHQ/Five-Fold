@@ -8,6 +8,7 @@ import { Phone, Mail, MapPin, Twitter, Facebook, Instagram, Linkedin, Youtube } 
 // Use approved local image assets
 import footerBgImg from "@/assets/Images/hero section background.png";
 import logoImg from "@/assets/Images/Logos/Five_Fold_White.png";
+import { COMPANY_CONTACT } from "@/lib/company";
 
 export const Footer: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -242,7 +243,7 @@ export const Footer: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Phone className="h-3.5 w-3.5 text-[#00A9D6] shrink-0" />
-                      <span>+91 70081 01078 / +91 70081 33792</span>
+                      <a href={COMPANY_CONTACT.phoneHref} className="hover:text-[#00A9D6] transition-colors">{COMPANY_CONTACT.phoneDisplay}</a>
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="h-3.5 w-3.5 text-[#00A9D6] shrink-0" />

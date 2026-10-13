@@ -286,7 +286,7 @@ The Hero operates on a **TEXT → FRAMED IMAGE → FULLSCREEN IMAGE** scroll int
 
 1. **Initial State (Outside)**:
    - Light canvas (`#F6F3EC`) with clean navigation and dark typography (`#173B53`).
-   - Main Hero Copy ("Powering Odisha with Smarter Solar Energy").
+   - Main Hero Copy ("Invest in Green. Benefit for Life.").
    - Supporting copy and primary CTA ("Find My Solar Solution →").
    - Large framed solar visual below copy with restrained borders (`#DCE2E2`) and generous margins.
 2. **Scroll Phase 1 (Text Exits)**:

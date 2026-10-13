@@ -11,7 +11,7 @@
  *
  * HOW TO UPDATE:
  * 1. Visit https://solarrooftop.gov.in for latest central subsidy slabs
- * 2. Check OREDA (https://oreda.in) for state-specific additions
+ * 2. Check OREDA (https://oredaodisha.com) for state-specific additions
  * 3. Update slabs below with new amounts and effectiveFrom date
  * 4. Set lastVerified to today's date
  * 5. Increment CALCULATOR_ENGINE_VERSION in system-assumptions.ts
@@ -171,10 +171,10 @@ export function computePMSuryaGharSubsidy(systemKWp: number): {
  * Modelled as ₹25,000/kWp for the first 2 kWp + ₹10,000 for the 3rd kWp, capped at ₹60,000.
  * Combined with the central ₹78,000 this gives the reported ₹1,38,000 at 3 kWp.
  *
- * Sources (verified 2026-10): Odisha government / discom announcements as reported by
- * powerline.net.in (2025-09-03), pv-magazine-india.com and odishabytes.com.
- * Eligibility, exact conditions and fund availability must be confirmed with OREDA
- * (https://oreda.in) or the consumer's discom (TPCODL / TPWODL / TPNODL / TPSODL).
+ * Source (verified 2026-10): Odisha Cabinet decision of 3 Jan 2025 (additional state
+ * assistance for households installing under PM Surya Ghar), as reported in the press.
+ * The official notification text could not be retrieved — confirm amounts, availability and
+ * eligibility with OREDA (https://oredaodisha.com) or the consumer's discom.
  */
 export const ODISHA_STATE_TOPUP: SubsidyScheme = {
   id: "odisha_state_topup",
@@ -187,8 +187,8 @@ export const ODISHA_STATE_TOPUP: SubsidyScheme = {
     { fromKWp: 2, toKWp: 3, rateINRPerKWp: 10000, fixedAmountINR: null, notes: "₹10,000 for the 3rd kWp — total ₹60,000" },
     { fromKWp: 3, toKWp: null, rateINRPerKWp: null, fixedAmountINR: 60000, notes: "Fixed ₹60,000 maximum for 3 kWp and above" },
   ],
-  source: "Odisha government / discom announcements (reported Sept 2025); confirm with OREDA",
-  effectiveFrom: "2025-01",
+  source: "Odisha Cabinet decision, 3 Jan 2025 (press-reported); confirm with OREDA / discom",
+  effectiveFrom: "2025-01-03",
   lastVerified: "2026-10",
   notes:
     "Paid in addition to PM Surya Ghar for eligible residential consumers. " +

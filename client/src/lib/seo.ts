@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { COMPANY_CONTACT } from "@/lib/company";
 
 export const SITE_CONFIG = {
   name: "Fivefold Renewable",
@@ -7,9 +8,8 @@ export const SITE_CONFIG = {
     "Fivefold Renewable is an engineering-led Solar EPC company in Odisha providing rooftop and ground-mounted solar solutions for industrial, commercial, and residential clients.",
   url: "https://fivefoldsolar.com",
   ogImage: "/images/og-default.jpg",
-  contactPhone: "+91 70081 01078",
-  contactPhoneAlt: "+91 70081 33792",
-  contactEmail: "info@fivefoldsolar.com",
+  contactPhone: COMPANY_CONTACT.phoneDisplay,
+  contactEmail: COMPANY_CONTACT.email,
   address: "Plot No. SCR 2, Lane No. 6, Anant Vihar Phase-3, Pokhariput, Bhubaneswar – 751020, Odisha, India",
 };
 

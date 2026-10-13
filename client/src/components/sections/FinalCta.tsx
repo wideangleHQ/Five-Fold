@@ -6,6 +6,8 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { PhoneCall } from "lucide-react";
 import heroBg from "@/assets/Images/hero section background.png";
+import { COMPANY_CONTACT } from "@/lib/company";
+import { TAGLINE } from "@/lib/company";
 
 export const FinalCta: React.FC = () => {
   return (
@@ -41,6 +43,10 @@ export const FinalCta: React.FC = () => {
                 Talk to our solar engineers about your project.
               </p>
 
+              <p data-reveal="paragraph" className="font-heading text-base sm:text-lg font-bold text-white tracking-tight">
+                {TAGLINE}
+              </p>
+
               <div data-reveal="cta" className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
                 <Button
                   href="/contact"
@@ -51,11 +57,11 @@ export const FinalCta: React.FC = () => {
                 </Button>
 
                 <a
-                  href="tel:+917008101078"
+                  href={COMPANY_CONTACT.phoneHref}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg border border-white/30 hover:border-white/60 text-white font-sans text-sm font-semibold transition-all"
                 >
                   <PhoneCall className="h-4 w-4 text-[#1684C7]" />
-                  <span>+91 70081 01078</span>
+                  <span>{COMPANY_CONTACT.phoneDisplay}</span>
                 </a>
               </div>
             </div>

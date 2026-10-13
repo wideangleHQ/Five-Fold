@@ -37,7 +37,7 @@ The platform should allow visitors to:
 
 ## Core Message
 
-**“Powering Odisha with Smarter Solar Energy”**  
+**“Invest in Green. Benefit for Life.”**  
 Supporting line: Engineering-Led Solar EPC Solutions Since 2016
 
 The site should feel premium, engineering-driven and trustworthy — never salesy or overloaded.

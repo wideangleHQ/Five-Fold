@@ -44,7 +44,7 @@ export function calculateSubsidy(
       warnings.push(
         "Odisha state top-up is indicative and paid in addition to the central subsidy for eligible " +
           "residential consumers. Confirm current eligibility and fund availability with OREDA " +
-          "(https://oreda.in) or your discom before applying."
+          "(https://oredaodisha.com) or your discom before applying."
       );
     }
   }

@@ -82,7 +82,7 @@ The Resend API key is a server-only secret and must never appear in the React cl
 
 ### Confirmed contact details
 ```
-Phone    +91 70081 01078 / +91 70081 33792
+Phone    +91 70081 33793 (also WhatsApp)
 Email    info@fivefoldsolar.com
 Address  Plot No. SCR 2, Lane No. 6, Anant Vihar Phase-3,
          Pokhariput, Bhubaneswar – 751020

@@ -131,10 +131,26 @@ export const Header: React.FC = () => {
                 </Link>
               );
             })}
+            <Link
+              href="/contact"
+              className={cn(
+                "hidden lg:inline-flex min-[1440px]:hidden whitespace-nowrap px-2.5 py-1 text-xs xl:text-sm font-semibold transition-colors font-sans rounded-md",
+                pathname === "/contact" ? "text-[#1684C7]" : "text-[#173B53] hover:text-[#1684C7] hover:bg-black/5"
+              )}
+            >
+              Contact Us
+            </Link>
           </nav>
 
           {/* Right Action Area: CTA + Mobile Menu Button */}
           <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/contact"
+              className="hidden sm:inline-flex lg:hidden min-[1440px]:inline-flex h-[36px] sm:h-[38px] px-3.5 sm:px-4 items-center justify-center rounded-lg border border-[#173B53] text-[#173B53] hover:bg-[#173B53] hover:text-white text-xs sm:text-sm font-sans font-semibold whitespace-nowrap transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#1684C7] focus:ring-offset-2"
+            >
+              Contact Us
+            </Link>
+
             {/* CTA Button */}
             <Link
               href="/solar-calculator"
@@ -142,8 +158,8 @@ export const Header: React.FC = () => {
               className="h-[36px] sm:h-[38px] px-3.5 sm:px-4 bg-[#173B53] hover:bg-[#0f2738] text-white rounded-lg flex items-center justify-center gap-1.5 sm:gap-2 transition-colors duration-200 shadow-xs hover:shadow-sm group focus:outline-none focus:ring-2 focus:ring-[#1684C7] focus:ring-offset-2 select-none"
             >
               <span className="text-xs sm:text-sm font-sans font-semibold whitespace-nowrap text-white">
-                <span className="hidden sm:inline">Find My Solar Solution</span>
-                <span className="sm:hidden">Find Solution</span>
+                <span className="hidden sm:inline lg:hidden xl:inline">Find My Solar Solution</span>
+                <span className="sm:hidden lg:inline xl:hidden">Find Solution</span>
               </span>
               <ArrowUpRight
                 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white stroke-white shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"

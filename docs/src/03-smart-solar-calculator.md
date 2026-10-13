@@ -268,7 +268,7 @@ All results are clearly labelled as **preliminary estimates**.
 **Never** update regulatory values from solar industry blogs. Use:
 - OERC orders: https://www.orierc.org
 - MNRE PM Surya Ghar: https://solarrooftop.gov.in
-- Odisha state schemes: https://oreda.in
+- Odisha state schemes: https://oredaodisha.com
 - CEA grid emission factors: https://cea.nic.in
 
 ---

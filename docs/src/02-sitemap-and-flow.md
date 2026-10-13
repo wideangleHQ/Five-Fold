@@ -54,7 +54,7 @@ The header must remain visually minimal and consistent across the website.
 
 Core message:
 
-**Powering Odisha with Smarter Solar Energy**
+**Invest in Green. Benefit for Life.**
 
 Supporting positioning:
 

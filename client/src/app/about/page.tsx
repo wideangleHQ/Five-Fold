@@ -21,6 +21,7 @@ import { EngineeringCapabilities } from "@/components/sections/EngineeringCapabi
 // Approved local assets
 import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
 import heroBgImg from "@/assets/Images/hero section background.png";
+import { TAGLINE } from "@/lib/company";
 
 export const metadata: Metadata = constructMetadata({
   title: "About Us | Engineering-Led Solar EPC",
@@ -68,6 +69,10 @@ export default function AboutPage() {
               className="font-sans text-[#526673] text-base sm:text-lg lg:text-xl leading-relaxed max-w-3xl pt-1"
             >
               Fivefold Renewable is an engineering-led solar EPC company focused on designing, delivering and supporting reliable solar energy systems.
+            </p>
+
+            <p data-reveal="paragraph" className="font-heading text-lg sm:text-xl font-bold text-[#1684C7] tracking-tight">
+              {TAGLINE}
             </p>
 
             <div data-reveal="cta" className="flex flex-wrap items-center gap-3.5 pt-3">
