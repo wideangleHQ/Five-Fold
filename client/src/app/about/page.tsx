@@ -22,6 +22,7 @@ import { EngineeringCapabilities } from "@/components/sections/EngineeringCapabi
 import stock1Img from "@/assets/Images/Five_Fold_stock_1.png";
 import heroBgImg from "@/assets/Images/hero section background.png";
 import { TAGLINE } from "@/lib/company";
+import { CERTIFICATIONS, CERTIFICATION_SCOPE, CERTIFIED_ENTITY, CERTIFYING_BODY } from "@/data/certifications";
 
 export const metadata: Metadata = constructMetadata({
   title: "About Us | Engineering-Led Solar EPC",
@@ -320,6 +321,56 @@ export default function AboutPage() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Management system certifications */}
+          <div className="mt-12 sm:mt-16 space-y-6">
+            <div data-reveal="group" className="max-w-3xl space-y-2">
+              <h3 data-reveal="heading" className="font-heading text-2xl sm:text-3xl font-extrabold text-[#173B53] tracking-tight">
+                Certified Management Systems
+              </h3>
+              <p data-reveal="paragraph" className="font-sans text-sm sm:text-base text-[#526673] leading-relaxed">
+                {CERTIFIED_ENTITY} is certified to ISO 9001:2015 and ISO 45001:2018 by {CERTIFYING_BODY}.
+              </p>
+            </div>
+
+            <div data-reveal="cards-container" className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+              {CERTIFICATIONS.map((c) => (
+                <div key={c.standard} data-reveal="card" className="flex gap-5 sm:gap-6">
+                  <a
+                    href={c.image.src}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`View the ${c.standard} certificate`}
+                    className="shrink-0 w-28 sm:w-36 self-start rounded-lg overflow-hidden border border-[#DCE2E2] bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1684C7] focus-visible:ring-offset-2"
+                  >
+                    <Image src={c.image} alt={c.imageAlt} sizes="144px" className="w-full h-auto" />
+                  </a>
+                  <div className="space-y-1.5 min-w-0">
+                    <h4 className="font-heading text-lg sm:text-xl font-bold text-[#173B53]">{c.standard}</h4>
+                    <p className="text-sm font-semibold text-[#173B53]">{c.system}</p>
+                    <dl className="text-xs sm:text-sm text-[#526673] leading-relaxed space-y-0.5">
+                      <div><dt className="inline font-semibold">Certificate no.: </dt><dd className="inline">{c.certificateNo}</dd></div>
+                      <div><dt className="inline font-semibold">Issued: </dt><dd className="inline">{c.issued}</dd></div>
+                      <div><dt className="inline font-semibold">Expiry: </dt><dd className="inline">{c.expiry} (re-certification {c.recertification})</dd></div>
+                      <div><dt className="inline font-semibold">Accreditation: </dt><dd className="inline">{c.accreditation}</dd></div>
+                    </dl>
+                    <a
+                      href={c.image.src}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block pt-1 text-sm font-semibold text-[#1684C7] hover:underline"
+                    >
+                      View certificate
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="max-w-4xl text-xs sm:text-sm text-[#526673] leading-relaxed">
+              <span className="font-semibold">Scope: </span>{CERTIFICATION_SCOPE}
+            </p>
           </div>
 
         </div>

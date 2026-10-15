@@ -101,3 +101,16 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+
+/* Customer reviews: endless right-to-left marquee (one track = two identical copies) */
+@keyframes review-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.review-marquee {
+  animation: review-marquee 80s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .review-marquee { animation: none; }
+}

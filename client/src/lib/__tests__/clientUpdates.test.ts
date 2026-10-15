@@ -3,6 +3,9 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { COMPANY_CONTACT, TAGLINE, WHATSAPP_DEFAULT_MESSAGE, whatsappUrl } from "@/lib/company";
 import { FAQS_DATA } from "@/data/faqs";
+import { GOOGLE_REVIEWS } from "@/data/reviews";
+import { TRUST_METRICS } from "@/components/sections/TrustMetrics";
+import { CERTIFICATIONS, CERTIFIED_ENTITY, CERTIFYING_BODY } from "@/data/certifications";
 import {
   APPLICATION_STEPS,
   CENTRAL_ELIGIBILITY,
@@ -134,13 +137,94 @@ describe("tagline", () => {
 });
 
 describe("scope exclusions and unverified claims", () => {
-  it("does not publish ISO claims without certificate evidence", () => {
-    const offenders = walk(SRC).filter((f) => /ISO\s?(9001|45001)/i.test(readFileSync(f, "utf8")));
+  it("ISO claims match the supplied certificates and are valid", () => {
+    expect(CERTIFICATIONS.map((c) => c.standard)).toEqual(["ISO 9001:2015", "ISO 45001:2018"]);
+    expect(CERTIFICATIONS.map((c) => c.certificateNo)).toEqual(["26EQRP12", "26EORN15"]);
+    expect(CERTIFIED_ENTITY).toBe("Fivefold Renewable Private Limited");
+    expect(CERTIFYING_BODY).toBe("Assurance Quality Certification LLC");
+    for (const c of CERTIFICATIONS) {
+      expect(new Date(c.expiry).getTime()).toBeGreaterThan(new Date(c.issued).getTime());
+      expect(c.imageAlt).toContain(c.standard);
+    }
+  });
+
+  it("ISO standards are only claimed where the certificates support it", () => {
+    const allowed = ["data/certifications.ts", "app/about/page.tsx"].map((p) => join(SRC, p));
+    const offenders = walk(SRC).filter((f) => !allowed.includes(f) && /ISO\s?(9001|45001)/i.test(readFileSync(f, "utf8")));
     expect(offenders).toEqual([]);
   });
 
-  it("does not introduce a reviews/testimonials feature", () => {
-    const offenders = walk(SRC).filter((f) => /testimonial|googleReview|starRating/i.test(readFileSync(f, "utf8")));
-    expect(offenders).toEqual([]);
+  it("shows the seven supplied Google reviews above the FAQ, with alt text", () => {
+    expect(GOOGLE_REVIEWS).toHaveLength(7);
+    for (const r of GOOGLE_REVIEWS) expect(r.alt.length).toBeGreaterThan(40);
+    const home = read("app/page.tsx");
+    const at = home.indexOf("<TestimonialsSection />");
+    expect(at).toBeGreaterThan(0);
+    expect(at).toBeLessThan(home.indexOf("<FaqSection />"));
+  });
+
+  it("review images are not draggable, not linked, and the context menu is blocked", () => {
+    const c = read("components/sections/TestimonialsSection.tsx");
+    expect(c).toMatch(/draggable=\{false\}/);
+    expect(c).toMatch(/pointer-events-none/);
+    expect(c).toMatch(/onContextMenu=\{\(e\) => e\.preventDefault\(\)\}/);
+    expect(c).not.toMatch(/<a[\s>]/);
+    expect(c).not.toMatch(/next\/link/);
+    expect(c).toMatch(/rounded-2xl/);
+  });
+
+  it("is a continuous right-to-left marquee, not a slideshow", () => {
+    const c = read("components/sections/TestimonialsSection.tsx");
+    expect(c).toMatch(/review-marquee/);
+    expect(c).not.toMatch(/setInterval|useState/);
+    const css = read("app/globals.css");
+    expect(css).toMatch(/@keyframes review-marquee[\s\S]*translateX\(-50%\)/);
+    expect(css).toMatch(/animation: review-marquee [\d.]+s linear infinite/);
+  });
+});
+
+describe("static hero", () => {
+  const hero = read("components/hero/Hero.tsx");
+
+  it("uses Hero Section Bg.png as its background", () => {
+    expect(hero).toMatch(/@\/assets\/Images\/Hero Section Bg\.png/);
+  });
+
+  it("has no scroll-driven animation, pinning, canvas or image sequence", () => {
+    expect(hero).not.toMatch(/ScrollTrigger|scrollTrigger|sticky|<canvas|getContext|heroFrames|HERO_FRAME|scrub|pin:/);
+    expect(hero).not.toMatch(/h-\[280vh\]/);
+  });
+});
+
+describe("statistics strip", () => {
+  it("shows the five verified figures, matching the About page", () => {
+    expect(TRUST_METRICS.map((m) => `${m.value} ${m.unit} ${m.label}`.replace(/\s+/g, " ").trim())).toEqual([
+      "10+ Years of Experience",
+      "20+ MW Installed Capacity",
+      "30+ Projects Delivered",
+      "800+ MW Engineering Experience",
+      "10+ States Engineering Reach Across India",
+    ]);
+    const about = read("app/about/page.tsx");
+    for (const stat of ["10+ Years", "20+ MW", "30+ Projects", "800+ MW", "10+ States"]) expect(about).toContain(stat);
+  });
+
+  it("renders directly below the hero and reuses the existing scroll-reveal infrastructure", () => {
+    const home = read("app/page.tsx");
+    expect(home.indexOf("<Hero />")).toBeLessThan(home.indexOf("<TrustMetrics />"));
+    expect(home.indexOf("<TrustMetrics />")).toBeLessThan(home.indexOf("<SolarDecisionPlatform />"));
+    const c = read("components/sections/TrustMetrics.tsx");
+    expect(c).toMatch(/data-reveal="cards-container"/);
+    expect(c).toMatch(/lg:grid-cols-5/);
+    expect(c).not.toMatch(/shadow|gradient|rounded/);
+  });
+
+  it("counts the numbers up once on entering view, honouring reduced motion and cleaning up", () => {
+    const c = read("components/sections/TrustMetrics.tsx");
+    expect(c).toMatch(/IntersectionObserver/);
+    expect(c).toMatch(/gsap\.to\(counter/);
+    expect(c).toMatch(/prefers-reduced-motion/);
+    expect(c).toMatch(/io\.disconnect\(\);\s+tween\?\.kill\(\)/);
+    expect(c).toMatch(/minWidth/);
   });
 });
