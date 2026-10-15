@@ -160,9 +160,7 @@ export const Header: React.FC = () => {
               className={cn(
                 "hidden lg:inline-flex min-[1440px]:hidden whitespace-nowrap px-2.5 py-1 text-xs xl:text-sm font-semibold transition-all duration-200 font-sans rounded-md",
                 isHero
-                  ? (pathname === "/contact"
-                      ? "text-white bg-white/15"
-                      : "text-white/90 hover:text-white hover:bg-white/15 backdrop-blur-xs")
+                  ? "text-white/90 hover:text-white hover:bg-white/15 backdrop-blur-xs"
                   : (pathname === "/contact"
                       ? "text-[#1684C7]"
                       : "text-[#173B53] hover:text-[#1684C7] hover:bg-black/5")
