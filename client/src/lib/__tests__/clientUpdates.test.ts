@@ -41,10 +41,20 @@ describe("company contact configuration", () => {
     expect(decodeURIComponent(whatsappUrl("Hi & bye").split("?text=")[1])).toBe("Hi & bye");
   });
 
-  it("no stale company phone numbers remain in the source", () => {
-    const stale = /7008101078|70081 01078|7008133792|70081 33792/;
-    const offenders = walk(SRC).filter((f) => stale.test(readFileSync(f, "utf8")));
-    expect(offenders).toEqual([]);
+  it("the two approved numbers live only in the shared config; the old 33792 number is gone", () => {
+    expect(COMPANY_CONTACT.secondaryPhoneHref).toBe("tel:7008101078");
+    expect(COMPANY_CONTACT.secondaryPhoneDisplay).toBe("+91 70081 01078");
+    const company = join(SRC, "lib/company.ts");
+    const stale = /7008133792|70081 33792/;
+    expect(walk(SRC).filter((f) => stale.test(readFileSync(f, "utf8")))).toEqual([]);
+    const second = /7008101078|70081 01078/;
+    expect(walk(SRC).filter((f) => f !== company && second.test(readFileSync(f, "utf8")))).toEqual([]);
+  });
+
+  it("the footer shows both numbers as tel: links", () => {
+    const footer = read("components/layout/Footer.tsx");
+    expect(footer).toMatch(/COMPANY_CONTACT\.phoneHref/);
+    expect(footer).toMatch(/COMPANY_CONTACT\.secondaryPhoneHref/);
   });
 });
 

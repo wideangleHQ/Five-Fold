@@ -1,6 +1,8 @@
 export const COMPANY_CONTACT = {
   phoneDisplay: "+91 70081 33793",
   phoneHref: "tel:7008133793",
+  secondaryPhoneDisplay: "+91 70081 01078",
+  secondaryPhoneHref: "tel:7008101078",
   whatsappNumber: "917008133793",
   email: "info@fivefoldsolar.com",
   contactPath: "/contact",

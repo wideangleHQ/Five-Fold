@@ -243,7 +243,11 @@ export const Footer: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Phone className="h-3.5 w-3.5 text-[#00A9D6] shrink-0" />
-                      <a href={COMPANY_CONTACT.phoneHref} className="hover:text-[#00A9D6] transition-colors">{COMPANY_CONTACT.phoneDisplay}</a>
+                      <span>
+                        <a href={COMPANY_CONTACT.phoneHref} className="hover:text-[#00A9D6] transition-colors">{COMPANY_CONTACT.phoneDisplay}</a>
+                        {" / "}
+                        <a href={COMPANY_CONTACT.secondaryPhoneHref} className="hover:text-[#00A9D6] transition-colors">{COMPANY_CONTACT.secondaryPhoneDisplay}</a>
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="h-3.5 w-3.5 text-[#00A9D6] shrink-0" />
