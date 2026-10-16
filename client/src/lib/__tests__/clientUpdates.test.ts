@@ -51,6 +51,15 @@ describe("company contact configuration", () => {
     expect(walk(SRC).filter((f) => f !== company && second.test(readFileSync(f, "utf8")))).toEqual([]);
   });
 
+  it("both numbers appear on the contact page, mobile menu, final CTA and structured data", () => {
+    for (const f of ["app/contact/page.tsx", "components/navigation/MobileMenu.tsx", "components/sections/FinalCta.tsx"]) {
+      expect(read(f)).toMatch(/COMPANY_CONTACT\.phoneHref/);
+      expect(read(f)).toMatch(/COMPANY_CONTACT\.secondaryPhoneHref/);
+    }
+    expect(read("lib/seo.ts")).toMatch(/contactPhoneAlt/);
+    expect(FAQS_DATA.find((f) => /site assessment or consultation/.test(f.question))!.answer).toContain(COMPANY_CONTACT.secondaryPhoneDisplay);
+  });
+
   it("the footer shows both numbers as tel: links", () => {
     const footer = read("components/layout/Footer.tsx");
     expect(footer).toMatch(/COMPANY_CONTACT\.phoneHref/);

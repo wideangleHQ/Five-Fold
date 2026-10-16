@@ -234,6 +234,7 @@ export const GovernmentSchemesView: React.FC = () => {
             <div className="flex flex-wrap items-center gap-3">
               <Button href={COMPANY_CONTACT.contactPath} variant="primary" size="md"><span>Contact Us</span></Button>
               <a href={COMPANY_CONTACT.phoneHref} className="text-sm font-semibold text-[#173B53] hover:text-[#1684C7]">{COMPANY_CONTACT.phoneDisplay}</a>
+              <a href={COMPANY_CONTACT.secondaryPhoneHref} className="text-sm font-semibold text-[#173B53] hover:text-[#1684C7]">{COMPANY_CONTACT.secondaryPhoneDisplay}</a>
               <a href={whatsappUrl("Hello Fivefold, I would like to check my rooftop solar subsidy eligibility.")} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#173B53] hover:text-[#1684C7]">Enquire on WhatsApp</a>
             </div>
             <p className="text-xs text-[#526673] leading-relaxed max-w-3xl">{SCHEME_DISCLAIMER} Content last verified {SCHEME_CONTENT_VERIFIED_ON}.</p>

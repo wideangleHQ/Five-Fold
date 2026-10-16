@@ -47,7 +47,7 @@ export const FinalCta: React.FC = () => {
                 {TAGLINE}
               </p>
 
-              <div data-reveal="cta" className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2">
+              <div data-reveal="cta" className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
                 <Button
                   href="/contact"
                   variant="primary"
@@ -62,6 +62,14 @@ export const FinalCta: React.FC = () => {
                 >
                   <PhoneCall className="h-4 w-4 text-[#1684C7]" />
                   <span>{COMPANY_CONTACT.phoneDisplay}</span>
+                </a>
+
+                <a
+                  href={COMPANY_CONTACT.secondaryPhoneHref}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg border border-white/30 hover:border-white/60 text-white font-sans text-sm font-semibold transition-all"
+                >
+                  <PhoneCall className="h-4 w-4 text-[#1684C7]" />
+                  <span>{COMPANY_CONTACT.secondaryPhoneDisplay}</span>
                 </a>
               </div>
             </div>

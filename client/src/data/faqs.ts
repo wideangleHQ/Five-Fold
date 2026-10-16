@@ -163,6 +163,6 @@ export const FAQS_DATA: FAQItem[] = [
   {
     id: "faq-26",
     question: "How can I contact Fivefold for a site assessment or consultation?",
-    answer: `Use the Contact Us page, call ${COMPANY_CONTACT.phoneDisplay}, or message us on WhatsApp using the button on every page. Our team will arrange a consultation and site assessment.`,
+    answer: `Use the Contact Us page, call ${COMPANY_CONTACT.phoneDisplay} or ${COMPANY_CONTACT.secondaryPhoneDisplay}, or message us on WhatsApp using the button on every page. Our team will arrange a consultation and site assessment.`,
   },
 ];

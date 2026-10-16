@@ -9,6 +9,7 @@ export const SITE_CONFIG = {
   url: "https://fivefoldsolar.com",
   ogImage: "/images/og-default.jpg",
   contactPhone: COMPANY_CONTACT.phoneDisplay,
+  contactPhoneAlt: COMPANY_CONTACT.secondaryPhoneDisplay,
   contactEmail: COMPANY_CONTACT.email,
   address: "Plot No. SCR 2, Lane No. 6, Anant Vihar Phase-3, Pokhariput, Bhubaneswar – 751020, Odisha, India",
 };
@@ -96,6 +97,13 @@ export function generateOrganizationSchema() {
       {
         "@type": "ContactPoint",
         telephone: SITE_CONFIG.contactPhone,
+        contactType: "customer service",
+        areaServed: "IN",
+        availableLanguage: ["en", "or", "hi"],
+      },
+      {
+        "@type": "ContactPoint",
+        telephone: SITE_CONFIG.contactPhoneAlt,
         contactType: "customer service",
         areaServed: "IN",
         availableLanguage: ["en", "or", "hi"],

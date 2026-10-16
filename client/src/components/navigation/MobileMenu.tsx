@@ -140,7 +140,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
             <div className="space-y-1.5 text-[11px] text-slate-400">
               <div className="flex items-center gap-2">
                 <Phone className="h-3.5 w-3.5 text-[#00A9D6] shrink-0" />
-                <a href={COMPANY_CONTACT.phoneHref}>{COMPANY_CONTACT.phoneDisplay}</a>
+                <span>
+                  <a href={COMPANY_CONTACT.phoneHref}>{COMPANY_CONTACT.phoneDisplay}</a>
+                  {" / "}
+                  <a href={COMPANY_CONTACT.secondaryPhoneHref}>{COMPANY_CONTACT.secondaryPhoneDisplay}</a>
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-3.5 w-3.5 text-[#00A9D6] shrink-0" />

@@ -85,6 +85,8 @@ export default function ContactPage() {
                     <div>
                       <strong className="block text-white">Phone / WhatsApp</strong>
                       <a href={COMPANY_CONTACT.phoneHref} className="hover:underline">{COMPANY_CONTACT.phoneDisplay}</a>
+                      <br />
+                      <a href={COMPANY_CONTACT.secondaryPhoneHref} className="hover:underline">{COMPANY_CONTACT.secondaryPhoneDisplay}</a>
                     </div>
                   </div>
 
